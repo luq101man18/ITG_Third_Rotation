@@ -13,7 +13,6 @@ export default function Task( { taskRecieved }) {
         <View>
             <View style={styles.stopButton}>
                 <Text>{ taskRecieved }</Text>
-                
             </View>
         </View>
     );

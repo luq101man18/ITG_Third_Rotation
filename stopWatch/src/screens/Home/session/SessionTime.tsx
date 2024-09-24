@@ -13,7 +13,7 @@ export default function SessionTime({ sessionCallback }) {
 
     const onPressStart = () => {
        // navigation.navigate('TaskAndTimer', { sessionParam: sessionTime, taskParam: taskName  });
-       sessionCallback(sessionTime);
+        sessionCallback(sessionTime);
     };
 
     return (
