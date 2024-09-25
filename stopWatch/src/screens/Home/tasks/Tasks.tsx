@@ -2,6 +2,7 @@ import React from 'react';
 import { Text, View, TextInput, TouchableOpacity } from 'react-native';
 import { useState } from 'react';
 import { StyleSheet } from 'react-native';
+import { stylesHome } from '../styles';
 
 export default function Tasks({ taskCallback }) {
     const [task, setTask] = useState();
@@ -17,17 +18,17 @@ export default function Tasks({ taskCallback }) {
 
     return (
         <View>
-            <View style={styles.taskStyle}>
-                <Text>Create Task</Text>
+            <View style={stylesHome.createTaskHeader}>
+                <Text style={stylesHome.taskHeaderText}>Create Task</Text>
             </View>
-            <View style={styles.stopButton}>
+            <View>
                 <TextInput
-                    style={styles.taskStyle}
+                    style={stylesHome.taskInput}
                     placeholder="ex: study math"
                     onChangeText={(text) => setTask(text)}
                 />
-                <TouchableOpacity onPress={onPress} style={styles.taskStyle}>
-                    <Text>
+                <TouchableOpacity onPress={onPress} style={stylesHome.taskButton}>
+                    <Text style={stylesHome.textButton}>
                         Add Task
                     </Text>
                 </TouchableOpacity>
@@ -36,24 +37,3 @@ export default function Tasks({ taskCallback }) {
     );
 }
 
-
-
-const styles = StyleSheet.create({
-    taskStyle: {
-        // other source
-        textAlign: 'center',
-        justifyContent: 'center',
-        backgroundColor: '#FF885B',
-        paddingVertical: 10,
-        paddingHorizontal: 20,
-        borderRadius: 10,
-        color: 'black',
-        //
-    },
-    currentTimeWidget: {
-        backgroundColor: '#ff7527',
-        paddingVertical: 10,
-        paddingHorizontal: 20,
-        borderRadius: 10,
-    },
-});

@@ -14,22 +14,3 @@ export default function ErrorScreen({ navigation }) {
         </View>
     );
 }
-
-const styles = StyleSheet.create({
-    stopButton: {
-        // other source
-        textAlign: 'center',
-        justifyContent: 'center',
-        backgroundColor: '#ff6347',
-        paddingVertical: 10,
-        paddingHorizontal: 20,
-        borderRadius: 10,
-        //
-    },
-    currentTimeWidget: {
-        backgroundColor: '#ff7527',
-        paddingVertical: 10,
-        paddingHorizontal: 20,
-        borderRadius: 10,
-    },
-});

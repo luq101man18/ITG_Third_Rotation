@@ -4,7 +4,7 @@ import { useState } from "react";
 import { View, Text, TouchableOpacity, StyleSheet, TextInput } from "react-native";
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import { NavigationContainer } from '@react-navigation/native';
-
+import { stylesHome } from "../styles";
 
 
 export default function SessionTime({ sessionCallback }) {
@@ -18,37 +18,18 @@ export default function SessionTime({ sessionCallback }) {
 
     return (
         <View>
-            <View>
+            <View style={stylesHome.viewSession}>
                 <TextInput
-                    style={styles.stopButton}
-                    placeholder="set session time"
+                    style={stylesHome.sessionTimeInput}
+                    placeholder="ex: 60"
                     onChangeText={(number) => setSessionTime(Number(number))}
                 />
-                <TouchableOpacity style={styles.stopButton} onPress={onPressStart}>
-                    <Text>Set Session Time</Text>
-                </TouchableOpacity>
+                <View style = {stylesHome.sessionTimeButton}>
+                    <TouchableOpacity style={stylesHome.sessionTimeOpacity}  onPress={onPressStart}>
+                        <Text>Set Session Time</Text>
+                    </TouchableOpacity>
+                </View>
             </View>
         </View>
     );
 }
-
-
-
-const styles = StyleSheet.create({
-    stopButton: {
-        // other source
-        textAlign: 'center',
-        justifyContent: 'center',
-        backgroundColor: '#ff6347',
-        paddingVertical: 10,
-        paddingHorizontal: 20,
-        borderRadius: 10,
-        //
-    },
-    currentTimeWidget: {
-        backgroundColor: '#ff7527',
-        paddingVertical: 10,
-        paddingHorizontal: 20,
-        borderRadius: 10,
-    },
-});

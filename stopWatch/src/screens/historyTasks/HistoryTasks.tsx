@@ -7,6 +7,9 @@ import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import Reactotron, { asyncStorage } from "reactotron-react-native"
 
 
+// styles
+import { stylesHisotry } from './styles';
+
 //const [taskListToString, setList] = useState('');
 export let taskList : any = [];
 
@@ -41,10 +44,16 @@ export default function HistoryTasks({ route, navigation }) {
     return (
         <View>
             <View>
-                <Text style={styles.stopButton}>Completed Task list</Text>
-                <View style={styles.stopButton}>
-                        {/* <Text>{taskList.join(", ")}</Text> */}
-                    <Text>{taskList.join(', ')}</Text>
+                <Text style={stylesHisotry.header}>Completed Task list</Text>
+                <View style={stylesHisotry.tasks}>
+                    {taskList.map((item, index) => {
+                            return (
+                                <View key={index} style = {stylesHisotry.tasksView}>
+                                    <Text style={stylesHisotry.tasks}>{item}</Text>
+                                </View>
+                            );
+                        })}
+
                 </View>
             </View>
         </View>
@@ -52,22 +61,3 @@ export default function HistoryTasks({ route, navigation }) {
 }
 
 
-
-const styles = StyleSheet.create({
-    stopButton: {
-        // other source
-        textAlign: 'center',
-        justifyContent: 'center',
-        backgroundColor: '#ff6347',
-        paddingVertical: 10,
-        paddingHorizontal: 20,
-        borderRadius: 10,
-        //
-    },
-    currentTimeWidget: {
-        backgroundColor: '#ff7527',
-        paddingVertical: 10,
-        paddingHorizontal: 20,
-        borderRadius: 10,
-    },
-});

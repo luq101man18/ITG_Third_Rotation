@@ -1,6 +1,5 @@
 import React from 'react';
-import './global.css';
-import { GluestackUIProvider } from "@/components/ui/gluestack-ui-provider";
+
 import AppNavigator from './src/nav/AppNavigator';
 export default function App() {
 
@@ -8,6 +7,6 @@ export default function App() {
   if (__DEV__) {
     require("./ReactotronConfig");
   }
-  return <GluestackUIProvider mode="light"><AppNavigator /></GluestackUIProvider>;
+  return <AppNavigator />;
 }
 

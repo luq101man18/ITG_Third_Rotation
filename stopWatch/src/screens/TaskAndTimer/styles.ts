@@ -1,0 +1,71 @@
+import { StyleSheet } from "react-native";
+
+
+export const stylesAction = StyleSheet.create({
+    header: {
+        textAlign: 'center',
+        justifyContent: 'center',
+        backgroundColor: '#FFFFEC',
+        paddingVertical: 10,
+        paddingHorizontal: 20,
+        borderRadius: 10,
+        margin: 5,
+        fontSize: 20,
+        fontWeight: "bold",
+        //
+    },
+    stopButton: {
+        textAlign: 'center',
+        justifyContent: 'center',
+        alignContent:"center",
+        backgroundColor: '#FF9B50',
+        paddingVertical: 10,
+        paddingHorizontal: 20,
+        borderRadius: 10,
+        margin: 20 ,
+        fontSize: 18,
+        fontWeight: "bold",
+    },
+    actionText: {
+        fontSize: 16,
+        fontWeight: "bold",
+        padding: 5,
+        textAlign: "center",
+    },
+    currentTime: {
+        textAlign: 'center',
+        justifyContent: 'center',
+        alignContent:"center",
+        backgroundColor: '#FFFFEC',
+        paddingVertical: 10,
+        paddingHorizontal: 20,
+        borderRadius: 10,
+        margin: 20 ,
+        fontSize: 18,
+        fontWeight: "bold",
+    },
+    curretnTimeText: {
+        fontSize: 15,
+        fontWeight: "bold",
+        padding: 5,
+        textAlign: "center",
+    },
+    taskName: {
+        textAlign: 'center',
+        justifyContent: 'center',
+        alignContent:"center",
+        backgroundColor: '#FFFFEC',
+        paddingVertical: 10,
+        paddingHorizontal: 20,
+        borderRadius: 10,
+        margin: 20 ,
+        fontSize: 18,
+        fontWeight: "bold",
+    },
+    taskText: {
+        fontSize: 15,
+        fontWeight: "bold",
+        padding: 5,
+        textAlign: "center",
+    },
+});

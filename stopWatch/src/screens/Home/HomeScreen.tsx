@@ -5,6 +5,8 @@ import HistoryTasks from '../historyTasks/HistoryTasks';
 import SessionTime from './session/SessionTime';
 import { useState } from 'react';
 import { StyleSheet } from 'react-native';
+import { stylesHome } from './styles';
+
 
 export default function HomeScreen({ navigation }) {
     const [timeSession, setTimeSesion] = useState(0);
@@ -21,7 +23,7 @@ export default function HomeScreen({ navigation }) {
     return (
         <View>
             <View>
-                <Text>Stop Watch</Text>
+                <Text style={stylesHome.header}>SessionUp</Text>
             </View>
             <View>
                 <SessionTime sessionCallback={setTimeSesion} />
@@ -30,40 +32,21 @@ export default function HomeScreen({ navigation }) {
                 <Tasks taskCallback = {setTaskName} />
             </View>
             <View>
-                <View style={styles.stopButton}>
-                    <Text style={styles.stopButton}> Task Name: {nameTask}</Text>
-                    <Text style={styles.stopButton}>Session Time: {timeSession}</Text>
+                <View style={stylesHome.inputs}>
+                    <Text style={stylesHome.inputsText}>Task Name: {nameTask}</Text>
+                    <Text style={stylesHome.inputsText}>Session Time: {timeSession}</Text>
                 </View>
                 <View>
-                    <TouchableOpacity style={styles.stopButton} onPress={onPress}>
-                        <Text>Start Session</Text>
+                    <TouchableOpacity style={stylesHome.startSession} onPress={onPress}>
+                        <Text style={stylesHome.startText}>Start Session</Text>
                     </TouchableOpacity>
                 </View>
                 <View>
-                    <TouchableOpacity style={styles.stopButton} onPress={onPressHistory}>
-                        <Text>See All Completed Tasks</Text>
+                    <TouchableOpacity style={stylesHome.showHisotry} onPress={onPressHistory}>
+                        <Text style={stylesHome.historyText}>See All Completed Tasks</Text>
                     </TouchableOpacity>
                 </View>
             </View>
         </View>
     );
 }
-
-const styles = StyleSheet.create({
-    stopButton: {
-        // other source
-        textAlign: 'center',
-        justifyContent: 'center',
-        backgroundColor: '#FF885B',
-        paddingVertical: 10,
-        paddingHorizontal: 20,
-        borderRadius: 10,
-        //
-    },
-    currentTimeWidget: {
-        backgroundColor: '#ff7527',
-        paddingVertical: 10,
-        paddingHorizontal: 20,
-        borderRadius: 10,
-    },
-});

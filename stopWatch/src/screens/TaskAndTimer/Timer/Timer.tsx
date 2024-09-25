@@ -5,7 +5,7 @@ import { View, Text, TouchableOpacity, StyleSheet } from 'react-native';
 import { Alert } from 'react-native';
 import { MyContext } from '../../../components/Historycontext/HistoryContext';
 import { storeTasksToStorage, clearAsyncStorage } from '../../../utils/storageStore';
-
+import { stylesAction } from '../styles';
 
 let currentIntevral = setInterval(() => { }, 0);
 
@@ -44,34 +44,14 @@ export default function Timer({ session, taskName }) {
     return (
         <View>
             <View>
-                <TouchableOpacity style={styles.stopButton} onPress={onPressStop}>
-                    <Text>Stop</Text>
-                </TouchableOpacity>
-                <View style={styles.currentTimeWidget}>
-                    <Text>Current Time: {time}</Text>
+
+                <View style={stylesAction.currentTime}>
+                    <Text style={stylesAction.curretnTimeText}>Current Time: {time}</Text>
                 </View>
+                <TouchableOpacity style={stylesAction.stopButton} onPress={onPressStop}>
+                    <Text style={stylesAction.actionText}>Stop</Text>
+                </TouchableOpacity> 
             </View>
         </View>
     );
 }
-
-
-
-const styles = StyleSheet.create({
-    stopButton: {
-        // other source
-        textAlign: 'center',
-        justifyContent: 'center',
-        backgroundColor: '#ff6347',
-        paddingVertical: 10,
-        paddingHorizontal: 20,
-        borderRadius: 10,
-        //
-    },
-    currentTimeWidget: {
-        backgroundColor: '#ff7527',
-        paddingVertical: 10,
-        paddingHorizontal: 20,
-        borderRadius: 10,
-    },
-});

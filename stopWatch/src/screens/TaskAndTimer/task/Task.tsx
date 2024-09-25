@@ -2,7 +2,7 @@ import React from 'react';
 
 
 import { Text, View } from 'react-native';
-
+import { stylesAction } from '../styles';
 
 import { StyleSheet } from 'react-native';
 
@@ -11,30 +11,9 @@ export default function Task( { taskRecieved }) {
     // For now TaskName will be hard coded, then will be changed to tha passed parameter
     return (
         <View>
-            <View style={styles.stopButton}>
-                <Text>{ taskRecieved }</Text>
+            <View style={stylesAction.taskName}>
+                <Text style={stylesAction.taskText}>{ taskRecieved }</Text>
             </View>
         </View>
     );
 }
-
-
-
-const styles = StyleSheet.create({
-    stopButton: {
-        // other source
-        textAlign: 'center',
-        justifyContent: 'center',
-        backgroundColor: '#ff6347',
-        paddingVertical: 10,
-        paddingHorizontal: 20,
-        borderRadius: 10,
-        //
-    },
-    currentTimeWidget: {
-        backgroundColor: '#ff7527',
-        paddingVertical: 10,
-        paddingHorizontal: 20,
-        borderRadius: 10,
-    },
-});
