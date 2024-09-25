@@ -23,7 +23,7 @@ export default function HomeScreen({ navigation }) {
     return (
         <View>
             <View>
-                <Text style={stylesHome.header}>SessionUp</Text>
+                <Text style={stylesHome.header}>SessionTime</Text>
             </View>
             <View>
                 <SessionTime sessionCallback={setTimeSesion} />
