@@ -26,7 +26,7 @@ export default function SessionTime({ sessionCallback }) {
                 />
                 <View style = {stylesHome.sessionTimeButton}>
                     <TouchableOpacity style={stylesHome.sessionTimeOpacity}  onPress={onPressStart}>
-                        <Text>Set Session Time</Text>
+                        <Text>Set Session Time In Minutes</Text>
                     </TouchableOpacity>
                 </View>
             </View>

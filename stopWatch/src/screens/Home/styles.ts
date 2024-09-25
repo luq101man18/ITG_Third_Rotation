@@ -30,7 +30,7 @@ export const stylesHome = StyleSheet.create({
         fontWeight: "900",
         margin: 20,
         borderRadius: 10,
-        width: 150,
+        width: 250,
     },
     sessionTimeOpacity: {
         alignItems: "center",

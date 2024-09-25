@@ -18,7 +18,7 @@ export default function Timer({ session, taskName }) {
         currentIntevral = setInterval(() => {
             currentTime += 1;
             setTime(currentTime);
-            if (currentTime === session) {  // currentTime should be compared to sessionTime but for now sessionsTime will be hard coded
+            if (currentTime === (session * 60)) {
                 Alert.alert("Time's up!");
                 clearInterval(currentIntevral);
                 setTime(0);
@@ -45,7 +45,7 @@ export default function Timer({ session, taskName }) {
             <View>
 
                 <View style={stylesAction.currentTime}>
-                    <Text style={stylesAction.curretnTimeText}>Current Time: {time}</Text>
+                    <Text style={stylesAction.curretnTimeText}>Current Time In Minutes: {Math.round((time / 60) * 100) / 100}</Text>
                 </View>
                 <TouchableOpacity style={stylesAction.stopButton} onPress={onPressStop}>
                     <Text style={stylesAction.actionText}>Stop</Text>
