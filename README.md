@@ -12,8 +12,8 @@
 
 ### Screenshots
 
-[Main Screen](./stopWatch/images/mainScreen.png)
+![Main Screen](./stopWatch/images/mainScreen.png)
 
-[Timer Screen](./stopWatch/images/actionScreen.png)
+![Timer Screen](./stopWatch/images/actionScreen.png)
 
-[History Screen](./stopWatch/images/historyScreen.png)
+![History Screen](./stopWatch/images/historyScreen.png)
