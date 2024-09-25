@@ -1,6 +1,6 @@
 # ITG_Third_Rotation
 
-
+## Project: SessionTime
 ### To Build: 
 
 - #### Use an android emulator or a physical device and connect. 
