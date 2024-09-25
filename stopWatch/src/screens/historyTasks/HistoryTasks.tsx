@@ -14,8 +14,6 @@ import { stylesHisotry } from './styles';
 export let taskList : any = [];
 
 export default function HistoryTasks({ route, navigation }) {
-
-    const { flag, setFlag } = useContext(MyContext);
     const { completedTask } = route.params;
 
     const [taskListState, setTaskList] = useState();

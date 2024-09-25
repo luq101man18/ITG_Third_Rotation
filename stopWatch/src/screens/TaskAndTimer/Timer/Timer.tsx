@@ -12,7 +12,6 @@ let currentIntevral = setInterval(() => { }, 0);
 export default function Timer({ session, taskName }) {
 
     const [time, setTime] = useState(0);
-    const { setFlag } = useContext(MyContext);
     // to handle double clicking
     useEffect(() => {
         let currentTime = 0;

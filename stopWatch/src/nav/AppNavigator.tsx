@@ -6,7 +6,6 @@ import HistoryTasks from '../screens/historyTasks/HistoryTasks';
 import HomeScreen from '../screens/Home/HomeScreen';
 import TaskAndTimer from '../screens/TaskAndTimer/TimerAndTask';
 import ErrorScreen from '../screens/error/ErrorScreen';
-import { MyContextProvidor } from '../components/Historycontext/HistoryContext';
 
 
 
@@ -14,7 +13,6 @@ const Stack = createNativeStackNavigator();
 
 export default function AppNavigator() {
     return (
-        <MyContextProvidor>
             <NavigationContainer>
                 <Stack.Navigator initialRouteName="Home">
                     <Stack.Screen name="Home" component={HomeScreen} />
@@ -23,7 +21,6 @@ export default function AppNavigator() {
                     <Stack.Screen name="HistoryTasks" component={HistoryTasks} />
                 </Stack.Navigator>
             </NavigationContainer>
-        </MyContextProvidor>
     );
 }
 
