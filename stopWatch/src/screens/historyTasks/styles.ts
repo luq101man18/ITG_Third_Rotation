@@ -28,4 +28,22 @@ export const stylesHisotry = StyleSheet.create({
     tasksView: {
         margin: 10,
     },
+    clearHistory: {
+        textAlign: 'center',
+        justifyContent: 'center',
+        alignContent:"center",
+        backgroundColor: '#FF9B50',
+        paddingVertical: 10,
+        paddingHorizontal: 20,
+        borderRadius: 10,
+        margin: 20 ,
+        fontSize: 18,
+        fontWeight: "bold",
+    },
+    clearHistoryText: {
+        fontSize: 16,
+        fontWeight: "bold",
+        padding: 5,
+        textAlign: "center",
+    },
 });

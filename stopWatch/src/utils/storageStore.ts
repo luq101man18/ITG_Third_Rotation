@@ -26,7 +26,7 @@ export const storeTasksToStorage = async (value: any) => {
 
 export const clearAsyncStorage =  async () => {
     try {
-        AsyncStorage.clear();
+        await AsyncStorage.setItem('completed-task-list', "");
     } catch (error) {
         console.log(error);
 

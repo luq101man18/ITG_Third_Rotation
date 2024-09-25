@@ -1,5 +1,5 @@
 import React, { useContext, useEffect, useState } from 'react';
-import { View, Text, StyleSheet } from 'react-native';
+import { View, Text, StyleSheet, TouchableOpacity } from 'react-native';
 import { MyContext } from '../../components/Historycontext/HistoryContext';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { NavigationContainer } from '@react-navigation/native';
@@ -9,7 +9,7 @@ import Reactotron, { asyncStorage } from "reactotron-react-native"
 
 // styles
 import { stylesHisotry } from './styles';
-
+import { clearAsyncStorage } from '@/src/utils/storageStore';
 //const [taskListToString, setList] = useState('');
 export let taskList : any = [];
 
@@ -17,6 +17,11 @@ export default function HistoryTasks({ route, navigation }) {
     const { completedTask } = route.params;
 
     const [taskListState, setTaskList] = useState();
+
+
+    const clearHistory = () => {
+            clearAsyncStorage();
+        };
 
     const getTasksFromStorage = async () => {
         try {
@@ -37,6 +42,12 @@ export default function HistoryTasks({ route, navigation }) {
     };
 
     useEffect(() => {
+        const clearHistory = () => {
+            clearAsyncStorage();
+        };
+    }, []);
+
+    useEffect(() => {
         getTasksFromStorage();
     }, []);
     return (
@@ -52,6 +63,11 @@ export default function HistoryTasks({ route, navigation }) {
                             );
                         })}
 
+                </View>
+                <View>
+                    <TouchableOpacity style={stylesHisotry.clearHistory} onPress={clearHistory}>
+                        <Text style={stylesHisotry.clearHistoryText}>Clear History</Text>
+                    </TouchableOpacity>
                 </View>
             </View>
         </View>
