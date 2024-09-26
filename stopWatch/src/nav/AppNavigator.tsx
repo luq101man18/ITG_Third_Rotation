@@ -16,9 +16,9 @@ export default function AppNavigator() {
             <NavigationContainer>
                 <Stack.Navigator initialRouteName="Home">
                     <Stack.Screen name="Home" component={HomeScreen} />
-                    <Stack.Screen name="TaskAndTimer" component={TaskAndTimer}  />
+                    <Stack.Screen name="TaskAndTimer" component={TaskAndTimer}  options={{title: ""}} />
                     <Stack.Screen name="ErrorScreen" component={ErrorScreen} />
-                    <Stack.Screen name="HistoryTasks" component={HistoryTasks} />
+                <Stack.Screen name="HistoryTasks" component={HistoryTasks} options={{ title: "" }} />
                 </Stack.Navigator>
             </NavigationContainer>
     );
