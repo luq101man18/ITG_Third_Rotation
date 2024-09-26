@@ -3,7 +3,7 @@ import React from 'react';
 import { useState, useEffect } from 'react';
 import { View, Text, TouchableOpacity, StyleSheet } from 'react-native';
 import { Alert } from 'react-native';
-import { storeTasksToStorage, clearAsyncStorage } from '../../../utils/storageStore';
+import { storeTasksToStorage } from '../../../utils/storageStore';
 import { stylesAction } from '../styles';
 
 let currentIntevral = setInterval(() => { }, 0);

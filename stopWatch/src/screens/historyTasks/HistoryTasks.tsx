@@ -5,15 +5,18 @@ import { NavigationContainer } from '@react-navigation/native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import Reactotron, { asyncStorage } from "reactotron-react-native"
 import { stylesHisotry } from './styles';
-import { clearAsyncStorage } from '@/src/utils/storageStore';export let taskList : any = [];
+import { removeItemFromAsyncStorage } from '@/src/utils/storageStore';
+export let taskList : any = [];
 
 export default function HistoryTasks({ route, navigation }) {
     const { completedTask } = route.params;
-
-    const [taskListState, setTaskList] = useState();
+    const [completedTaskChecker, checkCompletedTask] = useState(false);
+    const [taskListState, setTaskList] = useState([]);
 
     const clearHistory = () => {
-            clearAsyncStorage();
+            taskList = [];
+            setTaskList([]);
+            removeItemFromAsyncStorage();
         };
 
     const getTasksFromStorage = async () => {
@@ -23,8 +26,9 @@ export default function HistoryTasks({ route, navigation }) {
             if (jsonValue != null) {
                 taskList = JSON.parse(jsonValue);
                 setTaskList(taskList);
+                checkCompletedTask(true);
             } else {
-                return taskListState;
+                return;
             }
         } catch (e) {
             console.log(e);
@@ -39,20 +43,22 @@ export default function HistoryTasks({ route, navigation }) {
         <View>
             <View>
                 <Text style={stylesHisotry.header}>Completed Task list</Text>
-                <View style={stylesHisotry.tasks}>
-                    {taskList.map((item, index) => {
+                <View style={StyleSheet.create({display: completedTaskChecker ? 'flex' : 'none'})}>
+                    <View style={stylesHisotry.tasks}>
+                        {taskListState.map((item, index) => {
                             return (
-                                <View key={index} style = {stylesHisotry.tasksView}>
+                                <View key={index} style={stylesHisotry.tasksView}>
                                     <Text style={stylesHisotry.tasks}>{item}</Text>
                                 </View>
                             );
                         })}
 
-                </View>
-                <View>
-                    <TouchableOpacity style={stylesHisotry.clearHistory} onPress={clearHistory}>
-                        <Text style={stylesHisotry.clearHistoryText}>Clear History</Text>
-                    </TouchableOpacity>
+                    </View>
+                    <View>
+                        <TouchableOpacity style={stylesHisotry.clearHistory} onPress={clearHistory}>
+                            <Text style={stylesHisotry.clearHistoryText}>Clear History</Text>
+                        </TouchableOpacity>
+                    </View>
                 </View>
             </View>
         </View>

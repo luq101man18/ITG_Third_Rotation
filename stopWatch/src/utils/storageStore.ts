@@ -16,14 +16,11 @@ export const storeTasksToStorage = async (value: any) => {
     }
 };
 
-
-export const clearAsyncStorage =  async () => {
+export const removeItemFromAsyncStorage =  async () => {
     try {
-        await AsyncStorage.setItem('completed-task-list', "");
+        await AsyncStorage.removeItem('completed-task-list');
     } catch (error) {
         console.log(error);
 
     }
 };
-
-
