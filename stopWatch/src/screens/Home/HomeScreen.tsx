@@ -4,7 +4,7 @@ import Tasks from './tasks/Tasks';
 import SessionTime from './session/SessionTime';
 import { useState } from 'react';
 import { stylesHome } from './styles';
-
+import { Alert } from 'react-native';
 
 export default function HomeScreen({ navigation }) {
     const [timeSession, setTimeSesion] = useState(0);
@@ -12,6 +12,9 @@ export default function HomeScreen({ navigation }) {
     const [userInvalidInput, preventUserFromAdvancing] = useState(false);
     const onPress = () => {
         if(userInvalidInput) {
+            return;
+        } else if (timeSession === 0 || nameTask === '') {
+            Alert.alert("You missed something!", "Please type the task name and set the time!");
             return;
         }
         navigation.navigate('TaskAndTimer', { sessionParam: timeSession, taskParam: nameTask });
