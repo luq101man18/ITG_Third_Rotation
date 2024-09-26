@@ -1,12 +1,10 @@
 import React from 'react';
 import { Text, View, TextInput, TouchableOpacity } from 'react-native';
 import { useState } from 'react';
-import { StyleSheet } from 'react-native';
 import { stylesHome } from '../styles';
 
 export default function Tasks({ taskCallback }) {
     const [task, setTask] = useState();
-    const [tasks, addTask] = useState([]);
 
     const testSendTaskToParent = () => {
         taskCallback(task);

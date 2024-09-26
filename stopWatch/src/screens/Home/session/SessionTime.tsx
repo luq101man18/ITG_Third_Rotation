@@ -5,17 +5,23 @@ import { View, Text, TouchableOpacity, StyleSheet, TextInput } from "react-nativ
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import { NavigationContainer } from '@react-navigation/native';
 import { stylesHome } from "../styles";
-
+import { Alert } from "react-native";
 
 export default function SessionTime({ sessionCallback }) {
 
     const [sessionTime, setSessionTime] = useState(0);
 
     const onPressStart = () => {
-       // navigation.navigate('TaskAndTimer', { sessionParam: sessionTime, taskParam: taskName  });
+        validateSessionTime();
         sessionCallback(sessionTime);
-    };
 
+    };
+    const validateSessionTime = () => {
+        if(!sessionTime || typeof sessionTime === 'number') {
+            Alert.alert("Please enter a valid number");
+            return;
+        }
+    };
     return (
         <View>
             <View style={stylesHome.viewSession}>

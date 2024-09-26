@@ -1,9 +1,8 @@
-import React, { useContext } from 'react';
+import React from 'react';
 
 import { useState, useEffect } from 'react';
 import { View, Text, TouchableOpacity, StyleSheet } from 'react-native';
 import { Alert } from 'react-native';
-import { MyContext } from '../../../components/Historycontext/HistoryContext';
 import { storeTasksToStorage, clearAsyncStorage } from '../../../utils/storageStore';
 import { stylesAction } from '../styles';
 
@@ -12,7 +11,6 @@ let currentIntevral = setInterval(() => { }, 0);
 export default function Timer({ session, taskName }) {
 
     const [time, setTime] = useState(0);
-    // to handle double clicking
     useEffect(() => {
         let currentTime = 0;
         currentIntevral = setInterval(() => {
@@ -22,7 +20,6 @@ export default function Timer({ session, taskName }) {
                 Alert.alert("Time's up!");
                 clearInterval(currentIntevral);
                 setTime(0);
-                //clearAsyncStorage();
                 storeTasksToStorage(taskName);
             }
         }, 1000);
@@ -30,13 +27,12 @@ export default function Timer({ session, taskName }) {
             clearInterval(currentIntevral);
         };
     }
-    , []); // empty dependencies means only works on mount
+    , []);
 
 
     const onPressStop = () => {
         clearInterval(currentIntevral);
         setTime(0);
-        // navigate to other screen and delete the highlighted task
     };
 
 
@@ -49,7 +45,7 @@ export default function Timer({ session, taskName }) {
                 </View>
                 <TouchableOpacity style={stylesAction.stopButton} onPress={onPressStop}>
                     <Text style={stylesAction.actionText}>Stop</Text>
-                </TouchableOpacity> 
+                </TouchableOpacity>
             </View>
         </View>
     );

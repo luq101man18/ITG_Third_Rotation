@@ -9,13 +9,6 @@ export const storeTasksToStorage = async (value: any) => {
 
         let tempTaskList = taskList;
         tempTaskList = [...taskList, value];
-
-
-        // debugger
-        //Reactotron.logImportant('Checking the value of myVariable');
-        //Reactotron.log(tempTaskList);
-        //
-
         const jsonValue = JSON.stringify(tempTaskList);
         await AsyncStorage.setItem('completed-task-list', jsonValue);
     } catch (e) {

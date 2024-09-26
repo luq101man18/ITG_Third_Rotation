@@ -1,17 +1,14 @@
 import React from 'react';
 import { View, Text, TouchableOpacity } from 'react-native';
 import Tasks from './tasks/Tasks';
-import HistoryTasks from '../historyTasks/HistoryTasks';
 import SessionTime from './session/SessionTime';
 import { useState } from 'react';
-import { StyleSheet } from 'react-native';
 import { stylesHome } from './styles';
 
 
 export default function HomeScreen({ navigation }) {
     const [timeSession, setTimeSesion] = useState(0);
     const [nameTask, setTaskName] = useState('');
-    // const [finishedTask, setFinishedTask] = useState('');
     const onPress = () => {
         navigation.navigate('TaskAndTimer', { sessionParam: timeSession, taskParam: nameTask });
     };
