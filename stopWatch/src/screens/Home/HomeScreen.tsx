@@ -9,7 +9,11 @@ import { stylesHome } from './styles';
 export default function HomeScreen({ navigation }) {
     const [timeSession, setTimeSesion] = useState(0);
     const [nameTask, setTaskName] = useState('');
+    const [userInvalidInput, preventUserFromAdvancing] = useState(false);
     const onPress = () => {
+        if(userInvalidInput) {
+            return;
+        }
         navigation.navigate('TaskAndTimer', { sessionParam: timeSession, taskParam: nameTask });
     };
 
@@ -23,7 +27,7 @@ export default function HomeScreen({ navigation }) {
                 <Text style={stylesHome.header}>SessionTime</Text>
             </View>
             <View>
-                <SessionTime sessionCallback={setTimeSesion} />
+                <SessionTime sessionCallback={setTimeSesion} invalidInputCallback={preventUserFromAdvancing} />
             </View>
             <View>
                 <Tasks taskCallback = {setTaskName} />

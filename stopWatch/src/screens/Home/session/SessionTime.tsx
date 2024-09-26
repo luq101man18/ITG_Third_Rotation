@@ -5,23 +5,32 @@ import { View, Text, TouchableOpacity, StyleSheet, TextInput } from "react-nativ
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import { NavigationContainer } from '@react-navigation/native';
 import { stylesHome } from "../styles";
-import { Alert } from "react-native";
-
-export default function SessionTime({ sessionCallback }) {
+import ErrorMessageSession from "@/src/components/error/ErrorMessageSession";
+import { sessionTimeError } from "@/src/utils/errormessages";
+export default function SessionTime({ sessionCallback, invalidInputCallback }) {
 
     const [sessionTime, setSessionTime] = useState(0);
+    const [error, showError] = useState(false);
 
     const onPressStart = () => {
-        validateSessionTime();
-        sessionCallback(sessionTime);
-
-    };
-    const validateSessionTime = () => {
-        if(!sessionTime || typeof sessionTime === 'number') {
-            Alert.alert("Please enter a valid number");
+        if (validateSessionTime()) {
+            sessionCallback(sessionTime);
+        } else {
             return;
         }
     };
+    function validateSessionTime() {
+        if(!sessionTime || isNaN(sessionTime)) {
+            showError(true);
+            invalidInputCallback(true);
+            return false;
+        }
+        showError(false);
+        invalidInputCallback(false);
+        return true;
+    }
+
+
     return (
         <View>
             <View style={stylesHome.viewSession}>
@@ -35,6 +44,9 @@ export default function SessionTime({ sessionCallback }) {
                         <Text>Set Session Time In Minutes</Text>
                     </TouchableOpacity>
                 </View>
+            </View>
+            <View style={StyleSheet.create({display: error ? 'flex' : 'none'})}>
+                <ErrorMessageSession message={sessionTimeError}/>
             </View>
         </View>
     );
