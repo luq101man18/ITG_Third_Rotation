@@ -10,8 +10,8 @@
 
 ### Screenshots
 
-![Main Screen](./stopWatch/images/mainScreen.png)
+![Main Screen](./images/mainScreen.png)
 
-![Timer Screen](./stopWatch/images/actionScreen.png)
+![Timer Screen](./images/actionScreen.png)
 
-![History Screen](./stopWatch/images/historyScreen.png)
+![History Screen](./images/historyScreen.png)
