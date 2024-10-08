@@ -1,26 +1,20 @@
-import React from "react";
-import { View, TouchableOpacity, TextInput, Alert } from "react-native";
-import { IconButton, Text, MD3Colors } from "react-native-paper";
-import { stylesLogin } from "../styles";
-import { useState, useEffect  } from "react";
-import { NavigationContainer } from "@react-navigation/native";
-import fetchUserCredentialData from "../server/api";
+import React from 'react';
+import { View, TouchableOpacity, TextInput, Alert } from 'react-native';
+import { IconButton, Text, MD3Colors } from 'react-native-paper';
+import { stylesLogin } from '../styles';
+import { useState, useEffect  } from 'react';
+import fetchUserCredentialData from '../server/api';
 
 
-/// Development
-import Reactotron from "reactotron-react-native";///
-// backend
-//
-
-
-export default function LoginView({ navigation }) {
-    const [email, setEmail] = useState("");
-    const [password, setPassword] = useState("");
+export default function LoginView({ navigation } ) {
+    const [email, setEmail] = useState('');
+    const [password, setPassword] = useState('');
     const [emailError, setEmailError] = useState(false);
     const [passwordError, setPasswordError] = useState(false);
     const [PasswordVisibility, setPasswordVisibility] = useState(false);
     const [emailValid, setEmailValid] = useState(false);
     const [passwordValid, setPasswordValid] = useState(false);
+    const [userCredentials, setUserCredentials] = useState('');
     const [accessToken, setAccessToken] = useState();
     const [refreshToken, setRefreshToken] = useState('');
 
@@ -28,10 +22,6 @@ export default function LoginView({ navigation }) {
     function goToHome() {
         navigation.navigate('Home');
     }
-
-    // verify user backend stuff
-    //let val : any;
-    // const [val, setVal] = useState('');
 
     function goToRegistrationScreen(){
         navigation.navigate('Registration');
@@ -62,16 +52,12 @@ export default function LoginView({ navigation }) {
         setPasswordVisibility(!PasswordVisibility);
     }
 
-    const [data, setData] = useState('');
-    // const [error, setError] = useState(null);
-   // const FetchGetRequest = () => {
-
     useEffect(() => {
         // calling the fetch function
         let callFetchDataUserCredentials = async () => {
             if (email && password){
-                const testValue = await fetchUserCredentialData(email, password);
-                if(testValue){setData(JSON.stringify(testValue));}
+                const retrievedUserCredentials = await fetchUserCredentialData(email, password);
+                if (retrievedUserCredentials) { setUserCredentials(JSON.stringify(retrievedUserCredentials));}
             }
         };
         callFetchDataUserCredentials();
@@ -81,18 +67,20 @@ export default function LoginView({ navigation }) {
         if (validateEmailAndPassword()) {
             return;
         } else {
-            if(data === ''){
-                return Alert.alert("data state is empty!")
+            if (userCredentials === ''){
+                return Alert.alert('Error has occurred! Please contact services or try again later');
             } else {
-                const parsedData = JSON.parse(data);
-                setAccessToken(parsedData.accessToken);
-                setRefreshToken(parsedData.refreshToken);
-                if ((accessToken === null) && (refreshToken === null)) 
+                const parsedUserCredentials = JSON.parse(userCredentials);
+                setAccessToken(parsedUserCredentials.accessToken);
+                setRefreshToken(parsedUserCredentials.refreshToken);
+                if ((accessToken === null) && (refreshToken === null))
                     { return Alert.alert('Unfortunately Faced an error, please try again'); }
                 else { return goToHome();}
             }
         }
     }
+
+
     return(
         <View style={stylesLogin.container}>
             <View>
@@ -105,7 +93,7 @@ export default function LoginView({ navigation }) {
                         <View style={stylesLogin.emailInput}>
                             <Text style={stylesLogin.textLabels} >Email</Text>
                             <TextInput
-                                placeholder="Enter your email address"
+                                placeholder='Enter your email address'
                                 style={ emailError ? stylesLogin.errorEmail : emailValid ? stylesLogin.validEmail : stylesLogin.textInput}
                                 onChangeText={(text) => setEmail(text)}
                             />
@@ -125,7 +113,7 @@ export default function LoginView({ navigation }) {
                                 />
                                 <View style={ passwordError ? stylesLogin.errorPasswordIcon : passwordValid ? stylesLogin.validPasswordIcon : stylesLogin.eyeIcon}>
                                     <IconButton
-                                        icon={PasswordVisibility ? "eye" : "eye-off"} 
+                                        icon={PasswordVisibility ? 'eye' : 'eye-off'}
                                         iconColor={MD3Colors.grey}
                                         size={20}
                                         onPress={() => showPassword()}
@@ -147,7 +135,7 @@ export default function LoginView({ navigation }) {
                     <View style={stylesLogin.registerContainer}>
                         <Text style={stylesLogin.registerationText}>Don't have an account? </Text>
                         <TouchableOpacity onPress={() => goToRegistrationScreen()}>
-                            <Text style={{fontWeight:"bold", fontSize: 16}}>Join</Text>
+                            <Text style={{fontWeight:'bold', fontSize: 16}}>Join</Text>
                         </TouchableOpacity>
                     </View>
                 </View>
