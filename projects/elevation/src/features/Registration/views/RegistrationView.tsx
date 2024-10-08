@@ -1,19 +1,19 @@
-import React from "react";
-import { View, TouchableOpacity, TextInput, Alert } from "react-native";
-import { IconButton, Text, MD3Colors } from "react-native-paper";
-import { stylesLogin } from "../styles";
-import { useState } from "react";
+import React from 'react';
+import { View, TouchableOpacity, TextInput, Alert } from 'react-native';
+import { IconButton, Text, MD3Colors } from 'react-native-paper';
+import { stylesLogin } from '../styles';
+import { useState } from 'react';
 
 export default function RegistrationView({ navigation }) {
 
-    const [email, setEmail] = useState("");
-    const [password, setPassword] = useState("");
+    const [email, setEmail] = useState('');
+    const [password, setPassword] = useState('');
     const [emailError, setEmailError] = useState(false);
     const [passwordError, setPasswordError] = useState(false);
     const [PasswordVisibility, setPasswordVisibility] = useState(false);
     const [emailValid, setEmailValid] = useState(false);
     const [passwordValid, setPasswordValid] = useState(false);
-    const [fullName, setFullName] = useState("");
+    const [fullName, setFullName] = useState('');
     const [fullNameError, setFullNameError] = useState(false);
     const [fullNameValid, setFullNameValid] = useState(false);
 

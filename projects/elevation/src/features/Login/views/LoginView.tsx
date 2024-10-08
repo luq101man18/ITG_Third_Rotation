@@ -2,8 +2,16 @@ import React from "react";
 import { View, TouchableOpacity, TextInput, Alert } from "react-native";
 import { IconButton, Text, MD3Colors } from "react-native-paper";
 import { stylesLogin } from "../styles";
-import { useState } from "react";
+import { useState, useEffect  } from "react";
 import { NavigationContainer } from "@react-navigation/native";
+import fetchUserCredentialData from "../server/api";
+
+
+/// Development
+import Reactotron from "reactotron-react-native";///
+// backend
+//
+
 
 export default function LoginView({ navigation }) {
     const [email, setEmail] = useState("");
@@ -13,6 +21,17 @@ export default function LoginView({ navigation }) {
     const [PasswordVisibility, setPasswordVisibility] = useState(false);
     const [emailValid, setEmailValid] = useState(false);
     const [passwordValid, setPasswordValid] = useState(false);
+    const [accessToken, setAccessToken] = useState();
+    const [refreshToken, setRefreshToken] = useState('');
+
+
+    function goToHome() {
+        navigation.navigate('Home');
+    }
+
+    // verify user backend stuff
+    //let val : any;
+    // const [val, setVal] = useState('');
 
     function goToRegistrationScreen(){
         navigation.navigate('Registration');
@@ -38,16 +57,41 @@ export default function LoginView({ navigation }) {
             return flag;
         }
     }
-    function processLogin(){
-        if(validateEmailAndPassword()){
-            return;
-        } else {
-            Alert.alert("Successfully Logged In!!");
-        }
-    }
 
     function showPassword() {
         setPasswordVisibility(!PasswordVisibility);
+    }
+
+    const [data, setData] = useState('');
+    // const [error, setError] = useState(null);
+   // const FetchGetRequest = () => {
+
+    useEffect(() => {
+        // calling the fetch function
+        let callFetchDataUserCredentials = async () => {
+            if (email && password){
+                const testValue = await fetchUserCredentialData(email, password);
+                if(testValue){setData(JSON.stringify(testValue));}
+            }
+        };
+        callFetchDataUserCredentials();
+    }, [email, password]);
+
+    function processLogin() {
+        if (validateEmailAndPassword()) {
+            return;
+        } else {
+            if(data === ''){
+                return Alert.alert("data state is empty!")
+            } else {
+                const parsedData = JSON.parse(data);
+                setAccessToken(parsedData.accessToken);
+                setRefreshToken(parsedData.refreshToken);
+                if ((accessToken === null) && (refreshToken === null)) 
+                    { return Alert.alert('Unfortunately Faced an error, please try again'); }
+                else { return goToHome();}
+            }
+        }
     }
     return(
         <View style={stylesLogin.container}>
@@ -71,6 +115,7 @@ export default function LoginView({ navigation }) {
                         </View>
                         <View>
                             <Text style={stylesLogin.textLabels} >Password</Text>
+
                             <View style={stylesLogin.passwordEye}>
                                 <TextInput
                                     placeholder="Enter your password"

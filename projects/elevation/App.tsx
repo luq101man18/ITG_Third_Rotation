@@ -11,6 +11,9 @@ import ElevateNav from './src/navigation/ElevateNav';
 
 
 function App(): React.JSX.Element {
+  if (__DEV__) {
+    require("./ReactotronConfig");
+  }
   return (
     <PaperProvider>
       <ElevateNav />
