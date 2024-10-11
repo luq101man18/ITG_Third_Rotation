@@ -12,12 +12,12 @@ import { useAppDispatch, useAppSelector } from '../../../hooks/hooks';
 
 
 export default function LoginView({ navigation } ) {
-    const [email, setEmail] = useState('');
+    const [username, setUsername] = useState('');
     const [password, setPassword] = useState('');
-    const [emailError, setEmailError] = useState(false);
+    const [usernameError, setUsernameError] = useState(false);
     const [passwordError, setPasswordError] = useState(false);
     const [PasswordVisibility, setPasswordVisibility] = useState(false);
-    const [emailValid, setEmailValid] = useState(false);
+    const [usernameValid, setUsernameValid] = useState(false);
     const [passwordValid, setPasswordValid] = useState(false);
     const [userCredentials, setUserCredentials] = useState('');
     // try using object state rather targeting each with a different state. even though rendering wise it mithgt not be the best
@@ -39,10 +39,9 @@ export default function LoginView({ navigation } ) {
     }
 
     function validateEmailAndPassword() {
-        const emailExpression = /\S+@\S+\.\S+/;
         let flag = false;
-        if(!email.match(emailExpression)) {
-            setEmailError(true);
+        if(username === '') {
+            setUsernameError(true);
             flag = true;
             return flag;
         } else if(password.length < 8) {
@@ -50,9 +49,9 @@ export default function LoginView({ navigation } ) {
             flag = true;
             return flag;
         } else {
-            setEmailError(false);
+            setUsernameError(false);
             setPasswordError(false);
-            setEmailValid(true);
+            setUsernameValid(true);
             setPasswordValid(true);
             flag = false;
             return flag;
@@ -66,13 +65,13 @@ export default function LoginView({ navigation } ) {
     useEffect(() => {
         // calling the fetch function
         let callFetchDataUserCredentials = async () => {
-            if (email && password){
-                const retrievedUserCredentials = await fetchUserCredentialData(email, password);
+            if (username && password){
+                const retrievedUserCredentials = await fetchUserCredentialData(username, password);
                 if (retrievedUserCredentials) { setUserCredentials(JSON.stringify(retrievedUserCredentials));}
             }
         };
         callFetchDataUserCredentials();
-    }, [email, password]);
+    }, [username, password]);
 
     function processLogin() {
         if (validateEmailAndPassword()) {
@@ -100,14 +99,14 @@ export default function LoginView({ navigation } ) {
                 <View>
                     <View style={stylesLogin.userInputs}>
                         <View style={stylesLogin.emailInput}>
-                            <Text style={stylesLogin.textLabels} >Email</Text>
+                            <Text style={stylesLogin.textLabels} >Username</Text>
                             <TextInput
                                 placeholder='Enter your email address'
-                                style={ emailError ? stylesLogin.errorEmail : emailValid ? stylesLogin.validEmail : stylesLogin.textInput}
-                                onChangeText={(text) => setEmail(text)}
+                                style={ usernameError ? stylesLogin.errorEmail : usernameValid ? stylesLogin.validEmail : stylesLogin.textInput}
+                                onChangeText={(text) => setUsername(text)}
                             />
-                            <View style={{display: emailError ? 'flex' : 'none'}}>
-                                <Text style={stylesLogin.ErrorMessageText}>Please enter a valid email!</Text>
+                            <View style={{display: usernameError ? 'flex' : 'none'}}>
+                                <Text style={stylesLogin.ErrorMessageText}>Please enter a valid username!</Text>
                             </View>
                         </View>
                         <View>

@@ -6,8 +6,6 @@ import { RootState } from "../../../store/store";
 
 export default function HomeView() {
 
-
-    
     const accessTokenRedux = useAppSelector((state : RootState) => {return state.authentication.accessToken;});
     const refreshTokenRedux = useAppSelector((state: RootState) => {return state.authentication.refreshToken; });
 
