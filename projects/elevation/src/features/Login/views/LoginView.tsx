@@ -4,6 +4,11 @@ import { IconButton, Text, MD3Colors } from 'react-native-paper';
 import { stylesLogin } from '../styles';
 import { useState, useEffect  } from 'react';
 import fetchUserCredentialData from '../server/api';
+import { Dispatch } from '@reduxjs/toolkit';
+import { setAccessToken, setRefreshToken } from '../authentication/redux/authenticationSlice';
+import { Selector } from '@reduxjs/toolkit';
+import { useDispatch, useSelector } from 'react-redux';
+import { useAppDispatch, useAppSelector } from '../../../hooks/hooks';
 
 
 export default function LoginView({ navigation } ) {
@@ -15,9 +20,15 @@ export default function LoginView({ navigation } ) {
     const [emailValid, setEmailValid] = useState(false);
     const [passwordValid, setPasswordValid] = useState(false);
     const [userCredentials, setUserCredentials] = useState('');
-    const [accessToken, setAccessToken] = useState();
-    const [refreshToken, setRefreshToken] = useState('');
+    // try using object state rather targeting each with a different state. even though rendering wise it mithgt not be the best
+        // since it doesn't decrease the number of renders and might rebuild unnecessary parts that didn't change in the object.
 
+
+    // move the below to global state, aka, useContext
+    // const [accessToken, setAccessToken] = useState();
+    // const [refreshToken, setRefreshToken] = useState('');
+
+    const dispatch = useAppDispatch();
 
     function goToHome() {
         navigation.navigate('Home');
@@ -71,11 +82,9 @@ export default function LoginView({ navigation } ) {
                 return Alert.alert('Error has occurred! Please contact services or try again later');
             } else {
                 const parsedUserCredentials = JSON.parse(userCredentials);
-                setAccessToken(parsedUserCredentials.accessToken);
-                setRefreshToken(parsedUserCredentials.refreshToken);
-                if ((accessToken === null) && (refreshToken === null))
-                    { return Alert.alert('Unfortunately Faced an error, please try again'); }
-                else { return goToHome();}
+                dispatch(setAccessToken(parsedUserCredentials.accessToken));
+                dispatch(setRefreshToken(parsedUserCredentials.refreshToken));
+                goToHome();
             }
         }
     }

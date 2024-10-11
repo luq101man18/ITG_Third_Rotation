@@ -6,18 +6,18 @@
  */
 
 import React from 'react';
-import { PaperProvider } from 'react-native-paper';
 import ElevateNav from './src/navigation/ElevateNav';
-
+import store from './src/store/store';
+import { Provider } from 'react-redux';
 
 function App(): React.JSX.Element {
   if (__DEV__) {
     require("./ReactotronConfig");
   }
   return (
-    <PaperProvider>
+    <Provider store={store}>
       <ElevateNav />
-    </PaperProvider>
+    </Provider>
   );
 }
 
