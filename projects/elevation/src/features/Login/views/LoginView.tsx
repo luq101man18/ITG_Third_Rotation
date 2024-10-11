@@ -94,7 +94,7 @@ export default function LoginView({ navigation } ) {
             <View>
                 <View style={stylesLogin.header}>
                     <Text style={stylesLogin.title}>Login to your account</Text>
-                    <Text style={stylesLogin.welcomingHeader}>It's great to see ou again.</Text>
+                    <Text style={stylesLogin.welcomingHeader}>It's great to see you again.</Text>
                 </View>
                 <View>
                     <View style={stylesLogin.userInputs}>

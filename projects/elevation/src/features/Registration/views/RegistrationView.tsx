@@ -1,46 +1,57 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { View, TouchableOpacity, TextInput, Alert } from 'react-native';
 import { IconButton, Text, MD3Colors } from 'react-native-paper';
 import { stylesLogin } from '../styles';
 import { useState } from 'react';
+import addUserCredentialData from '../server/api';
 
 export default function RegistrationView({ navigation }) {
 
-    const [email, setEmail] = useState('');
+    const [username, setUsername] = useState('');
     const [password, setPassword] = useState('');
-    const [emailError, setEmailError] = useState(false);
+    const [usernameError, setUsernameError] = useState(false);
     const [passwordError, setPasswordError] = useState(false);
     const [PasswordVisibility, setPasswordVisibility] = useState(false);
-    const [emailValid, setEmailValid] = useState(false);
+    const [usernameValid, setUsernameValid] = useState(false);
     const [passwordValid, setPasswordValid] = useState(false);
-    const [fullName, setFullName] = useState('');
-    const [fullNameError, setFullNameError] = useState(false);
-    const [fullNameValid, setFullNameValid] = useState(false);
+    const [firstName, setFirstName] = useState('');
+    const [firstNameError, setFirstNameError] = useState(false);
+    const [firstNameValid, setFirstNameValid] = useState(false);
+    const [lastName, setLastName] = useState('');
+    const [lastNameError, setLastNameError] = useState(false);
+    const [lastNameValid, setLastNameValid] = useState(false);
+    const [userCredentials, setUserCredentials] = useState('');
 
 
     function validateCredentials() {
-        const emailExpression = /\S+@\S+\.\S+/;
         let flag = false;
-        if(fullName === "") {
-            setFullNameError(true);
+        if(firstName === "") {
+            setFirstNameError(true);
             flag = true;
             return flag;
         }
-        if(!email.match(emailExpression) || email === "") {
-            setEmailError(true);
+        else if(lastName === "") {
+            setFirstNameError(false);
+            setLastNameError(true);
+            flag = true;
+            return flag;
+        }
+        else if(username === "") {
+            setLastNameError(false);
+            setUsernameError(true);
             flag = true;
             return flag;
         } else if (password.length < 8 || password === "") {
+            setUsernameError(false);
             setPasswordError(true);
             flag = true;
             return flag;
         } else {
-            setEmailError(false);
             setPasswordError(false);
-            setFullNameError(false);
-            setEmailValid(true);
+            setUsernameValid(true);
             setPasswordValid(true);
-            setFullNameValid(true);
+            setFirstNameValid(true);
+            setLastNameValid(true);
             flag = false;
             return flag;
         }
@@ -49,7 +60,11 @@ export default function RegistrationView({ navigation }) {
         if (validateCredentials()){
             return;
         } else {
-            navigation.navigate('Login');
+            if (userCredentials === '') {
+                return Alert.alert('Error has occurred! Please contact services or try again later');
+            } else {
+                goToLogin();
+            }
         }
     }
 
@@ -60,6 +75,20 @@ export default function RegistrationView({ navigation }) {
     function showPassword() {
         setPasswordVisibility(!PasswordVisibility);
     }
+
+
+    useEffect(() => {
+        // calling the fetch function
+        let callAddUserCredentialsData = async () => {
+            if (firstName && lastName && username && password) {
+                const retrievedUserCredentials = await addUserCredentialData(firstName, lastName, username, password);
+
+                if (retrievedUserCredentials) { setUserCredentials(JSON.stringify(retrievedUserCredentials)); }
+            }
+        };
+        callAddUserCredentialsData();
+    }, [firstName, lastName, username, password]);
+
     return(
         <View style={stylesLogin.container}>
             <View>
@@ -70,24 +99,35 @@ export default function RegistrationView({ navigation }) {
                 <View>
                     <View style={stylesLogin.userInputs}>
                         <View style={stylesLogin.emailInput}>
-                            <Text style={stylesLogin.textLabels} >Full Name</Text>
+                            <Text style={stylesLogin.textLabels} >First Name</Text>
                             <TextInput
-                                placeholder="Enter your full name"
-                                style={fullNameError ? stylesLogin.errorEmail : fullNameValid ? stylesLogin.validEmail : stylesLogin.textInput}
-                                onChangeText={(text) => setFullName(text)}
+                                placeholder="Enter your first name"
+                                style={firstNameError ? stylesLogin.errorEmail : firstNameValid ? stylesLogin.validEmail : stylesLogin.textInput}
+                                onChangeText={(text) => setFirstName(text)}
                             />
                         </View>
-                        <View style={{ display: fullNameError ? 'flex' : 'none' }}>
-                            <Text style={stylesLogin.ErrorMessageText}>Please enter your full name!</Text>
+                        <View style={{ display: firstNameError ? 'flex' : 'none' }}>
+                            <Text style={stylesLogin.ErrorMessageText}>Please enter your first name!</Text>
+                        </View>
+                        <View style={stylesLogin.emailInput}>
+                            <Text style={stylesLogin.textLabels} >Last Name</Text>
+                            <TextInput
+                                placeholder="Enter your last name"
+                                style={lastNameError ? stylesLogin.errorEmail : lastNameValid ? stylesLogin.validEmail : stylesLogin.textInput}
+                                onChangeText={(text) => setLastName(text)}
+                            />
+                        </View>
+                        <View style={{ display: lastNameError ? 'flex' : 'none' }}>
+                            <Text style={stylesLogin.ErrorMessageText}>Please enter your last name!</Text>
                         </View>
                         <View style={stylesLogin.emailInput}>
                             <Text style={stylesLogin.textLabels} >Email</Text>
                             <TextInput
                                 placeholder="Enter your email address"
-                                style={ emailError ? stylesLogin.errorEmail : emailValid ? stylesLogin.validEmail : stylesLogin.textInput}
-                                onChangeText={(text) => setEmail(text)}
+                                style={ usernameError ? stylesLogin.errorEmail : usernameValid ? stylesLogin.validEmail : stylesLogin.textInput}
+                                onChangeText={(text) => setUsername(text)}
                             />
-                            <View style={{display: emailError ? 'flex' : 'none'}}>
+                            <View style={{display: usernameError ? 'flex' : 'none'}}>
                                 <Text style={stylesLogin.ErrorMessageText}>Please enter a valid email!</Text>
                             </View>
                         </View>
