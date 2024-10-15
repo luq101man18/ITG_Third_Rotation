@@ -5,11 +5,13 @@ import { stylesLogin } from '../styles';
 import { useState, useEffect  } from 'react';
 import fetchUserCredentialData from '../server/api';
 import { Dispatch } from '@reduxjs/toolkit';
-import { setAccessToken, setRefreshToken } from '../authentication/redux/authenticationSlice';
+import { fetchUser, setAccessToken, setRefreshToken, userAuth } from '../authentication/redux/authenticationSlice';
 import { Selector } from '@reduxjs/toolkit';
 import { useDispatch, useSelector } from 'react-redux';
 import { useAppDispatch, useAppSelector } from '../../../hooks/hooks';
-
+import { Credentials } from '../authentication/redux/authenticationSlice';
+import { setUserCredentials } from '../authentication/redux/authenticationSlice';
+import reactotron from 'reactotron-react-native';
 
 export default function LoginView({ navigation } ) {
     const [username, setUsername] = useState('');
@@ -19,14 +21,6 @@ export default function LoginView({ navigation } ) {
     const [PasswordVisibility, setPasswordVisibility] = useState(false);
     const [usernameValid, setUsernameValid] = useState(false);
     const [passwordValid, setPasswordValid] = useState(false);
-    const [userCredentials, setUserCredentials] = useState('');
-    // try using object state rather targeting each with a different state. even though rendering wise it mithgt not be the best
-        // since it doesn't decrease the number of renders and might rebuild unnecessary parts that didn't change in the object.
-
-
-    // move the below to global state, aka, useContext
-    // const [accessToken, setAccessToken] = useState();
-    // const [refreshToken, setRefreshToken] = useState('');
 
     const dispatch = useAppDispatch();
 
@@ -62,28 +56,48 @@ export default function LoginView({ navigation } ) {
         setPasswordVisibility(!PasswordVisibility);
     }
 
-    useEffect(() => {
-        // calling the fetch function
-        let callFetchDataUserCredentials = async () => {
-            if (username && password){
-                const retrievedUserCredentials = await fetchUserCredentialData(username, password);
-                if (retrievedUserCredentials) { setUserCredentials(JSON.stringify(retrievedUserCredentials));}
-            }
-        };
-        callFetchDataUserCredentials();
-    }, [username, password]);
 
-    function processLogin() {
+    // calling the fetch function
+    let callFetchDataUserCredentials = async () => {
+        if (username && password){
+            const userAuthCredentials: userAuth =  {
+                username: username,
+                password: password,
+            };
+            // fetch user
+            const retrievedUserCredentials = await dispatch(fetchUser(userAuthCredentials));
+            if (retrievedUserCredentials) { return JSON.stringify(retrievedUserCredentials);}
+        }
+    };
+
+    // helper function
+    const checkCredentials = async () => {
+        const credentials = await callFetchDataUserCredentials();
+        if (credentials) {
+            return credentials;
+        }else{
+            return null;
+        }
+    };
+
+    async function processLogin() {
         if (validateEmailAndPassword()) {
             return;
         } else {
-            if (userCredentials === ''){
-                return Alert.alert('Error has occurred! Please contact services or try again later');
+            const credentials =  await checkCredentials();
+            if(credentials !== null){
+                if (credentials === ''){
+                    Alert.alert('Error has occurred! Please contact services or try again later');
+                    return;
+                } else {
+                    const parsedUserCredentials = JSON.parse(credentials);
+                    // save state
+                    dispatch(setUserCredentials(parsedUserCredentials));
+                    goToHome();
+                }
             } else {
-                const parsedUserCredentials = JSON.parse(userCredentials);
-                dispatch(setAccessToken(parsedUserCredentials.accessToken));
-                dispatch(setRefreshToken(parsedUserCredentials.refreshToken));
-                goToHome();
+                Alert.alert('Error raised');
+                return;
             }
         }
     }

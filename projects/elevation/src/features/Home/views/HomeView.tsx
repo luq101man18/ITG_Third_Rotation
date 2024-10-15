@@ -9,13 +9,14 @@ import { useEffect, useState } from "react";
 import fetchProductsData from "../server/api";
 import { Alert } from "react-native";
 import { styles } from "../styles";
+import Search from "../components/search/Search";
+import reactotron from "reactotron-react-native";
 export default function HomeView() {
 
     // const accessTokenRedux = useAppSelector((state : RootState) => {return state.authentication.accessToken;});
     // const refreshTokenRedux = useAppSelector((state: RootState) => {return state.authentication.refreshToken; });
-
+    const {user, error, status} = useAppSelector((state) => {return state.authentication;});
     const [fetchedProducts, setFetchedProducts] = useState([]);
-
     useEffect(() => {
         try {
             const fetchProducts = async () => {
@@ -35,6 +36,9 @@ export default function HomeView() {
     return(
         <PaperProvider>
             <SafeAreaView style={{flex: 1}}>
+                <Text style={{fontSize:30,color: 'black'}}>
+                    here is the name: {user.firstName}
+                </Text>
                 <FlatList
                     style={styles.container}
                     numColumns={2}
