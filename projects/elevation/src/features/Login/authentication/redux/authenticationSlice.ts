@@ -16,8 +16,7 @@ const initialState: Credentials = {
         accessToken: '',
         refreshToken: '',
     },
-    error: null,
-    status: 'idle',
+    loading: 'idle',
 };
 
 export interface Credentials {
@@ -31,8 +30,7 @@ export interface Credentials {
         accessToken: string,
         refreshToken: string,
     },
-    error: null,
-    status: 'idle'
+    loading: 'idle' | 'loading' | 'succeeded'| 'failed' ,
 }
 
 
@@ -66,32 +64,41 @@ const authenticationSlice = createSlice({
     name: 'authentication',
     initialState,
     reducers: {
-        setUserCredentials(state, action: PayloadAction<Credentials>){
-            // state.user = action.payload;
-            state.user = {
-                id: action.payload.payload.id,
-                username : action.payload.payload.firstName,
-                firstName : action.payload.payload.firstName,
-                lastName : action.payload.payload.lastName,
-                gender : action.payload.payload.gender,
-                email : action.payload.payload.email,
-                accessToken : action.payload.payload.accessToken,
-                refreshToken : action.payload.payload.refreshToken,
-            };
-        },
+        // setUserCredentials(state, action: PayloadAction<Credentials>){
+        //     state.user = {
+        //         // id: action.payload.payload.id,
+        //         // username : action.payload.payload.username,
+        //         // firstName : action.payload.payload.firstName,
+        //         // lastName : action.payload.payload.lastName,
+        //         // gender : action.payload.payload.gender,
+        //         // email : action.payload.payload.email,
+        //         // accessToken : action.payload.payload.accessToken,
+        //         // refreshToken : action.payload.payload.refreshToken,
+        //     };
+        // },
     },
     extraReducers: (builder) => {
         builder.addCase(fetchUser.pending, (state, action) => {
-            state.status = 'loading';
+            state.loading = 'loading';
         });
         builder.addCase(fetchUser.fulfilled, (state, action) => {
-            state.status = 'succeeded';
+            state.loading = 'succeeded';
+            state.user = {
+                id: action.payload.id,
+                username : action.payload.username,
+                firstName : action.payload.firstName,
+                lastName : action.payload.lastName,
+                gender : action.payload.gender,
+                email : action.payload.email,
+                accessToken : action.payload.accessToken,
+                refreshToken : action.payload.refreshToken,
+            };
         });
         builder.addCase(fetchUser.rejected, (state, action) => {
-            state.status = 'failed';
+            state.loading = 'failed';
         });
     },
 });
 
-export const { setUserCredentials } = authenticationSlice.actions;
+// export const { setUserCredentials } = authenticationSlice.actions;
 export default authenticationSlice.reducer;

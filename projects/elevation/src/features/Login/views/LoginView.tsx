@@ -4,7 +4,7 @@ import { IconButton, Text, MD3Colors } from 'react-native-paper';
 import { stylesLogin } from '../styles';
 import { useState, useEffect  } from 'react';
 import fetchUserCredentialData from '../server/api';
-import { Dispatch } from '@reduxjs/toolkit';
+import { Dispatch, unwrapResult } from '@reduxjs/toolkit';
 import { fetchUser, setAccessToken, setRefreshToken, userAuth } from '../authentication/redux/authenticationSlice';
 import { Selector } from '@reduxjs/toolkit';
 import { useDispatch, useSelector } from 'react-redux';
@@ -23,7 +23,7 @@ export default function LoginView({ navigation } ) {
     const [passwordValid, setPasswordValid] = useState(false);
 
     const dispatch = useAppDispatch();
-
+    const status = useAppSelector((state) => {return state.authentication.loading;});
     function goToHome() {
         navigation.navigate('Home');
     }
@@ -65,8 +65,11 @@ export default function LoginView({ navigation } ) {
                 password: password,
             };
             // fetch user
-            const retrievedUserCredentials = await dispatch(fetchUser(userAuthCredentials));
-            if (retrievedUserCredentials) { return JSON.stringify(retrievedUserCredentials);}
+            const retrievedUserCredentials = await dispatch(fetchUser(userAuthCredentials))
+            .then(
+                (response) => { return JSON.stringify(response);}
+            );
+            return retrievedUserCredentials;
         }
     };
 
@@ -90,10 +93,7 @@ export default function LoginView({ navigation } ) {
                     Alert.alert('Error has occurred! Please contact services or try again later');
                     return;
                 } else {
-                    const parsedUserCredentials = JSON.parse(credentials);
-                    // save state
-                    dispatch(setUserCredentials(parsedUserCredentials));
-                    goToHome();
+                        goToHome();
                 }
             } else {
                 Alert.alert('Error raised');
