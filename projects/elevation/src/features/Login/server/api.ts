@@ -4,7 +4,7 @@ const fetchUserCredentialData = async (email : string, password : string) => {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify({
-                username: 'emilys', // change to accept username
+                username: 'emilys5', // change to accept username
                 password: 'emilyspass', //change back to password
                 expiresInMins: 30, // optional, defaults to 60
             }),

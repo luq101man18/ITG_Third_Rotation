@@ -58,11 +58,7 @@ export default function LoginView({ navigation } ) {
                 password: password,
             };
             // fetch user using asyncThunk
-            const retrievedUserCredentials = await dispatch(fetchUser(userAuthCredentials))
-            .then(
-                //wait for api and return when fulfilled or rejected
-                (response) => { return JSON.stringify(response);}
-            );
+            const retrievedUserCredentials = await dispatch(fetchUser(userAuthCredentials));
             return retrievedUserCredentials;
         }
     };
@@ -72,11 +68,11 @@ export default function LoginView({ navigation } ) {
             return;
         } else {
             const credentials = await callFetchDataUserCredentials();
-            if(credentials !== null){
-                if (credentials === ''){
-                    Alert.alert('Error has occurred! Please contact services or try again later');
-                    return;
-                } else {
+            if(credentials){
+                if (credentials.payload.message === 'Invalid credentials'){
+                    Alert.alert('Username or password is wrong!');
+                }
+                else {
                     goToHome();
                 }
             } else {

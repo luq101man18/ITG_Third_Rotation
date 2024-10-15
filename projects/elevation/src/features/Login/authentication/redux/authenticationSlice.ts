@@ -64,18 +64,7 @@ const authenticationSlice = createSlice({
     name: 'authentication',
     initialState,
     reducers: {
-        // setUserCredentials(state, action: PayloadAction<Credentials>){
-        //     state.user = {
-        //         // id: action.payload.payload.id,
-        //         // username : action.payload.payload.username,
-        //         // firstName : action.payload.payload.firstName,
-        //         // lastName : action.payload.payload.lastName,
-        //         // gender : action.payload.payload.gender,
-        //         // email : action.payload.payload.email,
-        //         // accessToken : action.payload.payload.accessToken,
-        //         // refreshToken : action.payload.payload.refreshToken,
-        //     };
-        // },
+
     },
     extraReducers: (builder) => {
         builder.addCase(fetchUser.pending, (state, action) => {
