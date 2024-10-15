@@ -2,16 +2,9 @@ import React from 'react';
 import { View, TouchableOpacity, TextInput, Alert } from 'react-native';
 import { IconButton, Text, MD3Colors } from 'react-native-paper';
 import { stylesLogin } from '../styles';
-import { useState, useEffect  } from 'react';
-import fetchUserCredentialData from '../server/api';
-import { Dispatch, unwrapResult } from '@reduxjs/toolkit';
-import { fetchUser, setAccessToken, setRefreshToken, userAuth } from '../authentication/redux/authenticationSlice';
-import { Selector } from '@reduxjs/toolkit';
-import { useDispatch, useSelector } from 'react-redux';
-import { useAppDispatch, useAppSelector } from '../../../hooks/hooks';
-import { Credentials } from '../authentication/redux/authenticationSlice';
-import { setUserCredentials } from '../authentication/redux/authenticationSlice';
-import reactotron from 'reactotron-react-native';
+import { useState } from 'react';
+import { fetchUser, userAuth } from '../authentication/redux/authenticationSlice';
+import { useAppDispatch } from '../../../hooks/hooks';
 
 export default function LoginView({ navigation } ) {
     const [username, setUsername] = useState('');
@@ -23,7 +16,6 @@ export default function LoginView({ navigation } ) {
     const [passwordValid, setPasswordValid] = useState(false);
 
     const dispatch = useAppDispatch();
-    const status = useAppSelector((state) => {return state.authentication.loading;});
     function goToHome() {
         navigation.navigate('Home');
     }
@@ -60,26 +52,18 @@ export default function LoginView({ navigation } ) {
     // calling the fetch function
     let callFetchDataUserCredentials = async () => {
         if (username && password){
+            //pass user object
             const userAuthCredentials: userAuth =  {
                 username: username,
                 password: password,
             };
-            // fetch user
+            // fetch user using asyncThunk
             const retrievedUserCredentials = await dispatch(fetchUser(userAuthCredentials))
             .then(
+                //wait for api and return when fulfilled or rejected
                 (response) => { return JSON.stringify(response);}
             );
             return retrievedUserCredentials;
-        }
-    };
-
-    // helper function
-    const checkCredentials = async () => {
-        const credentials = await callFetchDataUserCredentials();
-        if (credentials) {
-            return credentials;
-        }else{
-            return null;
         }
     };
 
@@ -87,16 +71,16 @@ export default function LoginView({ navigation } ) {
         if (validateEmailAndPassword()) {
             return;
         } else {
-            const credentials =  await checkCredentials();
+            const credentials = await callFetchDataUserCredentials();
             if(credentials !== null){
                 if (credentials === ''){
                     Alert.alert('Error has occurred! Please contact services or try again later');
                     return;
                 } else {
-                        goToHome();
+                    goToHome();
                 }
             } else {
-                Alert.alert('Error raised');
+                Alert.alert('Username or password is wrong!');
                 return;
             }
         }
