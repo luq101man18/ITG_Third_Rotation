@@ -31,6 +31,7 @@ export interface Credentials {
         refreshToken: string,
     },
     loading: 'idle' | 'loading' | 'succeeded'| 'failed' ,
+
 }
 
 
@@ -44,8 +45,8 @@ export const fetchUser = createAsyncThunk(
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify({
-                    username: 'emilys', // change to accept username
-                    password: 'emilyspass', //change back to password
+                    username: username,
+                    password: password,
                     expiresInMins: 30, // optional, defaults to 60
                 }),
             });
@@ -66,6 +67,7 @@ const authenticationSlice = createSlice({
     reducers: {
 
     },
+
     extraReducers: (builder) => {
         builder.addCase(fetchUser.pending, (state, action) => {
             state.loading = 'loading';
@@ -88,6 +90,12 @@ const authenticationSlice = createSlice({
         });
     },
 });
+
+
+export const selectUser = (state) => state.user;
+export const selectLoading = (state) => state.loading;
+
+
 
 // export const { setUserCredentials } = authenticationSlice.actions;
 export default authenticationSlice.reducer;
