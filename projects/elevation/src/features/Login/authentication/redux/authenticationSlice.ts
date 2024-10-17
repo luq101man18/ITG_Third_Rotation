@@ -93,6 +93,8 @@ const authenticationSlice = createSlice({
 });
 
 export const selectUser = (state : RootState) => state.authentication.user;
+export const selectRefreshToken = (state : RootState) => state.authentication.user.refreshToken;
+export const selectAccessToken = (state : RootState) => state.authentication.user.accessToken;
 export const selectLoading = (state :  RootState) => state.authentication.loading;
 
 export default authenticationSlice.reducer;
