@@ -46,8 +46,8 @@ export const fetchUser = createAsyncThunk(
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify({
-                    username: 'emilys',
-                    password: 'emilyspass',
+                    username: username,
+                    password: password,
                     expiresInMins: 30, // optional, defaults to 60
                 }),
             });
