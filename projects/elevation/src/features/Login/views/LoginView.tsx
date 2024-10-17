@@ -2,14 +2,9 @@ import React from 'react';
 import { View, TouchableOpacity, TextInput, Alert } from 'react-native';
 import { IconButton, Text, MD3Colors } from 'react-native-paper';
 import { stylesLogin } from '../styles';
-import { useState, useEffect  } from 'react';
-import fetchUserCredentialData from '../server/api';
-import { Dispatch } from '@reduxjs/toolkit';
-import { setAccessToken, setRefreshToken } from '../authentication/redux/authenticationSlice';
-import { Selector } from '@reduxjs/toolkit';
-import { useDispatch, useSelector } from 'react-redux';
-import { useAppDispatch, useAppSelector } from '../../../hooks/hooks';
-
+import { useState } from 'react';
+import { fetchUser, userAuth } from '../authentication/redux/authenticationSlice';
+import { useAppDispatch } from '../../../hooks/hooks';
 
 export default function LoginView({ navigation } ) {
     const [username, setUsername] = useState('');
@@ -19,17 +14,8 @@ export default function LoginView({ navigation } ) {
     const [PasswordVisibility, setPasswordVisibility] = useState(false);
     const [usernameValid, setUsernameValid] = useState(false);
     const [passwordValid, setPasswordValid] = useState(false);
-    const [userCredentials, setUserCredentials] = useState('');
-    // try using object state rather targeting each with a different state. even though rendering wise it mithgt not be the best
-        // since it doesn't decrease the number of renders and might rebuild unnecessary parts that didn't change in the object.
-
-
-    // move the below to global state, aka, useContext
-    // const [accessToken, setAccessToken] = useState();
-    // const [refreshToken, setRefreshToken] = useState('');
 
     const dispatch = useAppDispatch();
-
     function goToHome() {
         navigation.navigate('Home');
     }
@@ -62,28 +48,36 @@ export default function LoginView({ navigation } ) {
         setPasswordVisibility(!PasswordVisibility);
     }
 
-    useEffect(() => {
-        // calling the fetch function
-        let callFetchDataUserCredentials = async () => {
-            if (username && password){
-                const retrievedUserCredentials = await fetchUserCredentialData(username, password);
-                if (retrievedUserCredentials) { setUserCredentials(JSON.stringify(retrievedUserCredentials));}
-            }
-        };
-        callFetchDataUserCredentials();
-    }, [username, password]);
 
-    function processLogin() {
+    // calling the fetch function
+    let callFetchDataUserCredentials = async () => {
+        if (username && password){
+            //pass user object
+            const userAuthCredentials: userAuth =  {
+                username: username,
+                password: password,
+            };
+            // fetch user using asyncThunk
+            const retrievedUserCredentials = await dispatch(fetchUser(userAuthCredentials));
+            return retrievedUserCredentials;
+        }
+    };
+
+    async function processLogin() {
         if (validateEmailAndPassword()) {
             return;
         } else {
-            if (userCredentials === ''){
-                return Alert.alert('Error has occurred! Please contact services or try again later');
+            const credentials = await callFetchDataUserCredentials();
+            if(credentials){
+                if (credentials.payload.message === 'Invalid credentials'){
+                    Alert.alert('Username or password is wrong!');
+                }
+                else {
+                    goToHome();
+                }
             } else {
-                const parsedUserCredentials = JSON.parse(userCredentials);
-                dispatch(setAccessToken(parsedUserCredentials.accessToken));
-                dispatch(setRefreshToken(parsedUserCredentials.refreshToken));
-                goToHome();
+                Alert.alert('Username or password is wrong!');
+                return;
             }
         }
     }
