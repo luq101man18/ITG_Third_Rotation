@@ -1,4 +1,5 @@
 import { createAsyncThunk, createSlice, PayloadAction } from '@reduxjs/toolkit';
+import { RootState } from '@reduxjs/toolkit/query';
 
 export interface userAuth {
     username: string,
@@ -45,8 +46,8 @@ export const fetchUser = createAsyncThunk(
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify({
-                    username: username,
-                    password: password,
+                    username: 'emilys',
+                    password: 'emilyspass',
                     expiresInMins: 30, // optional, defaults to 60
                 }),
             });
@@ -91,11 +92,7 @@ const authenticationSlice = createSlice({
     },
 });
 
+export const selectUser = (state : RootState) => state.authentication.user;
+export const selectLoading = (state :  RootState) => state.authentication.loading;
 
-export const selectUser = (state) => state.user;
-export const selectLoading = (state) => state.loading;
-
-
-
-// export const { setUserCredentials } = authenticationSlice.actions;
 export default authenticationSlice.reducer;
