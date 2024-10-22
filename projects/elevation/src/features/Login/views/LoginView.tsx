@@ -95,7 +95,7 @@ export default function LoginView({ navigation } ) {
                         <View style={stylesLogin.emailInput}>
                             <Text style={stylesLogin.textLabels} >Username</Text>
                             <TextInput
-                                placeholder='Enter your email address'
+                                placeholder='Enter your username'
                                 style={ usernameError ? stylesLogin.errorEmail : usernameValid ? stylesLogin.validEmail : stylesLogin.textInput}
                                 onChangeText={(text) => setUsername(text)}
                             />

@@ -9,15 +9,15 @@ import { IconButton } from "react-native-paper";
 export const ProductCard = ({product}) => {
     const discountPercentage = product.discountPercentage;
     // const discountPercentage = 0;
-    const [save, saveProduct] =  useState(false);
+    const [isSaved, setIsSaved] =  useState(false);
     function addToSaved(){
-        return saveProduct(!save);
+        return setIsSaved(!isSaved);
     }
     return(
         <Card style={styles.container} elevation={0} >
             <View style={styles.saveIcon}>
                 <IconButton
-                    icon={save ? 'heart' : 'heart-outline'}
+                    icon={isSaved ? 'heart' : 'heart-outline'}
                     size={20}
                     onPress={() => addToSaved()}
                 />
