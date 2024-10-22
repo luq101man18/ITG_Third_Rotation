@@ -1,5 +1,6 @@
 import { createAsyncThunk, createSlice, PayloadAction } from '@reduxjs/toolkit';
 import { RootState } from '@reduxjs/toolkit/query';
+import fetchUserCredentialData from '../../server/api';
 
 export interface userAuth {
     username: string,
@@ -42,15 +43,7 @@ export const fetchUser = createAsyncThunk(
     async (credentials : userAuth, thunkAPI) => {
         const {username, password} = credentials;
         try {
-            const response = await fetch('https://dummyjson.com/user/login', {
-                method: 'POST',
-                headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({
-                    username: username,
-                    password: password,
-                    expiresInMins: 30, // optional, defaults to 60
-                }),
-            });
+            const response = await fetchUserCredentialData(username, password);
             let dataFetched = await response.json();
             if(dataFetched){
                 return dataFetched;
