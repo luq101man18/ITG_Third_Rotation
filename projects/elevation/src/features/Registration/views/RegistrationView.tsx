@@ -121,9 +121,9 @@ export default function RegistrationView({ navigation }) {
                             <Text style={stylesLogin.ErrorMessageText}>Please enter your last name!</Text>
                         </View>
                         <View style={stylesLogin.emailInput}>
-                            <Text style={stylesLogin.textLabels} >Email</Text>
+                            <Text style={stylesLogin.textLabels} >Username</Text>
                             <TextInput
-                                placeholder="Enter your email address"
+                                placeholder="Enter your username"
                                 style={ usernameError ? stylesLogin.errorEmail : usernameValid ? stylesLogin.validEmail : stylesLogin.textInput}
                                 onChangeText={(text) => setUsername(text)}
                             />

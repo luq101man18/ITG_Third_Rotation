@@ -4,7 +4,7 @@ import { StyleSheet } from "react-native";
 
 export const styles = StyleSheet.create({
     container: {
-        margin: 30,
+        marginTop: 15,
         flexDirection:'row',
     },
     textInput: {
