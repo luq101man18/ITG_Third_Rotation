@@ -28,7 +28,7 @@ export const stylesLogin = StyleSheet.create({
         paddingBottom: 10,
         paddingLeft: 10,
         paddingRight: 0,
-        color: 'grey',
+        color: 'black',
         textAlign: 'left',
         borderWidth: 1,
         borderRadius: 10,

@@ -44,9 +44,8 @@ export const fetchUser = createAsyncThunk(
         const {username, password} = credentials;
         try {
             const response = await fetchUserCredentialData(username, password);
-            let dataFetched = await response.json();
-            if(dataFetched){
-                return dataFetched;
+            if(response){
+                return response;
             }
         } catch (error) {
             return error.message;
