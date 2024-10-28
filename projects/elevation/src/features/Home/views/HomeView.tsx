@@ -1,5 +1,5 @@
 import React from "react";
-import { View, Text, FlatList } from "react-native";
+import { View, Text, FlatList, TouchableOpacity } from "react-native";
 import { useAppSelector } from "../../../hooks/hooks";
 import { RootState } from "../../../store/store";
 import { PaperProvider } from "react-native-paper";
@@ -10,12 +10,15 @@ import fetchProductsData from "../server/api";
 import { Alert } from "react-native";
 import { styles } from "../styles";
 import Header from "../components/header/header";
-export default function HomeView() {
-
-    // const accessTokenRedux = useAppSelector((state : RootState) => {return state.authentication.accessToken;});
-    // const refreshTokenRedux = useAppSelector((state: RootState) => {return state.authentication.refreshToken; });
+export default function HomeView({ navigation }) {
 
     const [fetchedProducts, setFetchedProducts] = useState([]);
+
+    //navigate to product screen details screen
+    const goToProductDetailsScreen = (productId : number) => {
+        // build screen and use route.
+        navigation.navigate('ProductDetails', { chosenProduct: productId });
+    };
 
     useEffect(() => {
         try {
@@ -42,9 +45,11 @@ export default function HomeView() {
                     numColumns={2}
                     data={fetchedProducts}
                     renderItem={({item}) => {return(
-                        <View style={styles.product}>
-                            <ProductCard product={item} />
-                        </View>
+                        <TouchableOpacity onPress={() => goToProductDetailsScreen(item.id)}>
+                            <View style={styles.product}>
+                                <ProductCard product={item} />
+                            </View>
+                        </TouchableOpacity>
                     );} }
                     keyExtractor={(item) => item.id}
                 />
