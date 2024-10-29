@@ -46,7 +46,7 @@ const SearchView = ({ navigation }) => {
                     iconColor="black"
                     size={30}
                     onPress={() => goToHome()}
-                    style={{alignSelf:'flex-start', marginLeft: 30, marginTop: 25,}}
+                    style={{alignSelf:'flex-start', marginLeft: 30, marginTop:10,}}
                     />
                 <Text style={styles.header}>Search</Text>
             </View>

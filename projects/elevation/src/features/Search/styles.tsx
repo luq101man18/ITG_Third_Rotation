@@ -5,7 +5,7 @@ import { StyleSheet } from "react-native";
 export const styles = StyleSheet.create({
     container: {
         margin: 30,
-        marginTop: 20,
+        marginTop: 10,
         flexDirection: 'row',
     },
     textInput: {
@@ -61,7 +61,7 @@ export const styles = StyleSheet.create({
         marginRight: 75,
         textAlign: 'center',
         flex: 1,
-        marginTop: 20,
+        marginTop: 5,
     },
     noSearch: {
         fontSize: 28,
