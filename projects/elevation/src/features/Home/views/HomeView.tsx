@@ -1,7 +1,5 @@
 import React from "react";
-import { View, Text, FlatList } from "react-native";
-import { useAppSelector } from "../../../hooks/hooks";
-import { RootState } from "../../../store/store";
+import { View, FlatList } from "react-native";
 import { PaperProvider } from "react-native-paper";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { ProductCard } from "../components/card/Card";
@@ -12,11 +10,7 @@ import { styles } from "../styles";
 import Header from "../components/header/header";
 export default function HomeView() {
 
-    // const accessTokenRedux = useAppSelector((state : RootState) => {return state.authentication.accessToken;});
-    // const refreshTokenRedux = useAppSelector((state: RootState) => {return state.authentication.refreshToken; });
-
     const [fetchedProducts, setFetchedProducts] = useState([]);
-
     useEffect(() => {
         try {
             const fetchProducts = async () => {
