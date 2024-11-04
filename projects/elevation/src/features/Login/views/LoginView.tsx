@@ -8,6 +8,7 @@ import { useAppDispatch } from '../../../hooks/hooks';
 import { useForm, Controller } from "react-hook-form"
 import Error from '../components/errors/Error';
 
+
 export default function LoginView({ navigation } ) {
     const [PasswordVisibility, setPasswordVisibility] = useState(false);
     const [usernameValid, setUsernameValid] = useState(false);
@@ -24,10 +25,10 @@ export default function LoginView({ navigation } ) {
             password: "",
         },
     });
+    
     const dispatch = useAppDispatch();
     const username = watch("username");
     const password = watch("password");
-
 
     function goToHome() {
         navigation.navigate('Home');

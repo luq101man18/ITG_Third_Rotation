@@ -7,6 +7,7 @@ import { useEffect, useState } from "react";
 import fetchProductsData from "../server/api";
 import { Alert } from "react-native";
 import { styles } from "../styles";
+import Header from "../components/header/header";
 export default function HomeView() {
 
     const [fetchedProducts, setFetchedProducts] = useState([]);
@@ -29,6 +30,7 @@ export default function HomeView() {
     return(
         <PaperProvider>
             <SafeAreaView style={{flex: 1}}>
+                <Header />
                 <FlatList
                     style={styles.container}
                     numColumns={2}
