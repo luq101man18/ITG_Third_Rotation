@@ -5,43 +5,37 @@ import { stylesLogin } from '../styles';
 import { useState } from 'react';
 import { fetchUser, userAuth } from '../authentication/redux/authenticationSlice';
 import { useAppDispatch } from '../../../hooks/hooks';
+import { useForm, Controller } from "react-hook-form"
+import Error from '../components/errors/Error';
+
 
 export default function LoginView({ navigation } ) {
-    const [username, setUsername] = useState('');
-    const [password, setPassword] = useState('');
-    const [usernameError, setUsernameError] = useState(false);
-    const [passwordError, setPasswordError] = useState(false);
     const [PasswordVisibility, setPasswordVisibility] = useState(false);
     const [usernameValid, setUsernameValid] = useState(false);
     const [passwordValid, setPasswordValid] = useState(false);
 
+    const {
+        control,
+        handleSubmit,
+        formState: { errors },
+        watch,
+    } = useForm({
+        defaultValues: {
+            username: "",
+            password: "",
+        },
+    });
+    
     const dispatch = useAppDispatch();
+    const username = watch("username");
+    const password = watch("password");
+
     function goToHome() {
         navigation.navigate('Home');
     }
 
     function goToRegistrationScreen(){
         navigation.navigate('Registration');
-    }
-
-    function validateEmailAndPassword() {
-        let flag = false;
-        if(username === '') {
-            setUsernameError(true);
-            flag = true;
-            return flag;
-        } else if(password.length < 8) {
-            setPasswordError(true);
-            flag = true;
-            return flag;
-        } else {
-            setUsernameError(false);
-            setPasswordError(false);
-            setUsernameValid(true);
-            setPasswordValid(true);
-            flag = false;
-            return flag;
-        }
     }
 
     function showPassword() {
@@ -62,28 +56,25 @@ export default function LoginView({ navigation } ) {
             return retrievedUserCredentials;
         }
     };
-
-    async function processLogin() {
-        if (validateEmailAndPassword()) {
-            return;
-        } else {
-            const credentials = await callFetchDataUserCredentials();
-            if(credentials){
-                if (credentials.payload.message === 'Invalid credentials'){
-                    Alert.alert('Username or password is wrong!');
-                }
-                else {
-                    goToHome();
-                }
-            } else {
+    const processLogin = async () => {
+        setUsernameValid(true);
+        setPasswordValid(true);
+        const credentials = await callFetchDataUserCredentials();
+        if(credentials){
+            if (credentials.payload.message === 'Invalid credentials'){
                 Alert.alert('Username or password is wrong!');
-                return;
             }
+            else {
+                goToHome();
+            }
+        } else {
+            Alert.alert('Username or password is wrong!');
+            return;
         }
-    }
+    };
 
 
-    return(
+    return (
         <View style={stylesLogin.container}>
             <View>
                 <View style={stylesLogin.header}>
@@ -92,28 +83,51 @@ export default function LoginView({ navigation } ) {
                 </View>
                 <View>
                     <View style={stylesLogin.userInputs}>
+
                         <View style={stylesLogin.emailInput}>
                             <Text style={stylesLogin.textLabels} >Username</Text>
-                            <TextInput
-                                placeholder='Enter your username'
-                                style={ usernameError ? stylesLogin.errorEmail : usernameValid ? stylesLogin.validEmail : stylesLogin.textInput}
-                                onChangeText={(text) => setUsername(text)}
+                            <Controller
+                                control={control}
+                                rules={{
+                                    required: true,
+                                    minLength:3,
+                                }}
+                                render={({ field: { onChange } }) => (
+                                    <TextInput
+                                        placeholder='Enter your username'
+                                        style={errors.username ? stylesLogin.errorEmail : usernameValid ? stylesLogin.validEmail : stylesLogin.textInput}
+                                        onChangeText={onChange}
+                                    />
+                                )}
+                                name="username"
                             />
-                            <View style={{display: usernameError ? 'flex' : 'none'}}>
-                                <Text style={stylesLogin.ErrorMessageText}>Please enter a valid username!</Text>
-                            </View>
+                            {errors.username && (
+                                    <Error message={"Please enter a valid username!"} />
+                                )
+                            }
                         </View>
+
                         <View>
                             <Text style={stylesLogin.textLabels} >Password</Text>
 
                             <View style={stylesLogin.passwordEye}>
-                                <TextInput
-                                    placeholder="Enter your password"
-                                    style={passwordError ? stylesLogin.errorPasswordNoIcon : passwordValid ? stylesLogin.validPasswordNoIcon : stylesLogin.passwordTextInput}
-                                    onChangeText={(text) => setPassword(text)}
-                                    secureTextEntry = {!PasswordVisibility}
+                                <Controller
+                                    control={control}
+                                    rules={{
+                                        required: true,
+                                        minLength: 8,
+                                    }}
+                                    render={({ field: { onChange } }) => (
+                                        <TextInput
+                                            placeholder="Enter your password"
+                                            style={errors.password ? stylesLogin.errorPasswordNoIcon : passwordValid ? stylesLogin.validPasswordNoIcon : stylesLogin.passwordTextInput}
+                                            onChangeText={onChange}
+                                            secureTextEntry={!PasswordVisibility}
+                                        />
+                                    )}
+                                    name="password"
                                 />
-                                <View style={ passwordError ? stylesLogin.errorPasswordIcon : passwordValid ? stylesLogin.validPasswordIcon : stylesLogin.eyeIcon}>
+                                <View style={errors.password ? stylesLogin.errorPasswordIcon : passwordValid ? stylesLogin.validPasswordIcon : stylesLogin.eyeIcon}>
                                     <IconButton
                                         icon={PasswordVisibility ? 'eye' : 'eye-off'}
                                         iconColor={MD3Colors.grey}
@@ -122,13 +136,14 @@ export default function LoginView({ navigation } ) {
                                     />
                                 </View>
                             </View>
-                            <View style={{ display: passwordError ? 'flex' : 'none' }}>
-                                <Text style={stylesLogin.ErrorMessageText}>Please enter a valid password!</Text>
-                            </View>
+                            {errors.password && (
+                                <Error message={"Please enter a valid password!"} />
+                                )
+                            }
                         </View>
                     </View>
                     <View>
-                        <TouchableOpacity style={stylesLogin.loginbutton} onPress={() => processLogin()}>
+                        <TouchableOpacity style={stylesLogin.loginbutton} onPress={handleSubmit(processLogin)}>
                             <Text style={stylesLogin.loginText}>Login</Text>
                         </TouchableOpacity>
                     </View>
@@ -137,7 +152,7 @@ export default function LoginView({ navigation } ) {
                     <View style={stylesLogin.registerContainer}>
                         <Text style={stylesLogin.registerationText}>Don't have an account? </Text>
                         <TouchableOpacity onPress={() => goToRegistrationScreen()}>
-                            <Text style={{fontWeight:'bold', fontSize: 16}}>Join</Text>
+                            <Text style={{ fontWeight: 'bold', fontSize: 16 }}>Join</Text>
                         </TouchableOpacity>
                     </View>
                 </View>
