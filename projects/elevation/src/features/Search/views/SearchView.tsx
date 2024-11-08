@@ -11,7 +11,6 @@ import ProductDisplay from "../components/ProductDisplay/ProductDisplay";
 import NotFound from "../components/NotFound/NotFound";
 
 
-
 const SearchView = ({ navigation }) => {
     const [product , setProduct] = useState('');
 
