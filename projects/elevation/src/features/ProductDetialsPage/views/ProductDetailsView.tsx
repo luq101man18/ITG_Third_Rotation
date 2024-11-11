@@ -1,13 +1,12 @@
 import React from 'react';
 import { View, Text, TouchableOpacity } from 'react-native';
-import { useAppDispatch } from '../../../hooks/hooks';
 import { useEffect, useState } from 'react';
 import { Alert } from 'react-native';
 import { styles } from '../styles';
 import Header from '../components/header/header';
-import { fetchProduct, ProductDetails, productName } from '../ProductDetails/redux/ProductDetailsSlice';
 import {Card} from 'react-native-paper';
 import {IconButton} from 'react-native-paper';
+import { fetchProductById } from '../server/api';
 
 export default function ProductDetailsView({route, navigation}) {
 
@@ -19,20 +18,14 @@ export default function ProductDetailsView({route, navigation}) {
     // get product name
     const { chosenProduct } = route.params;
 
-    const dispatch = useAppDispatch();
-
     // set product name
-    const [product, setFetchedProduct] = useState<ProductDetails|null>(null);
+    const [product, setFetchedProduct] = useState<productId|null>(null);
 
     // fetch Product function
     const callFetchProduct = async (receivedProductId : string) => {
         if (receivedProductId) {
-            //pass product object
-            const productNameToFetch : productName = {
-                product: receivedProductId,
-            };
-            // fetch user using asyncThunk
-            const retrievedProductDetails = await dispatch(fetchProduct(productNameToFetch));
+            const productIdNum = parseInt(receivedProductId);
+            const retrievedProductDetails = fetchProductById(productIdNum);
             return retrievedProductDetails;
         }
     };
@@ -62,7 +55,7 @@ export default function ProductDetailsView({route, navigation}) {
             const fetchReceivedProduct = async (receivedProduct : string) => {
                 const fetchedProductFromApi = await callFetchProduct(receivedProduct);
                 if (fetchedProductFromApi) {
-                    setFetchedProduct(fetchedProductFromApi.payload);
+                    setFetchedProduct(fetchedProductFromApi);
                 } else {
                     Alert.alert("product wasn't set yet");
                 }
@@ -72,9 +65,11 @@ export default function ProductDetailsView({route, navigation}) {
             Alert.alert("there is an error");
         }
     }, [chosenProduct]);
+
     function goToHome() {
         navigation.navigate('Home');
     }
+
     return(
         <View>
             <View style={styles.screenHeaderAndArrow}>

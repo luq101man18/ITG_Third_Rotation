@@ -1,16 +1,11 @@
-
-
-
-const fetchProductByName = async (productId:number) => {
+export const fetchProductById = async (productId:number) => {
     try {
         const response = await fetch('https://dummyjson.com/products/' + productId);
-        //let dataFetched = await response;
         if(response){
-            return response;
+            let dataFetched = await response.json();
+            return dataFetched;
         }
     } catch (error) {
         return 'Error at fetching the data!';
     }
 };
-
-export default fetchProductByName;
