@@ -8,8 +8,8 @@ import fetchProductsData from '../server/api';
 import { Alert } from 'react-native';
 import { styles } from '../styles';
 import Header from '../components/header/header';
-export default function HomeView() {
 
+export default function HomeView() {
     const [fetchedProducts, setFetchedProducts] = useState([]);
     const [limit, setLimit] = useState(10);
     const [skip, setSkip] = useState(0);
@@ -48,7 +48,6 @@ export default function HomeView() {
                     );} }
                     keyExtractor={(item) => item.id}
                     onEndReached={handlePagination}
-                    onEndReachedThreshold={0.5}
                 />
             </SafeAreaView>
         </PaperProvider>

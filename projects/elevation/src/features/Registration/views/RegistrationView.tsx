@@ -1,72 +1,53 @@
-import React, { useEffect } from 'react';
+import React from 'react';
 import { View, TouchableOpacity, TextInput, Alert } from 'react-native';
 import { IconButton, Text, MD3Colors } from 'react-native-paper';
 import { stylesLogin } from '../styles';
 import { useState } from 'react';
-import addUserCredentialData from '../server/api';
+import { useAppDispatch } from '../../../hooks/hooks';
+import { useForm, Controller } from "react-hook-form"
+import Error from '../components/errors/Error';
+import { addUser } from '../creation/redux/creationSlice';
+import { userCreate } from '../creation/redux/creationSlice';
 
 export default function RegistrationView({ navigation }) {
-
-    const [username, setUsername] = useState('');
-    const [password, setPassword] = useState('');
-    const [usernameError, setUsernameError] = useState(false);
-    const [passwordError, setPasswordError] = useState(false);
     const [PasswordVisibility, setPasswordVisibility] = useState(false);
     const [usernameValid, setUsernameValid] = useState(false);
     const [passwordValid, setPasswordValid] = useState(false);
-    const [firstName, setFirstName] = useState('');
-    const [firstNameError, setFirstNameError] = useState(false);
     const [firstNameValid, setFirstNameValid] = useState(false);
-    const [lastName, setLastName] = useState('');
-    const [lastNameError, setLastNameError] = useState(false);
     const [lastNameValid, setLastNameValid] = useState(false);
-    const [userCredentials, setUserCredentials] = useState('');
 
+    const {
+        control,
+        handleSubmit,
+        formState: { errors },
+        watch,
+    } = useForm({
+        defaultValues: {
+            username: "",
+            password: "",
+            firstName: "",
+            lastName: "",
+        },
+    });
 
-    function validateCredentials() {
-        let flag = false;
-        if(firstName === "") {
-            setFirstNameError(true);
-            flag = true;
-            return flag;
-        }
-        else if(lastName === "") {
-            setFirstNameError(false);
-            setLastNameError(true);
-            flag = true;
-            return flag;
-        }
-        else if(username === "") {
-            setLastNameError(false);
-            setUsernameError(true);
-            flag = true;
-            return flag;
-        } else if (password.length < 8 || password === "") {
-            setUsernameError(false);
-            setPasswordError(true);
-            flag = true;
-            return flag;
+    const dispatch = useAppDispatch();
+    const username = watch("username");
+    const password = watch("password");
+    const firstName = watch("firstName");
+    const lastName = watch("lastName");
+
+    const processRegistration = async () => {
+        setFirstNameValid(true);
+        setLastNameValid(true);
+        setUsernameValid(true);
+        setPasswordValid(true);
+        const credentials = await callAddDataUserCredentials();
+        if (!credentials) {
+            return Alert.alert('Error has occurred! Please contact services or try again later');
         } else {
-            setPasswordError(false);
-            setUsernameValid(true);
-            setPasswordValid(true);
-            setFirstNameValid(true);
-            setLastNameValid(true);
-            flag = false;
-            return flag;
+            goToLogin();
         }
-    }
-    function processRegistration(){
-        if (validateCredentials()){
-            return;
-        } else {
-            if (userCredentials === '') {
-                return Alert.alert('Error has occurred! Please contact services or try again later');
-            } else {
-                goToLogin();
-            }
-        }
-    }
+    };
 
     function goToLogin(){
         navigation.navigate('Login');
@@ -76,18 +57,21 @@ export default function RegistrationView({ navigation }) {
         setPasswordVisibility(!PasswordVisibility);
     }
 
+    let callAddDataUserCredentials = async () => {
+        if (firstName && lastName && username && password) {
+            //pass user object
+            const userAuthCredentials: userCreate = {
+                username: username,
+                password: password,
+                firstName: firstName,
+                lastName: lastName,
+            };
+            // fetch user using asyncThunk
+            const retrievedUserCredentials = await dispatch(addUser(userAuthCredentials));
+            return retrievedUserCredentials;
+        }
+    };
 
-    useEffect(() => {
-        // calling the fetch function
-        let callAddUserCredentialsData = async () => {
-            if (firstName && lastName && username && password) {
-                const retrievedUserCredentials = await addUserCredentialData(firstName, lastName, username, password);
-
-                if (retrievedUserCredentials) { setUserCredentials(JSON.stringify(retrievedUserCredentials)); }
-            }
-        };
-        callAddUserCredentialsData();
-    }, [firstName, lastName, username, password]);
 
     return(
         <View style={stylesLogin.container}>
@@ -100,47 +84,90 @@ export default function RegistrationView({ navigation }) {
                     <View style={stylesLogin.userInputs}>
                         <View style={stylesLogin.emailInput}>
                             <Text style={stylesLogin.textLabels} >First Name</Text>
-                            <TextInput
-                                placeholder="Enter your first name"
-                                style={firstNameError ? stylesLogin.errorEmail : firstNameValid ? stylesLogin.validEmail : stylesLogin.textInput}
-                                onChangeText={(text) => setFirstName(text)}
-                            />
+                            <Controller
+                                control={control}
+                                rules={{
+                                    required: true,
+                                    minLength: 2,
+                                }}
+                                render={({ field: { onChange } }) => (
+                                    <TextInput
+                                        placeholder="Enter your first name"
+                                        style={errors.firstName ? stylesLogin.errorEmail : firstNameValid ? stylesLogin.validEmail : stylesLogin.textInput}
+                                        onChangeText={onChange}
+                                        />
+                                )}
+                                name="firstName"
+                                />
                         </View>
-                        <View style={{ display: firstNameError ? 'flex' : 'none' }}>
-                            <Text style={stylesLogin.ErrorMessageText}>Please enter your first name!</Text>
-                        </View>
+                        {errors.username && (
+                            <Error message={"Please enter a valid first name!"} />
+                            )
+                        }
                         <View style={stylesLogin.emailInput}>
                             <Text style={stylesLogin.textLabels} >Last Name</Text>
-                            <TextInput
-                                placeholder="Enter your last name"
-                                style={lastNameError ? stylesLogin.errorEmail : lastNameValid ? stylesLogin.validEmail : stylesLogin.textInput}
-                                onChangeText={(text) => setLastName(text)}
+                            <Controller
+                                control={control}
+                                rules={{
+                                    required: true,
+                                    minLength: 2,
+                                }}
+                                render={({ field: { onChange } }) => (
+                                    <TextInput
+                                        placeholder="Enter your last name"
+                                        style={errors.lastName ? stylesLogin.errorEmail : lastNameValid ? stylesLogin.validEmail : stylesLogin.textInput}
+                                        onChangeText={onChange}
+                                    />
+                                )}
+                                name="lastName"
                             />
                         </View>
-                        <View style={{ display: lastNameError ? 'flex' : 'none' }}>
-                            <Text style={stylesLogin.ErrorMessageText}>Please enter your last name!</Text>
-                        </View>
+                        {errors.username && (
+                            <Error message={"Please enter a valid last name!"} />
+                            )
+                        }
                         <View style={stylesLogin.emailInput}>
                             <Text style={stylesLogin.textLabels} >Username</Text>
-                            <TextInput
-                                placeholder="Enter your username"
-                                style={ usernameError ? stylesLogin.errorEmail : usernameValid ? stylesLogin.validEmail : stylesLogin.textInput}
-                                onChangeText={(text) => setUsername(text)}
-                            />
-                            <View style={{display: usernameError ? 'flex' : 'none'}}>
-                                <Text style={stylesLogin.ErrorMessageText}>Please enter a valid email!</Text>
-                            </View>
+                            <Controller
+                                control={control}
+                                rules={{
+                                    required: true,
+                                    minLength: 3,
+                                }}
+                                render={({ field: { onChange } }) => (
+                                    <TextInput
+                                        placeholder="Enter your username"
+                                        style={ errors.username ? stylesLogin.errorEmail : usernameValid ? stylesLogin.validEmail : stylesLogin.textInput}
+                                        onChangeText={onChange}
+                                    />
+                                )}
+                                name="username"
+                                />
+                            {errors.username && (
+                                <Error message={"Please enter a valid username!"} />
+                                )
+                            }
                         </View>
                         <View>
                             <Text style={stylesLogin.textLabels} >Password</Text>
                             <View style={stylesLogin.passwordEye}>
-                                <TextInput
-                                    placeholder="Enter your password"
-                                    style={passwordError ? stylesLogin.errorPasswordNoIcon : passwordValid ? stylesLogin.validPasswordNoIcon : stylesLogin.passwordTextInput}
-                                    onChangeText={(text) => setPassword(text)}
-                                    secureTextEntry = {!PasswordVisibility}
+                                <Controller
+                                    control={control}
+                                    rules={{
+                                        required: true,
+                                        minLength: 3,
+                                    }}
+                                    render={({ field: { onChange } }) => (
+                                        <TextInput
+                                            placeholder="Enter your password"
+                                            style={errors.password ? stylesLogin.errorPasswordNoIcon : passwordValid ? stylesLogin.validPasswordNoIcon : stylesLogin.passwordTextInput}
+                                            onChangeText={onChange}
+                                            secureTextEntry = {!PasswordVisibility}
+                                        />
+                                    )}
+                                    name="password"
                                 />
-                                <View style={ passwordError ? stylesLogin.errorPasswordIcon : passwordValid ? stylesLogin.validPasswordIcon : stylesLogin.eyeIcon}>
+                                <View style={errors.password ? stylesLogin.errorPasswordIcon : passwordValid ? stylesLogin.validPasswordIcon : stylesLogin.eyeIcon}>
                                     <IconButton
                                         icon={PasswordVisibility ? "eye" : "eye-off"} 
                                         iconColor={MD3Colors.grey}
@@ -149,16 +176,17 @@ export default function RegistrationView({ navigation }) {
                                     />
                                 </View>
                             </View>
-                            <View style={{ display: passwordError ? 'flex' : 'none' }}>
-                                <Text style={stylesLogin.ErrorMessageText}>Please enter a valid password!</Text>
-                            </View>
+                            {errors.username && (
+                                <Error message={"Please enter a valid password!"} />
+                                )
+                            }
                         </View>
                     </View>
                     <View>
                         <Text>By signing up you agree to our Terms, Privacy Policy and Cookie Use</Text>
                     </View>
                     <View>
-                        <TouchableOpacity style={stylesLogin.registrationbutton} onPress={() => processRegistration()}>
+                        <TouchableOpacity style={stylesLogin.registrationbutton} onPress={handleSubmit(processRegistration)}>
                             <Text style={stylesLogin.loginText}>Create an Account</Text>
                         </TouchableOpacity>
                     </View>
