@@ -36,8 +36,6 @@ export default function HomeView() {
         fetchProducts();
     }, []);
 
-    reactotron.log(filterVisibility);
-
     return (
         <PaperProvider>
             <SafeAreaView style={{ flex: 1 }}>
@@ -54,7 +52,7 @@ export default function HomeView() {
                     )}
                     keyExtractor={(item) => item.id}
                 />
-                {filterVisibility ? <FilterView /> : <View></View>}
+                {filterVisibility ? <FilterView products={fetchedProducts} setProducts={setFetchedProducts} /> : <View />}
 
             </SafeAreaView>
         </PaperProvider>

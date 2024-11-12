@@ -6,9 +6,47 @@ import { IconButton } from 'react-native-paper';
 import RangeSlider from 'react-native-range-slider'
 import DropDownPicker from 'react-native-dropdown-picker';
 import MultiSlider from '@ptomasroos/react-native-multi-slider';
-
 import { styles } from '../styles';
-const FilterView = () => {
+import { Alert } from 'react-native';
+import { filterProductsFromHighToLow, filterProductsFromLowToHigh } from '../server/api';
+import reactotron from 'reactotron-react-native';
+
+
+const FilterView = ({products, setProducts}) => {
+
+    const filterProductsHighToLow = (products) => {
+        try {
+            const filteredProductsFromHighToLow = filterProductsFromHighToLow(products);
+            setProducts(filteredProductsFromHighToLow);
+        } catch (error) {
+            Alert.alert('An error occurred while filtering products.');
+        }
+    };
+
+    const filterProductsLowToHigh = (products) => {
+        try {
+            const filteredProductsFromLowToHigh = filterProductsFromLowToHigh(products);
+            setProducts(filteredProductsFromLowToHigh);
+        } catch (error) {
+            Alert.alert('An error occurred while filtering products.');
+        }
+    };
+
+    function processProductsFilteration(){
+        // check states
+        if(relevance){
+
+        } else if (highToLow) {
+            filterProductsHighToLow(products);
+        }
+        else if (lowToHigh) {
+            filterProductsLowToHigh(products);
+        }
+        bottomSheetRef.current?.close();
+    }
+
+
+
     // ref
     const bottomSheetRef = useRef<BottomSheet>(null);
 
@@ -67,6 +105,7 @@ const FilterView = () => {
                                 </View>
                                 <View>
                                     <ScrollView
+                                    horizontal={true}
                                     >
                                         <View style={{flexDirection: 'row', alignSelf: 'flex-start'}}>
                                             <View>
@@ -138,7 +177,7 @@ const FilterView = () => {
                                 </View>
                             </View>
                             <View>
-                                <TouchableOpacity style={styles.applyFilterButton} onPress={() => bottomSheetRef.current?.close()}>
+                                <TouchableOpacity style={styles.applyFilterButton} onPress={() => processProductsFilteration()}>
                                     <Text style={styles.applyFilterButtonText}>Apply Filter</Text>
                                 </TouchableOpacity>
                             </View>
