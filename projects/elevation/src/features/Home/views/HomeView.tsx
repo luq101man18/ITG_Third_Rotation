@@ -1,16 +1,24 @@
-import React from "react";
-import { View, FlatList } from "react-native";
-import { PaperProvider } from "react-native-paper";
-import { SafeAreaView } from "react-native-safe-area-context";
-import { ProductCard } from "../components/card/Card";
-import { useEffect, useState } from "react";
-import fetchProductsData from "../server/api";
-import { Alert } from "react-native";
-import { styles } from "../styles";
-import Header from "../components/header/header";
-export default function HomeView() {
+import React from 'react';
+import { View, FlatList, TouchableOpacity } from 'react-native';
+import { PaperProvider } from 'react-native-paper';
+import { SafeAreaView } from 'react-native-safe-area-context';
+import { ProductCard } from '../components/card/Card';
+import { useEffect, useState } from 'react';
+import fetchProductsData from '../server/api';
+import { Alert } from 'react-native';
+import { styles } from '../styles';
+import Header from '../components/header/header';
+
+export default function HomeView({ navigation }) {
 
     const [fetchedProducts, setFetchedProducts] = useState([]);
+
+    //navigate to product screen details screen
+    const goToProductDetailsScreen = (productId : number) => {
+        // build screen and use route.
+        navigation.navigate('ProductDetails', { chosenProduct: productId });
+    };
+
     useEffect(() => {
         try {
             const fetchProducts = async () => {
@@ -23,7 +31,7 @@ export default function HomeView() {
             };
             fetchProducts();
         } catch (error) {
-            Alert.alert("there is an error");
+            Alert.alert('there is an error');
         }
     }, []);
 
@@ -36,9 +44,11 @@ export default function HomeView() {
                     numColumns={2}
                     data={fetchedProducts}
                     renderItem={({item}) => {return(
-                        <View style={styles.product}>
-                            <ProductCard product={item} />
-                        </View>
+                        <TouchableOpacity onPress={() => goToProductDetailsScreen(item.id)}>
+                            <View style={styles.product}>
+                                <ProductCard product={item} />
+                            </View>
+                        </TouchableOpacity>
                     );} }
                     keyExtractor={(item) => item.id}
                 />
