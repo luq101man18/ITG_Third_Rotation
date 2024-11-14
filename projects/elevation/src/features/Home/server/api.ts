@@ -1,6 +1,3 @@
-
-
-
 const fetchProductsData = async () => {
     try {
         const response = await fetch('https://dummyjson.com/products');
@@ -12,5 +9,4 @@ const fetchProductsData = async () => {
         return 'Error at fetching the data!';
     }
 };
-
 export default fetchProductsData;

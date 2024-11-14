@@ -1,25 +1,25 @@
-import React from "react";
-import { View, Text, FlatList } from "react-native";
-import { useAppSelector } from "../../../hooks/hooks";
-import { RootState } from "../../../store/store";
+import React from 'react';
+import { View, FlatList } from 'react-native';
+import { PaperProvider } from 'react-native-paper';
+import { SafeAreaView } from 'react-native-safe-area-context';
+import { ProductCard } from '../components/card/Card';
+import { useEffect, useState } from 'react';
+import fetchProductsData from '../server/api';
+import { Alert } from 'react-native';
+import { styles } from '../styles';
+import Header from '../components/header/header';
+import reactotron from 'reactotron-react-native';
+import Search from '../components/search/Search';
 
-import { PaperProvider } from "react-native-paper";
-import { SafeAreaView } from "react-native-safe-area-context";
-import { ProductCard } from "../components/card/Card";
-import { useEffect, useState } from "react";
-import fetchProductsData from "../server/api";
-import { Alert } from "react-native";
-import { styles } from "../styles";
-import Header from "../components/header/header";
 export default function HomeView() {
 
     const [fetchedProducts, setFetchedProducts] = useState([]);
-
     useEffect(() => {
         try {
             const fetchProducts = async () => {
                 const fetchedProductsFromApi = await fetchProductsData();
                 if (fetchedProductsFromApi) {
+                    reactotron.log(fetchedProductsFromApi);
                     setFetchedProducts(fetchedProductsFromApi.products);
                 } else {
                     Alert.alert("product wasn't set yet");
@@ -27,7 +27,7 @@ export default function HomeView() {
             };
             fetchProducts();
         } catch (error) {
-            Alert.alert("there is an error");
+            Alert.alert('there is an error');
         }
     }, []);
 
@@ -35,6 +35,7 @@ export default function HomeView() {
         <PaperProvider>
             <SafeAreaView style={{flex: 1}}>
                 <Header />
+                <Search />
                 <FlatList
                     style={styles.container}
                     numColumns={2}

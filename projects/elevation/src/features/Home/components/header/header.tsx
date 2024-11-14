@@ -7,7 +7,6 @@ const Header = () => {
     return(
         <View style={styles.container}>
             <Text style={styles.header}>Discover</Text>
-            <Search />
         </View>
     );
 };

@@ -23,6 +23,24 @@ const SearchView = ({ navigation }) => {
         navigation.navigate('Home');
     }
 
+    async function searchForProductOnTextChange(product: string) {
+        try {
+            if(product.length > 2) {
+                setProduct(product);
+                const response = await searchProducts(product);
+                setSearchedProducts(response);
+                if (searchedProducts.total === 0) {
+                    setValidSearch(false);
+                } else {
+                    setValidSearch(true);
+                }
+                return true;
+            }
+        } catch (error) {
+            Alert.alert('Unfortunately faced an error please contact customer service');
+        }
+    }
+
     async function searchForProduct(product : string) {
         try {
             const response = await searchProducts(product);
@@ -63,7 +81,7 @@ const SearchView = ({ navigation }) => {
                     placeholder="Search for clothes..."
                     placeholderTextColor={'#B3B3B3'}
                     style={styles.textInput}
-                    onChangeText={(text) => setProduct(text)}
+                    onChangeText={(text) => searchForProductOnTextChange(text)}
                 />
                 <View style={styles.iconWrapperMice}>
                     <IconButton
@@ -74,7 +92,7 @@ const SearchView = ({ navigation }) => {
                 </View>
             </View>
             {product === '' ?
-                <Text></Text> : validSearch ?
+                <View /> : validSearch ?
                 <ProductDisplay searchedProducts={searchedProducts} /> : <NotFound />
             }
         </View>
