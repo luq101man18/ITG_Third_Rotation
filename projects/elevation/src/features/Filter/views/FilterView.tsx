@@ -8,16 +8,17 @@ import DropDownPicker from 'react-native-dropdown-picker';
 import MultiSlider from '@ptomasroos/react-native-multi-slider';
 import { styles } from '../styles';
 import { Alert } from 'react-native';
-import { filterProductsFromHighToLow, filterProductsFromLowToHigh } from '../server/api';
+import { filterProductsFromHighToLow, filterProductsFromLowToHigh, filterProductsUsingPriceRange } from '../server/api';
 import reactotron from 'reactotron-react-native';
-
+import { findHighestPriceProduct, findLowestPriceProduct } from '../server/api';
 
 const FilterView = ({products, setProducts}) => {
 
+    let filteredProducts : any[] = products;
+
     const filterProductsHighToLow = (products) => {
         try {
-            const filteredProductsFromHighToLow = filterProductsFromHighToLow(products);
-            setProducts(filteredProductsFromHighToLow);
+            filteredProducts = filterProductsFromHighToLow(filteredProducts);
         } catch (error) {
             Alert.alert('An error occurred while filtering products.');
         }
@@ -25,27 +26,43 @@ const FilterView = ({products, setProducts}) => {
 
     const filterProductsLowToHigh = (products) => {
         try {
-            const filteredProductsFromLowToHigh = filterProductsFromLowToHigh(products);
-            setProducts(filteredProductsFromLowToHigh);
+            filteredProducts = filterProductsFromLowToHigh(filteredProducts);
         } catch (error) {
             Alert.alert('An error occurred while filtering products.');
         }
     };
 
-    function processProductsFilteration(){
+    const filterProductsBasedOnPriceRange = (products, minPriceRange, maxPriceRange) => {
+        try {
+            filteredProducts = filterProductsUsingPriceRange(filteredProducts, minPriceRange, maxPriceRange);
+        } catch (error) {
+            Alert.alert('An error occurred while filtering products.');
+        }
+    };
+
+    const lookForHighestProductsPrice = () => findHighestPriceProduct(products);
+    const lookForLowestProductsPrice = () => findLowestPriceProduct(products);
+
+    function sortProductsBasedOnChosenSortOption(){
         // check states
         if(relevance){
+            // TODO:
+                // take searched input and filter items based on that on the search screen
 
         } else if (highToLow) {
-            filterProductsHighToLow(products);
+            filterProductsHighToLow(filteredProducts);
         }
         else if (lowToHigh) {
-            filterProductsLowToHigh(products);
+            filterProductsLowToHigh(filteredProducts);
         }
         bottomSheetRef.current?.close();
     }
 
-
+    function processProductsFiltration(){
+        filterProductsBasedOnPriceRange(filteredProducts, sliderValue[0], sliderValue[1]);
+        sortProductsBasedOnChosenSortOption();
+        setProducts(filteredProducts);
+    }
 
     // ref
     const bottomSheetRef = useRef<BottomSheet>(null);
@@ -62,13 +79,12 @@ const FilterView = ({products, setProducts}) => {
         { label: 'S', value: 'Small' },
         { label: 'M', value: 'Medium' },
         { label: 'L', value: 'Large' },
-
     ]);
-
 
     // range slider
 
-    const [sliderValue, setSliderValue] = useState([0, 19]);
+    const [sliderValue, setSliderValue] = useState([lookForLowestProductsPrice(), lookForHighestProductsPrice()]);
+
     const handleChange = (value) => {
         setSliderValue(value);
     };
@@ -152,9 +168,13 @@ const FilterView = ({products, setProducts}) => {
                                     <View>
                                         <MultiSlider
                                             onValuesChange={handleChange}
-                                            max={19}
-                                            min={0}
-                                            sliderLength={300}
+                                            values={sliderValue}
+                                            sliderLength={280}
+                                            min={lookForLowestProductsPrice()}
+                                            max={lookForHighestProductsPrice()}
+                                            step={1}
+                                            allowOverlap={false}
+                                            enableLabel
                                         />
                                     </View>
                                 </View>
@@ -177,7 +197,7 @@ const FilterView = ({products, setProducts}) => {
                                 </View>
                             </View>
                             <View>
-                                <TouchableOpacity style={styles.applyFilterButton} onPress={() => processProductsFilteration()}>
+                            <TouchableOpacity style={styles.applyFilterButton} onPress={() => processProductsFiltration()}>
                                     <Text style={styles.applyFilterButtonText}>Apply Filter</Text>
                                 </TouchableOpacity>
                             </View>

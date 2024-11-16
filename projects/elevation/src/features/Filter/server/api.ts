@@ -17,3 +17,41 @@ export const filterProductsFromHighToLow = (products) => {
         return 'Error at fetching the data!';
     }
 };
+
+export const filterProductsUsingPriceRange = (products, minPriceRange, maxPriceRange) => {
+    try {
+        let sortedProducts = [...products].filter((product) => product.price >= minPriceRange && product.price <= maxPriceRange);
+        return sortedProducts;
+    } catch (error) {
+        return 'Error at fetching the data!';
+    }
+};
+
+
+export const findHighestPriceProduct = (products) => {
+    try {
+        let highestPrice = 0;
+        products.find((product) =>
+            {
+                product.price > highestPrice ? highestPrice = product.price : highestPrice;
+            }
+        );
+        return highestPrice;
+    } catch (error) {
+        return 'Error at finding the highest price!';
+    }
+};
+
+export const findLowestPriceProduct = (products) => {
+    try {
+        let highestPrice = findHighestPriceProduct(products);
+        products.find((product) =>
+            {
+                product.price < highestPrice ? highestPrice = product.price : highestPrice;
+            }
+        );
+        return highestPrice;
+    } catch (error) {
+        return 'Error at finding the lowest price!';
+    }
+};
