@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { View, Text, FlatList, Alert } from "react-native";
-import { useAppSelector } from "../../../hooks/hooks";
+import { useAppDispatch, useAppSelector } from "../../../hooks/hooks";
 import { RootState } from "../../../store/store";
 import { Modal, PaperProvider } from "react-native-paper";
 import { SafeAreaView } from "react-native-safe-area-context";
@@ -11,29 +11,31 @@ import Header from "../components/header/header";
 import FilterView from "../../Filter/views/FilterView";
 import Search from "../components/search/Search";
 import reactotron from "reactotron-react-native";
+import { RotateInDownLeft } from "react-native-reanimated";
+import { fetchProducts } from "../redux/ProductsSlice";
 
 export default function HomeView() {
     const [fetchedProducts, setFetchedProducts] = useState([]);
     const [filterVisibility, setFilterVisibility] = useState(false);
-
+    const dispatch = useAppDispatch();
     const displayFilter = () => {
         setFilterVisibility(!filterVisibility);
     };
 
     useEffect(() => {
-        const fetchProducts = async () => {
+        const fetchProductsUsingAsyncThunk = async () => {
             try {
-                const fetchedProductsFromApi = await fetchProductsData();
+                const fetchedProductsFromApi = await dispatch(fetchProducts());
                 if (fetchedProductsFromApi) {
-                    setFetchedProducts(fetchedProductsFromApi.products);
+                    setFetchedProducts(fetchedProductsFromApi.payload.products);
                 } else {
-                    Alert.alert("Product data not available.");
+                    Alert.alert('Product data not available.');
                 }
             } catch (error) {
-                Alert.alert("An error occurred while fetching products.");
+                Alert.alert('An error occurred while fetching products in Front-End.');
             }
         };
-        fetchProducts();
+        fetchProductsUsingAsyncThunk();
     }, []);
 
     return (
@@ -52,7 +54,7 @@ export default function HomeView() {
                     )}
                     keyExtractor={(item) => item.id}
                 />
-                {filterVisibility ? <FilterView products={fetchedProducts} setProducts={setFetchedProducts} /> : <View />}
+                {filterVisibility ? <FilterView products={fetchedProducts} setProducts={setFetchedProducts} displayFilter={displayFilter} /> : <View />}
 
             </SafeAreaView>
         </PaperProvider>

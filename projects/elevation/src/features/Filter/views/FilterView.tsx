@@ -1,4 +1,4 @@
-import React, { useCallback, useMemo, useRef, useState } from 'react';
+import React, { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import { View, Text, StyleSheet, TouchableOpacity } from 'react-native';
 import BottomSheet, { BottomSheetView } from '@gorhom/bottom-sheet';
 import { FlatList, ScrollView } from 'react-native-gesture-handler';
@@ -11,9 +11,57 @@ import { Alert } from 'react-native';
 import { filterProductsFromHighToLow, filterProductsFromLowToHigh, filterProductsUsingPriceRange } from '../server/api';
 import reactotron from 'reactotron-react-native';
 import { findHighestPriceProduct, findLowestPriceProduct } from '../server/api';
+import { useAppSelector } from '../../../hooks/hooks';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
-const FilterView = ({products, setProducts}) => {
+const FilterView = ({products, setProducts, displayFilter}) => {
 
+    // ref
+    const bottomSheetRef = useRef<BottomSheet>(null);
+
+    // sorting buttons states
+    const [relevance, setRelevance] = useState(true);
+    const [highToLow, setHighToLow] = useState(false);
+    const [lowToHigh, setLowToHigh] = useState(false);
+
+    //DropDownSize
+    const [open, setOpen] = useState(false);
+    const [value, setValue] = useState(null);
+    const [items, setItems] = useState([
+        { label: 'S', value: 'Small' },
+        { label: 'M', value: 'Medium' },
+        { label: 'L', value: 'Large' },
+    ]);
+
+
+
+    let savedPriceRangeValues: any = [];
+    const savePriceRangeValues = async (value: any) => {
+        try {
+            const jsonValue = JSON.stringify(value);
+            await AsyncStorage.setItem('price-range-values', jsonValue);
+        } catch (e) {
+            return 'PriceRangeValues were not saved';
+        }
+    };
+
+    const getPriceRangeValues = async () => {
+        try {
+            const jsonValue = await AsyncStorage.getItem('price-range-values');
+
+            if (jsonValue != null) {
+                let priceRangeValues = JSON.parse(jsonValue);
+                return priceRangeValues;
+            } else {
+                return null;
+            }
+        } catch (e) {
+            return 'PriceRangeValues were not received from Async storage';
+        }
+    };
+
+    // get products from slice
+    const productsFromSlice = useAppSelector((state: RootState) => state.products.products);
     let filteredProducts : any[] = products;
 
     const filterProductsHighToLow = (products) => {
@@ -34,14 +82,34 @@ const FilterView = ({products, setProducts}) => {
 
     const filterProductsBasedOnPriceRange = (products, minPriceRange, maxPriceRange) => {
         try {
-            filteredProducts = filterProductsUsingPriceRange(filteredProducts, minPriceRange, maxPriceRange);
+            filteredProducts = filterProductsUsingPriceRange(products, minPriceRange, maxPriceRange);
         } catch (error) {
             Alert.alert('An error occurred while filtering products.');
         }
     };
 
-    const lookForHighestProductsPrice = () => findHighestPriceProduct(products);
-    const lookForLowestProductsPrice = () => findLowestPriceProduct(products);
+    const lookForHighestProductsPrice = () => findHighestPriceProduct(productsFromSlice);
+    const lookForLowestProductsPrice = () => findLowestPriceProduct(productsFromSlice);
+
+    const [sliderValue, setSliderValue] = useState(
+        [lookForLowestProductsPrice(), lookForHighestProductsPrice()]
+    );
+
+    const handleChange = (rangeSlideValue: any) => {
+        setSliderValue(rangeSlideValue);
+        savePriceRangeValues(rangeSlideValue);
+    };
+
+    const setPriceRange = async () => {
+        savedPriceRangeValues = await getPriceRangeValues();
+        if (savedPriceRangeValues) {
+            if (savedPriceRangeValues) {
+                setSliderValue([savedPriceRangeValues[0] ? savedPriceRangeValues[0] : lookForLowestProductsPrice(),
+                savedPriceRangeValues[1] ? savedPriceRangeValues[1] : lookForHighestProductsPrice()
+                ]);
+            }
+        }
+    };
 
     function sortProductsBasedOnChosenSortOption(){
         // check states
@@ -55,49 +123,22 @@ const FilterView = ({products, setProducts}) => {
         else if (lowToHigh) {
             filterProductsLowToHigh(filteredProducts);
         }
-        bottomSheetRef.current?.close();
     }
 
     function processProductsFiltration(){
-        filterProductsBasedOnPriceRange(filteredProducts, sliderValue[0], sliderValue[1]);
+        filterProductsBasedOnPriceRange(productsFromSlice, sliderValue[0], sliderValue[1]);
         sortProductsBasedOnChosenSortOption();
         setProducts(filteredProducts);
+        displayFilter();
     }
 
-    // ref
-    const bottomSheetRef = useRef<BottomSheet>(null);
-
-    // sorting buttons states
-    const [relevance, setRelevance] = useState(true);
-    const [highToLow, setHighToLow] = useState(false);
-    const [lowToHigh, setLowToHigh] = useState(false);
-
-    //DropDownSize
-    const [open, setOpen] = useState(false);
-    const [value, setValue] = useState(null);
-    const [items, setItems] = useState([
-        { label: 'S', value: 'Small' },
-        { label: 'M', value: 'Medium' },
-        { label: 'L', value: 'Large' },
-    ]);
-
-    // range slider
-
-    const [sliderValue, setSliderValue] = useState([lookForLowestProductsPrice(), lookForHighestProductsPrice()]);
-
-    const handleChange = (value) => {
-        setSliderValue(value);
-    };
-
-    // callbacks
-    const handleSheetChanges = useCallback((index: number) => {
-        // console.log('handleSheetChanges', index);
+    useEffect(() => {
+        setPriceRange();
     }, []);
 
     return (
             <BottomSheet
                 ref={bottomSheetRef}
-                onChange={handleSheetChanges}
                 snapPoints={['60%']}
             >
                 <BottomSheetView style={styles.contentContainer}>
@@ -110,7 +151,10 @@ const FilterView = ({products, setProducts}) => {
                                         icon={'close'}
                                         iconColor="black"
                                         size={35}
-                                        onPress={() => { bottomSheetRef.current?.close(); }}
+                                        onPress={() => {
+                                            displayFilter();
+                                            bottomSheetRef.current?.close();
+                                        }}
                                     />
                                 </View>
                             </View>
@@ -162,7 +206,7 @@ const FilterView = ({products, setProducts}) => {
                             <View style={{ marginTop: 20 }}>
                                 <View style={{flexDirection:'row'}}>
                                     <Text style={{ color: 'black', fontWeight: 'bold', fontSize: 20 }}>Price</Text>
-                                    <Text style={{marginLeft: 230, fontSize: 18}}>$ 0 - $ 19</Text>
+                                <Text style={{ marginLeft: 230, fontSize: 18 }}>$ {lookForLowestProductsPrice()} - $ {lookForHighestProductsPrice()}</Text>
                                 </View>
                                 <View style={{marginHorizontal: 8}}>
                                     <View>
@@ -180,7 +224,7 @@ const FilterView = ({products, setProducts}) => {
                                 </View>
                             </View>
                             <View style={{ height: 1, width: '100%', backgroundColor: '#E6E6E6' }} />
-                            <View style={{flexDirection: 'row', marginTop: 20}}>
+                            {/* <View style={{flexDirection: 'row', marginTop: 20}}>
                                 <View>
                                     <Text style={{ color: 'black', fontWeight: 'bold', fontSize: 20 }}>Size</Text>
                                 </View>
@@ -195,7 +239,7 @@ const FilterView = ({products, setProducts}) => {
                                         placeholder="ex:L"
                                     />
                                 </View>
-                            </View>
+                            </View> */}
                             <View>
                             <TouchableOpacity style={styles.applyFilterButton} onPress={() => processProductsFiltration()}>
                                     <Text style={styles.applyFilterButtonText}>Apply Filter</Text>

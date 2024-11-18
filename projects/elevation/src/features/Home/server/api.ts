@@ -9,7 +9,7 @@ const fetchProductsData = async () => {
             return dataFetched;
         }
     } catch (error) {
-        return 'Error at fetching the data!';
+        return 'Error at fetching the data From API!';
     }
 };
 

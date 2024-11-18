@@ -1,6 +1,7 @@
 import { createAsyncThunk, createSlice, PayloadAction } from '@reduxjs/toolkit';
 import fetchProductsData from '../server/api';
-
+import { RootState } from '../../../store/store';
+import reactotron from 'reactotron-react-native';
 const initialState: Products = {
     products: {},
     total: 0,
@@ -18,7 +19,7 @@ export interface Products {
 }
 
 // the thunk
-export const fetchUser = createAsyncThunk(
+export const fetchProducts = createAsyncThunk(
     'products/fetchAllProducts',
     async () => {
         try {
@@ -27,7 +28,7 @@ export const fetchUser = createAsyncThunk(
                 return response;
             }
         } catch (error) {
-            return error.message;
+            return 'Error fetching products from Slice';
         }
     }
 );
@@ -40,20 +41,23 @@ const productsSlice = createSlice({
 
     },
     extraReducers: (builder) => {
-        builder.addCase(fetchUser.pending, (state, action) => {
+        builder.addCase(fetchProducts.pending, (state, action) => {
             state.loading = 'loading';
         });
-        builder.addCase(fetchUser.fulfilled, (state, action) => {
+        builder.addCase(fetchProducts.fulfilled, (state, action) => {
             state.loading = 'succeeded';
             state.products = action.payload.products;
             state.total = action.payload.total;
             state.skip = action.payload.skip;
             state.limit = action.payload.limit;
         });
-        builder.addCase(fetchUser.rejected, (state, action) => {
+        builder.addCase(fetchProducts.rejected, (state, action) => {
             state.loading = 'failed';
         });
     },
 });
 
+// use the thunk in home then select the products in range slider in filter view so whenever a applying the range slider filter then 
+// select from the products that are stored in the store rather than the one that products that are
+export const selectProducts = (state :  RootState) => state.products.products;
 export default productsSlice.reducer;
