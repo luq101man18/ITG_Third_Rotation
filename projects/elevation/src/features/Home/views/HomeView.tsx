@@ -8,6 +8,7 @@ import fetchProductsData from "../server/api";
 import { Alert } from "react-native";
 import { styles } from "../styles";
 import Header from "../components/header/header";
+import CategoriesView from "../../Categories/views/CategoriesView";
 export default function HomeView() {
 
     const [fetchedProducts, setFetchedProducts] = useState([]);
@@ -31,6 +32,7 @@ export default function HomeView() {
         <PaperProvider>
             <SafeAreaView style={{flex: 1}}>
                 <Header />
+                <CategoriesView setProducts={setFetchedProducts} />
                 <FlatList
                     style={styles.container}
                     numColumns={2}
