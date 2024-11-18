@@ -22,7 +22,9 @@ const SearchView = ({ navigation }) => {
     function goToHome(){
         navigation.navigate('Home');
     }
-
+    function goToSearchProduct() {
+        if(product !== '' && validSearch) {navigation.navigate('SearchProduct', {productName: product});}
+    }
     async function searchForProductOnTextChange(product: string) {
         try {
             if(product.length > 2) {
@@ -74,7 +76,7 @@ const SearchView = ({ navigation }) => {
                         icon={'magnify'}
                         iconColor="#B3B3B3"
                         size={24}
-                        onPress={() => searchForProduct(product)}
+                        onPress={() => goToSearchProduct()}
                     />
                 </View>
                 <TextInput
