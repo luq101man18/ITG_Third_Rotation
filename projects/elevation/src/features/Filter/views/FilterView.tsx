@@ -8,7 +8,7 @@ import DropDownPicker from 'react-native-dropdown-picker';
 import MultiSlider from '@ptomasroos/react-native-multi-slider';
 import { styles } from '../styles';
 import { Alert } from 'react-native';
-import { filterProductsFromHighToLow, filterProductsFromLowToHigh, filterProductsUsingPriceRange } from '../server/api';
+import { filterProductsFromHighToLow, filterProductsFromLowToHigh, filterProductsUsingPriceRange, sortingProductsByRelevanceAPI } from '../server/api';
 import reactotron from 'reactotron-react-native';
 import { findHighestPriceProduct, findLowestPriceProduct } from '../server/api';
 import { useAppSelector } from '../../../hooks/hooks';
@@ -111,12 +111,20 @@ const FilterView = ({products, setProducts, displayFilter}) => {
         }
     };
 
+    const sortingProductsByRelevance = () => {
+        try {
+            filteredProducts = sortingProductsByRelevanceAPI(filteredProducts);
+        } catch (error) {
+            Alert.alert('An error occurred while filtering products.');
+        }
+    };
+
     function sortProductsBasedOnChosenSortOption(){
         // check states
         if(relevance){
             // TODO:
                 // take searched input and filter items based on that on the search screen
-
+            sortingProductsByRelevance();
         } else if (highToLow) {
             filterProductsHighToLow(filteredProducts);
         }
