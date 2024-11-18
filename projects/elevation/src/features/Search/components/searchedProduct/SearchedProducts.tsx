@@ -21,9 +21,6 @@ const SearchedProduct = ({product}) => {
                         <Text style={{ display: (discountPercentage > 0) ? 'flex' : 'none', color: 'red', fontWeight: "bold" }}> -{discountPercentage}%</Text>
                     </View>
                 </View>
-                <View>
-                    <Text>PDT</Text>
-                </View>
             </View>
         </Card>
     );
