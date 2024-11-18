@@ -51,7 +51,7 @@ export default function SearchProductView({navigation, route}) {
                         iconColor="black"
                         size={30}
                         onPress={() => goToHome()}
-                        style={{ alignSelf: 'flex-start', marginLeft: 30, marginTop: 10, }}
+                        style={{ alignSelf: 'flex-start', marginLeft: 20, marginTop: 10, }}
                     />
                     <Text style={styles.header}>{productName}</Text>
                 </View>
