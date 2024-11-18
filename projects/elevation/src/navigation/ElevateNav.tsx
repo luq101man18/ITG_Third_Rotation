@@ -7,6 +7,7 @@ import LoginView from '../features/Login/views/LoginView';
 import RegistrationView from '../features/Registration/views/RegistrationView';
 import Search from '../features/Home/components/search/Search';
 import SearchView from '../features/Search/views/SearchView';
+import SearchProductView from '../features/SearchProduct/views/SearchProductView';
 const Stack = createNativeStackNavigator();
 
 export default function ElevateNav() {
@@ -21,6 +22,7 @@ export default function ElevateNav() {
                     <Stack.Screen name="Registration" component={RegistrationView} />
                     <Stack.Screen name="Home" component={Home} />
                     <Stack.Screen name="Search" component={SearchView} />
+                    <Stack.Screen name="SearchProduct" component={SearchProductView} />
                 </Stack.Navigator>
             </NavigationContainer>
         </PaperProvider>
