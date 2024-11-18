@@ -1,5 +1,5 @@
 import React from 'react';
-import { View, FlatList } from 'react-native';
+import { View, FlatList, TouchableOpacity } from 'react-native';
 import { PaperProvider } from 'react-native-paper';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { ProductCard } from '../components/card/Card';
@@ -8,15 +8,25 @@ import fetchProductsData from '../server/api';
 import { Alert } from 'react-native';
 import { styles } from '../styles';
 import Header from '../components/header/header';
+import { LIMIT_ADDED_PRODUCTS_NUMBER_TO_FETCH, LIMIT_DEFAULT_PRODUCTS_NUMBER_TO_FETCH, SKIP_DEFAULT_PRODUCTS_NUMBER_TO_FETCH, SKIP_PRODUCTS_NUMBER_TO_FETCH } from '../constants/pagination/constants';
 
-export default function HomeView() {
+export default function HomeView({ navigation }) {
+
     const [fetchedProducts, setFetchedProducts] = useState([]);
-    const [limit, setLimit] = useState(10);
-    const [skip, setSkip] = useState(0);
+    const [limit, setLimit] = useState(LIMIT_DEFAULT_PRODUCTS_NUMBER_TO_FETCH);
+    const [skip, setSkip] = useState(SKIP_DEFAULT_PRODUCTS_NUMBER_TO_FETCH);
     const handlePagination = () => {
-        setLimit(limit + 10);
-        setSkip(0);
+        setLimit(limit + LIMIT_ADDED_PRODUCTS_NUMBER_TO_FETCH);
+        setSkip(SKIP_PRODUCTS_NUMBER_TO_FETCH);
     };
+
+
+    //navigate to product screen details screen
+    const goToProductDetailsScreen = (productId : number) => {
+        // build screen and use route.
+        navigation.navigate('ProductDetails', { chosenProduct: productId });
+    };
+
     useEffect(() => {
         try {
             const fetchProducts = async () => {
@@ -42,9 +52,11 @@ export default function HomeView() {
                     numColumns={2}
                     data={fetchedProducts}
                     renderItem={({item}) => {return(
-                        <View style={styles.product}>
-                            <ProductCard product={item} />
-                        </View>
+                        <TouchableOpacity onPress={() => goToProductDetailsScreen(item.id)}>
+                            <View style={styles.product}>
+                                <ProductCard product={item} />
+                            </View>
+                        </TouchableOpacity>
                     );} }
                     keyExtractor={(item) => item.id}
                     onEndReached={handlePagination}
