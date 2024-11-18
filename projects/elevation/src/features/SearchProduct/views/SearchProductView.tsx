@@ -1,5 +1,5 @@
 import React from 'react';
-import { View, FlatList, Text } from 'react-native';
+import { View, FlatList, Text, TouchableOpacity } from 'react-native';
 import { PaperProvider } from 'react-native-paper';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { ProductCard } from '../components/card/Card';
@@ -12,13 +12,19 @@ import reactotron from 'reactotron-react-native';
 import Search from '../components/search/Search';
 import { IconButton } from 'react-native-paper';
 
+
 export default function SearchProductView({navigation, route}) {
 
     const [fetchedProducts, setFetchedProducts] = useState([]);
+    const { productName } = route.params;
+
     function goToHome() {
         navigation.navigate('Home');
     }
-    const {productName} = route.params;
+
+    const goToProductDetailsScreen = (productId: number) => {
+        navigation.navigate('ProductDetails', { chosenProduct: productId });
+    };
 
     useEffect(() => {
         try {
@@ -54,9 +60,11 @@ export default function SearchProductView({navigation, route}) {
                     numColumns={2}
                     data={fetchedProducts}
                     renderItem={({item}) => {return(
-                        <View style={styles.product}>
-                            <ProductCard product={item} />
-                        </View>
+                        <TouchableOpacity onPress={() => goToProductDetailsScreen(item.id)}>
+                            <View style={styles.product}>
+                                <ProductCard product={item} />
+                            </View>
+                        </TouchableOpacity>
                     );} }
                     keyExtractor={(item) => item.id}
                 />

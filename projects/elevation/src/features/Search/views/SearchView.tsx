@@ -95,7 +95,7 @@ const SearchView = ({ navigation }) => {
             </View>
             {product === '' ?
                 <View /> : validSearch ?
-                <ProductDisplay searchedProducts={searchedProducts} /> : <NotFound />
+                <ProductDisplay searchedProducts={searchedProducts} navigation={navigation}/> : <NotFound />
             }
         </View>
     );
