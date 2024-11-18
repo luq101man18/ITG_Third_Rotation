@@ -1,14 +1,10 @@
-import React, { useState } from "react";
-import { View, TextInput, Text, Alert, FlatList, SafeAreaView } from "react-native";
-import { styles } from "../styles";
-import { Icon, IconButton } from "react-native-paper";
-import { useNavigation } from "@react-navigation/native";
-import searchProducts from "../server/api";
-import reactotron from "reactotron-react-native";
-import SearchedProduct from "../components/searchedProduct/SearchedProducts";
-import { black } from "react-native-paper/lib/typescript/styles/themes/v2/colors";
-import ProductDisplay from "../components/ProductDisplay/ProductDisplay";
-import NotFound from "../components/NotFound/NotFound";
+import React, { useState } from 'react';
+import { View, TextInput, Text, Alert } from 'react-native';
+import { styles } from '../styles';
+import { IconButton } from 'react-native-paper';
+import searchProducts from '../server/api';
+import ProductDisplay from '../components/ProductDisplay/ProductDisplay';
+import NotFound from '../components/NotFound/NotFound';
 
 
 

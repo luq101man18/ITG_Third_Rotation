@@ -8,7 +8,6 @@ import fetchProductsData from '../server/api';
 import { Alert } from 'react-native';
 import { styles } from '../styles';
 import Header from '../components/header/header';
-import reactotron from 'reactotron-react-native';
 import Search from '../components/search/Search';
 
 export default function HomeView({ navigation }) {
@@ -24,7 +23,6 @@ export default function HomeView({ navigation }) {
             const fetchProducts = async () => {
                 const fetchedProductsFromApi = await fetchProductsData();
                 if (fetchedProductsFromApi) {
-                    reactotron.log(fetchedProductsFromApi);
                     setFetchedProducts(fetchedProductsFromApi.products);
                 } else {
                     Alert.alert("product wasn't set yet");

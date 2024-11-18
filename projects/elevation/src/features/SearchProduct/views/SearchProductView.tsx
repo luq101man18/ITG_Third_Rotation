@@ -7,9 +7,6 @@ import { useEffect, useState } from 'react';
 import fetchProductsData from '../server/api';
 import { Alert } from 'react-native';
 import { styles } from '../styles';
-import Header from '../components/header/header';
-import reactotron from 'reactotron-react-native';
-import Search from '../components/search/Search';
 import { IconButton } from 'react-native-paper';
 
 
