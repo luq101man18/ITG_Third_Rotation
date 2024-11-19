@@ -23,7 +23,7 @@ export const styles = StyleSheet.create({
         marginBottom: 10,
     },
     filterHeaderIcon: {
-        marginLeft: 240,
+        marginLeft: 238,
     },
     filterLineSeparator: {
         height: 1,
@@ -45,7 +45,7 @@ export const styles = StyleSheet.create({
         marginHorizontal: 20,
         backgroundColor: 'black',
         borderRadius: 10,
-        borderColor: '#B3B3B3',
+        borderColor: 'black',
     },
     filterSheetButtonText: {
         color: 'white',
@@ -66,11 +66,13 @@ export const styles = StyleSheet.create({
         flexDirection: 'row',
     },
     filterPriceRangeSliderPricesText: {
-        marginLeft: 230,
-        fontSize: 18,
+        marginLeft: 180,
+        fontSize: 15,
     },
     filterPriceRangeSlider: {
-        marginHorizontal: 8,
+        marginTop: 30,
+        marginHorizontal: 20,
+        left: 5,
     },
     applyFilterButton: {
         marginTop: 30,

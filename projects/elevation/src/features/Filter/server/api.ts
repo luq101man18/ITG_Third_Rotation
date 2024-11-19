@@ -22,14 +22,23 @@ export const sortingProductsByRelevanceAPI = (products) => {
     try {
         let sortedProducts = [...products].sort((product1, product2) =>
             {
-                if((product1.rating > product2.rating) && (product1.reviews.length > product2.reviews.length)) {
+                if((product1.rating > product2.rating)
+                    && (product1.reviews.length > product2.reviews.length)) {
                     return -1;
-                } else if(product1.rating > product2.rating) {
+                } else if((product1.rating > product2.rating)
+                        && (product1.reviews.length < product2.reviews.length)
+                        && (product1.discountPercentage > product2.discountPercentage)) {
                     return -1;
-                } else if(product1.reviews.length > product2.reviews.length) {
+                }else if((product1.rating > product2.rating)
+                        && (product1.reviews.length < product2.reviews.length)
+                        && (product1.discountPercentage < product2.discountPercentage)) {
                     return -1;
                 } else {
-                    return 1;
+                    if((product1.reviews.length > product2.reviews.length)) {
+                        return -1;
+                    } else {
+                        return 1;
+                    }
                 }
             });
         return sortedProducts;

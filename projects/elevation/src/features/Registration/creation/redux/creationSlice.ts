@@ -1,10 +1,12 @@
 import { createAsyncThunk, createSlice, PayloadAction } from '@reduxjs/toolkit';
 import { RootState } from '@reduxjs/toolkit/query';
-import fetchUserCredentialData from '../../server/api';
+import addUserCredentialData from '../../server/api';
 
-export interface userAuth {
+export interface userCreate {
     username: string,
     password: string,
+    firstName: string,
+    lastName: string,
 }
 
 const initialState: Credentials = {
@@ -38,12 +40,12 @@ export interface Credentials {
 
 
 // the thunk
-export const fetchUser = createAsyncThunk(
-    'auth/fetchUserByUsername',
-    async (credentials : userAuth, thunkAPI) => {
-        const {username, password} = credentials;
+export const addUser = createAsyncThunk(
+    'add/addNewUser',
+    async (credentials : userCreate, thunkAPI) => {
+        const {firstName, lastName, username, password} = credentials;
         try {
-            const response = await fetchUserCredentialData(username, password);
+            const response = await addUserCredentialData(firstName, lastName,username, password);
             if(response){
                 return response;
             }
@@ -54,18 +56,18 @@ export const fetchUser = createAsyncThunk(
 );
 
 
-const authenticationSlice = createSlice({
-    name: 'authentication',
+const userCreationSlice = createSlice({
+    name: 'userCreation',
     initialState,
     reducers: {
 
     },
 
     extraReducers: (builder) => {
-        builder.addCase(fetchUser.pending, (state, action) => {
+        builder.addCase(addUser.pending, (state, action) => {
             state.loading = 'loading';
         });
-        builder.addCase(fetchUser.fulfilled, (state, action) => {
+        builder.addCase(addUser.fulfilled, (state, action) => {
             state.loading = 'succeeded';
             state.user = {
                 id: action.payload.id,
@@ -78,7 +80,7 @@ const authenticationSlice = createSlice({
                 refreshToken : action.payload.refreshToken,
             };
         });
-        builder.addCase(fetchUser.rejected, (state, action) => {
+        builder.addCase(addUser.rejected, (state, action) => {
             state.loading = 'failed';
         });
     },
@@ -89,4 +91,4 @@ export const selectRefreshToken = (state : RootState) => state.authentication.us
 export const selectAccessToken = (state : RootState) => state.authentication.user.accessToken;
 export const selectLoading = (state :  RootState) => state.authentication.loading;
 
-export default authenticationSlice.reducer;
+export default userCreationSlice.reducer;

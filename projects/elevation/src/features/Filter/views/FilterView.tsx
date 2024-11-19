@@ -177,33 +177,33 @@ const FilterView = ({products, setProducts, displayFilter}) => {
                                     >
                                         <View style={styles.filterButtonsContainer}>
                                             <View>
-                                            <TouchableOpacity style={[styles.filterSheetButton, { backgroundColor: relevance ? 'black' : 'white'}]} 
+                                                <TouchableOpacity style={[styles.filterSheetButton, { backgroundColor: relevance ? 'black' : 'white'}]} 
                                                     onPress={() => {
                                                         setRelevance(true);
                                                         setHighToLow(false);
                                                         setLowToHigh(false);
                                                     }}>
-                                                <Text style={[styles.filterSheetButtonText, { color : relevance ? 'white' : 'black' }]}>Relevance</Text>
+                                                    <Text style={[styles.filterSheetButtonText, { color : relevance ? 'white' : 'black' }]}>Relevance</Text>
                                                 </TouchableOpacity>
                                             </View>
                                             <View>
-                                            <TouchableOpacity style={[styles.filterSheetButton, { backgroundColor: highToLow ? 'black' : 'white' }]}
+                                                <TouchableOpacity style={[styles.filterSheetButton, { backgroundColor: highToLow ? 'black' : 'white' }]}
                                                     onPress={() => {
                                                         setHighToLow(true);
                                                         setLowToHigh(false);
                                                         setRelevance(false);
                                                     }}>
-                                                <Text style={[styles.filterSheetButtonText, { color: highToLow ? 'white' : 'black' }]}>Price: High - Low</Text>
+                                                    <Text style={[styles.filterSheetButtonText, { color: highToLow ? 'white' : 'black' }]}>Price: High - Low</Text>
                                                 </TouchableOpacity>
                                             </View>
                                             <View>
-                                            <TouchableOpacity style={[styles.filterSheetButton, { backgroundColor: lowToHigh ? 'black' : 'white' }]}
+                                                <TouchableOpacity style={[styles.filterSheetButton, { backgroundColor: lowToHigh ? 'black' : 'white' }]}
                                                     onPress={() => {
                                                         setLowToHigh(true);
                                                         setHighToLow(false);
                                                         setRelevance(false);
                                                     }}>
-                                                <Text style={[styles.filterSheetButtonText, { color: lowToHigh ? 'white' : 'black' }]}>Price: Low - High</Text>
+                                                    <Text style={[styles.filterSheetButtonText, { color: lowToHigh ? 'white' : 'black' }]}>Price: Low - High</Text>
                                                 </TouchableOpacity>
                                             </View>
                                         </View>
@@ -221,7 +221,7 @@ const FilterView = ({products, setProducts, displayFilter}) => {
                                         <MultiSlider
                                             onValuesChange={handleChange}
                                             values={sliderValue}
-                                            sliderLength={280}
+                                            sliderLength={290}
                                             min={lookForLowestProductsPrice()}
                                             max={lookForHighestProductsPrice()}
                                             step={1}

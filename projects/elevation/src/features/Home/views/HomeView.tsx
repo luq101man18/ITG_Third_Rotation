@@ -1,8 +1,8 @@
 import React, { useEffect, useState } from "react";
-import { View, Text, FlatList, Alert } from "react-native";
+import { View, Text, FlatList, Alert, TouchableOpacity } from "react-native";
 import { useAppDispatch, useAppSelector } from "../../../hooks/hooks";
 import { RootState } from "../../../store/store";
-import { Modal, PaperProvider } from "react-native-paper";
+import { PaperProvider } from "react-native-paper";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { ProductCard } from "../components/card/Card";
 import fetchProductsData from "../server/api";
@@ -14,12 +14,18 @@ import reactotron from "reactotron-react-native";
 import { RotateInDownLeft } from "react-native-reanimated";
 import { fetchProducts } from "../redux/ProductsSlice";
 
-export default function HomeView() {
+export default function HomeView({ navigation }) {
     const [fetchedProducts, setFetchedProducts] = useState([]);
     const [filterVisibility, setFilterVisibility] = useState(false);
     const dispatch = useAppDispatch();
     const displayFilter = () => {
         setFilterVisibility(!filterVisibility);
+    };
+
+    //navigate to product screen details screen
+    const goToProductDetailsScreen = (productId : number) => {
+        // build screen and use route.
+        navigation.navigate('ProductDetails', { chosenProduct: productId });
     };
 
     useEffect(() => {
@@ -47,11 +53,13 @@ export default function HomeView() {
                     style={styles.container}
                     numColumns={2}
                     data={fetchedProducts}
-                    renderItem={({ item }) => (
-                        <View style={styles.product}>
-                            <ProductCard product={item} />
-                        </View>
-                    )}
+                    renderItem={({item}) => {return(
+                        <TouchableOpacity onPress={() => goToProductDetailsScreen(item.id)}>
+                            <View style={styles.product}>
+                                <ProductCard product={item} />
+                            </View>
+                        </TouchableOpacity>
+                    );} }
                     keyExtractor={(item) => item.id}
                 />
                 {filterVisibility ? <FilterView products={fetchedProducts} setProducts={setFetchedProducts} displayFilter={displayFilter} /> : <View />}
