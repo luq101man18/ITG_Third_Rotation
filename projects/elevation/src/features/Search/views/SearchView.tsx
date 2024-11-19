@@ -39,13 +39,13 @@ const SearchView = ({ navigation }) => {
 
     return (
         <View>
-            <View style={{flexDirection: 'row', alignItems: "center"}}>
+            <View style={styles.searchHeader}>
                 <IconButton
                     icon={'arrow-left'}
                     iconColor="black"
                     size={30}
                     onPress={() => goToHome()}
-                    style={{alignSelf:'flex-start', marginLeft: 30, marginTop: 25,}}
+                    style={styles.searchIcon}
                     />
                 <Text style={styles.header}>Search</Text>
             </View>

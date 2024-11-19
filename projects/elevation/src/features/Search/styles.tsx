@@ -8,6 +8,15 @@ export const styles = StyleSheet.create({
         marginTop: 20,
         flexDirection: 'row',
     },
+    searchHeader: {
+        flexDirection: 'row',
+        alignItems: 'center',
+    },
+    searchIcon: {
+        alignSelf: 'flex-start',
+        marginLeft: 30,
+        marginTop: 25,
+    },
     textInput: {
         padding: 10,
         color: 'black',

@@ -152,9 +152,9 @@ const FilterView = ({products, setProducts, displayFilter}) => {
                 <BottomSheetView style={styles.contentContainer}>
                     <ScrollView>
                         <View>
-                            <View style={{ flexDirection: 'row', marginTop: 10, }}>
-                                <Text style={{color: 'black', fontWeight: 'bold', fontSize: 25, marginBottom: 10,}}>Filters</Text>
-                                <View style={{marginLeft: 240}}>
+                            <View style={styles.filterHeader}>
+                                <Text style={styles.filterHeaderTitle}>Filters</Text>
+                                <View style={styles.filterHeaderIcon}>
                                     <IconButton
                                         icon={'close'}
                                         iconColor="black"
@@ -166,16 +166,16 @@ const FilterView = ({products, setProducts, displayFilter}) => {
                                     />
                                 </View>
                             </View>
-                            <View style={{height: 1, width: '100%', backgroundColor: 'E6E6E6'}} />
+                            <View style={styles.filterLineSeparator} />
                             <View>
                                 <View>
-                                    <Text style={{ color: 'black', fontWeight: 'bold', fontSize: 20, marginBottom: 10, }}>Sort by</Text>
+                                    <Text style={styles.filterSortByHeader}>Sort by</Text>
                                 </View>
                                 <View>
                                     <ScrollView
                                     horizontal={true}
                                     >
-                                        <View style={{flexDirection: 'row', alignSelf: 'flex-start'}}>
+                                        <View style={styles.filterButtonsContainer}>
                                             <View>
                                             <TouchableOpacity style={[styles.filterSheetButton, { backgroundColor: relevance ? 'black' : 'white'}]} 
                                                     onPress={() => {
@@ -210,13 +210,13 @@ const FilterView = ({products, setProducts, displayFilter}) => {
                                     </ScrollView>
                                 </View>
                             </View>
-                            <View style={{ height: 1, width: '100%', backgroundColor: '#E6E6E6' }} />
-                            <View style={{ marginTop: 20 }}>
-                                <View style={{flexDirection:'row'}}>
-                                    <Text style={{ color: 'black', fontWeight: 'bold', fontSize: 20 }}>Price</Text>
-                                <Text style={{ marginLeft: 230, fontSize: 18 }}>$ {lookForLowestProductsPrice()} - $ {lookForHighestProductsPrice()}</Text>
+                            <View style={styles.filterLineSeparator} />
+                        <View style={styles.filterRangeSliderContainer}>
+                                <View style={styles.filterPriceRangeSliderHeaderContainer}>
+                                    <Text style={styles.filterPriceRangeSliderHeaderText}>Price</Text>
+                                    <Text style={styles.filterPriceRangeSliderPricesText}>$ {lookForLowestProductsPrice()} - $ {lookForHighestProductsPrice()}</Text>
                                 </View>
-                                <View style={{marginHorizontal: 8}}>
+                                <View style={styles.filterPriceRangeSlider}>
                                     <View>
                                         <MultiSlider
                                             onValuesChange={handleChange}
@@ -231,7 +231,7 @@ const FilterView = ({products, setProducts, displayFilter}) => {
                                     </View>
                                 </View>
                             </View>
-                            <View style={{ height: 1, width: '100%', backgroundColor: '#E6E6E6' }} />
+                            <View style={styles.filterLineSeparator} />
                             {/* <View style={{flexDirection: 'row', marginTop: 20}}>
                                 <View>
                                     <Text style={{ color: 'black', fontWeight: 'bold', fontSize: 20 }}>Size</Text>
