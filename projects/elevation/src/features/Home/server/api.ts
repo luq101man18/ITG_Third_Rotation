@@ -1,6 +1,6 @@
-const fetchProductsData = async () => {
+const fetchProductsData = async (limit : number, skip : number) => {
     try {
-        const response = await fetch('https://dummyjson.com/products');
+        const response = await fetch(`https://dummyjson.com/products?limit=${limit}&skip=${skip}`);
         let dataFetched = await response.json();
         if(dataFetched){
             return dataFetched;

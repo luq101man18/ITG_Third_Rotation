@@ -9,11 +9,17 @@ import { Alert } from 'react-native';
 import { styles } from '../styles';
 import Header from '../components/header/header';
 import Search from '../components/search/Search';
+import { LIMIT_ADDED_PRODUCTS_NUMBER_TO_FETCH, LIMIT_DEFAULT_PRODUCTS_NUMBER_TO_FETCH, SKIP_DEFAULT_PRODUCTS_NUMBER_TO_FETCH, SKIP_PRODUCTS_NUMBER_TO_FETCH } from '../constants/pagination/constants';
 
 export default function HomeView({ navigation }) {
 
     const [fetchedProducts, setFetchedProducts] = useState([]);
-
+    const [limit, setLimit] = useState(LIMIT_DEFAULT_PRODUCTS_NUMBER_TO_FETCH);
+    const [skip, setSkip] = useState(SKIP_DEFAULT_PRODUCTS_NUMBER_TO_FETCH);
+    const handlePagination = () => {
+        setLimit(limit + LIMIT_ADDED_PRODUCTS_NUMBER_TO_FETCH);
+        setSkip(SKIP_PRODUCTS_NUMBER_TO_FETCH);
+    };
     const goToProductDetailsScreen = (productId : number) => {
         navigation.navigate('ProductDetails', { chosenProduct: productId });
     };
@@ -21,7 +27,7 @@ export default function HomeView({ navigation }) {
     useEffect(() => {
         try {
             const fetchProducts = async () => {
-                const fetchedProductsFromApi = await fetchProductsData();
+                const fetchedProductsFromApi = await fetchProductsData(limit, skip);
                 if (fetchedProductsFromApi) {
                     setFetchedProducts(fetchedProductsFromApi.products);
                 } else {
@@ -32,7 +38,7 @@ export default function HomeView({ navigation }) {
         } catch (error) {
             Alert.alert('there is an error');
         }
-    }, []);
+    }, [limit, skip]);
 
     return(
         <PaperProvider>
@@ -51,6 +57,7 @@ export default function HomeView({ navigation }) {
                         </TouchableOpacity>
                     );} }
                     keyExtractor={(item) => item.id}
+                    onEndReached={handlePagination}
                 />
             </SafeAreaView>
         </PaperProvider>
