@@ -21,11 +21,8 @@ export default function ElevateNav() {
                 }}>
                     <Stack.Screen name="Login" component={LoginView} />
                     <Stack.Screen name="Registration" component={RegistrationView} />
-
-                    {/* <Stack.Screen name="Home" component={Home} /> */}
                     <Stack.Screen name="Search" component={SearchView} />
                     <Stack.Screen name="SearchProduct" component={SearchProductView} />
-
                     <Stack.Screen name="Home" component={HomeView} />
                     <Stack.Screen name="ProductDetails" component={ProductDetailsView} />
 
