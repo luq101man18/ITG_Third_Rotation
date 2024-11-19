@@ -39,21 +39,6 @@ const SearchView = ({ navigation }) => {
         }
     }
 
-    async function searchForProduct(product : string) {
-        try {
-            const response = await searchProducts(product);
-            setSearchedProducts(response);
-            if(searchedProducts.total === 0) {
-                setValidSearch(false);
-            } else {
-                setValidSearch(true);
-            }
-            return true;
-        } catch (error) {
-            Alert.alert('Unfortunately faced an error please contact customer service');
-        }
-    }
-
     return (
         <View>
             <View style={{flexDirection: 'row', alignItems: "center"}}>
