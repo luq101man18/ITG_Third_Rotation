@@ -5,7 +5,7 @@ export const filterProductsFromLowToHigh = (products) => {
         let sortedProducts = [...products].sort((product1, product2) => product1.price < product2.price ? -1 : 1);
         return sortedProducts;
     } catch (error) {
-        return 'Error at fetching the data!';
+        return 'Error while sorting from low to high!';
     }
 };
 
@@ -14,7 +14,7 @@ export const filterProductsFromHighToLow = (products) => {
         let sortedProducts = [...products].sort((product1, product2) => product1.price > product2.price ? -1 : 1);
         return sortedProducts;
     } catch (error) {
-        return 'Error at fetching the data!';
+        return 'Error while sorting from high to low!';
     }
 };
 
@@ -43,44 +43,44 @@ export const sortingProductsByRelevanceAPI = (products) => {
             });
         return sortedProducts;
     } catch (error) {
-        return 'Error at fetching the data!';
+        return 'Error while sorting by relevance!';
     }
 };
 
 export const filterProductsUsingPriceRange = (products, minPriceRange, maxPriceRange) => {
     try {
+
         let sortedProducts = [...products].filter((product) => product.price >= minPriceRange && product.price <= maxPriceRange);
         return sortedProducts;
     } catch (error) {
-        return 'Error at fetching the data!';
+        return 'Error while filtering by price range!';
     }
 };
 
-
 export const findHighestPriceProduct = (products) => {
     try {
-        let highestPrice : number = 0;
-        products.find((product) =>
+        let highestPrice = 0;
+        products.forEach((product) =>
             {
                 product.price > highestPrice ? highestPrice = product.price : highestPrice;
             }
         );
         return highestPrice;
     } catch (error) {
-        return 'Error at finding the highest price!';
+        return 'Error while looking for highest product price!';
     }
 };
 
 export const findLowestPriceProduct = (products) => {
     try {
         let highestPrice = findHighestPriceProduct(products);
-        products.find((product) =>
+        products.forEach((product) =>
             {
                 product.price < highestPrice ? highestPrice = product.price : highestPrice;
             }
         );
         return highestPrice;
     } catch (error) {
-        return 'Error at finding the lowest price!';
+        return 'Error while looking for lowest product price!';
     }
 };

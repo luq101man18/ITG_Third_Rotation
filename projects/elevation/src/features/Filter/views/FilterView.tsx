@@ -11,10 +11,14 @@ import { Alert } from 'react-native';
 import { filterProductsFromHighToLow, filterProductsFromLowToHigh, filterProductsUsingPriceRange, sortingProductsByRelevanceAPI } from '../server/api';
 import reactotron from 'reactotron-react-native';
 import { findHighestPriceProduct, findLowestPriceProduct } from '../server/api';
-import { useAppSelector } from '../../../hooks/hooks';
+import { useAppDispatch, useAppSelector } from '../../../hooks/hooks';
 import AsyncStorage from '@react-native-async-storage/async-storage';
+import { setPriceRange, setSortingFlags } from '../../Home/redux/ProductsSlice';
 
-const FilterView = ({products, setProducts, displayFilter}) => {
+const FilterView = ({ products, setProducts, displayFilter }) => {
+
+    // redux store to save filters for pagination purposes
+    const dispatch = useAppDispatch();
 
     // ref
     const bottomSheetRef = useRef<BottomSheet>(null);
@@ -61,7 +65,11 @@ const FilterView = ({products, setProducts, displayFilter}) => {
     };
 
     // get products from slice
-    const productsFromSlice = useAppSelector((state: RootState) => state.products.products);
+    const productsFromSlice = useAppSelector((state: RootState) => state.products);
+    reactotron.log("proudcts from slice: ");
+    reactotron.log(productsFromSlice);
+    reactotron.log("proudcts from slice Done");
+
     let filteredProducts : any[] = products;
 
     const filterProductsHighToLow = (products) => {
@@ -88,11 +96,11 @@ const FilterView = ({products, setProducts, displayFilter}) => {
         }
     };
 
-    const lookForHighestProductsPrice = () => findHighestPriceProduct(productsFromSlice);
-    const lookForLowestProductsPrice = () => findLowestPriceProduct(productsFromSlice);
+    const lookForHighestProductsPrice = () => findHighestPriceProduct(productsFromSlice.products);
+    const lookForLowestProductsPrice = () => findLowestPriceProduct(productsFromSlice.products);
 
     const [sliderValue, setSliderValue] = useState(
-        [lookForLowestProductsPrice(), lookForHighestProductsPrice()]
+        [lookForLowestProductsPrice() , lookForHighestProductsPrice()]
     );
 
     const handleChange = (rangeSlideValue: any) => {
@@ -100,7 +108,7 @@ const FilterView = ({products, setProducts, displayFilter}) => {
         savePriceRangeValues(rangeSlideValue);
     };
 
-    const setPriceRange = async () => {
+    const setPriceRangeValues = async () => {
         savedPriceRangeValues = await getPriceRangeValues();
         if (savedPriceRangeValues) {
             if (savedPriceRangeValues) {
@@ -120,10 +128,7 @@ const FilterView = ({products, setProducts, displayFilter}) => {
     };
 
     function sortProductsBasedOnChosenSortOption(){
-        // check states
         if(relevance){
-            // TODO:
-                // take searched input and filter items based on that on the search screen
             sortingProductsByRelevance();
         } else if (highToLow) {
             filterProductsHighToLow(filteredProducts);
@@ -134,14 +139,18 @@ const FilterView = ({products, setProducts, displayFilter}) => {
     }
 
     function processProductsFiltration(){
-        filterProductsBasedOnPriceRange(productsFromSlice, sliderValue[0], sliderValue[1]);
+        filterProductsBasedOnPriceRange(productsFromSlice.products, sliderValue[0], sliderValue[1]);
         sortProductsBasedOnChosenSortOption();
+
         setProducts(filteredProducts);
         displayFilter();
     }
 
     useEffect(() => {
-        setPriceRange();
+        dispatch(setSortingFlags({ sortingFlags: [lowToHigh, highToLow] }));
+        dispatch(setPriceRange({ priceRange: [sliderValue[0], sliderValue[1]]}));
+
+        setPriceRangeValues();
     }, []);
 
     return (

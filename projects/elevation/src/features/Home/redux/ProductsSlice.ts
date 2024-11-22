@@ -2,28 +2,31 @@ import { createAsyncThunk, createSlice, PayloadAction } from '@reduxjs/toolkit';
 import fetchProductsData from '../server/api';
 import { RootState } from '../../../store/store';
 import reactotron from 'reactotron-react-native';
+
 const initialState: Products = {
     products: {},
-    total: 0,
-    skip: 0,
-    limit: 0,
+    sortingFlags: [false, false, false],
+    priceRange: [0, 100],
     loading: 'idle',
 };
 
 export interface Products {
     products:{},
-    total: number,
-    skip: number,
-    limit: number,
+    sortingFlags: boolean[]
+    priceRange : number[]
     loading: 'idle' | 'loading' | 'succeeded'| 'failed' ,
+}
+
+export interface FetchingRequirements {
+    limit: number,
 }
 
 // the thunk
 export const fetchProducts = createAsyncThunk(
     'products/fetchAllProducts',
-    async () => {
+    async ({limit} : FetchingRequirements ) => {
         try {
-            const response = await fetchProductsData();
+            const response = await fetchProductsData(limit);
             if(response){
                 return response;
             }
@@ -38,7 +41,12 @@ const productsSlice = createSlice({
     name: 'products',
     initialState,
     reducers: {
-
+        setSortingFlags(state, action: PayloadAction<{sortingFlags : boolean[]}>){
+            state.sortingFlags = action.payload.sortingFlags;
+        },
+        setPriceRange(state, action: PayloadAction<{priceRange : number[]}>){
+            state.priceRange = action.payload.priceRange;
+        },
     },
     extraReducers: (builder) => {
         builder.addCase(fetchProducts.pending, (state, action) => {
@@ -46,18 +54,15 @@ const productsSlice = createSlice({
         });
         builder.addCase(fetchProducts.fulfilled, (state, action) => {
             state.loading = 'succeeded';
-            state.products = action.payload.products;
-            state.total = action.payload.total;
-            state.skip = action.payload.skip;
-            state.limit = action.payload.limit;
+            state.products = action.payload;
         });
         builder.addCase(fetchProducts.rejected, (state, action) => {
             state.loading = 'failed';
         });
     },
 });
-
-// use the thunk in home then select the products in range slider in filter view so whenever a applying the range slider filter then 
-// select from the products that are stored in the store rather than the one that products that are
+export const { setPriceRange, setSortingFlags } = productsSlice.actions;
 export const selectProducts = (state :  RootState) => state.products.products;
+export const selectPriceRange = (state :  RootState) => state.products.priceRange;
+export const selectSortingFlags = (state :  RootState) => state.products.sortingFlags;
 export default productsSlice.reducer;
