@@ -9,7 +9,7 @@ import { Alert } from 'react-native';
 import { styles } from '../styles';
 import Header from '../components/header/header';
 import { LIMIT_ADDED_PRODUCTS_NUMBER_TO_FETCH, LIMIT_DEFAULT_PRODUCTS_NUMBER_TO_FETCH, SKIP_DEFAULT_PRODUCTS_NUMBER_TO_FETCH, SKIP_PRODUCTS_NUMBER_TO_FETCH } from '../constants/pagination/constants';
-
+import Footer from '../components/footer/Footer';
 export default function HomeView({ navigation }) {
 
     const [fetchedProducts, setFetchedProducts] = useState([]);
@@ -61,6 +61,9 @@ export default function HomeView({ navigation }) {
                     keyExtractor={(item) => item.id}
                     onEndReached={handlePagination}
                 />
+                <View style={{}}>
+                    <Footer navigation={navigation} />
+                </View>
             </SafeAreaView>
         </PaperProvider>
     );
