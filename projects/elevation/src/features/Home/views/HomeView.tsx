@@ -8,7 +8,7 @@ import fetchProductsData from '../server/api';
 import { Alert } from 'react-native';
 import { styles } from '../styles';
 import Header from '../components/header/header';
-
+import { IconButton } from 'react-native-paper';
 export default function HomeView({ navigation }) {
 
     const [fetchedProducts, setFetchedProducts] = useState([]);
@@ -51,6 +51,11 @@ export default function HomeView({ navigation }) {
                         </TouchableOpacity>
                     );} }
                     keyExtractor={(item) => item.id}
+                />
+                <IconButton
+                    icon={'arrow-left'}
+                    size={25}
+                    onPress={() => { navigation.navigate("Address", { userId: 1 })}}
                 />
             </SafeAreaView>
         </PaperProvider>

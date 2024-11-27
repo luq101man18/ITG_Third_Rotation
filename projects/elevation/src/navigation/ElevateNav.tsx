@@ -7,6 +7,7 @@ import LoginView from '../features/Login/views/LoginView';
 import RegistrationView from '../features/Registration/views/RegistrationView';
 import HomeView from '../features/Home/views/HomeView';
 import ProductDetailsView from '../features/ProductDetialsPage/views/ProductDetailsView';
+import AddressView from '../features/Address/views/AddressView';
 const Stack = createNativeStackNavigator();
 
 export default function ElevateNav() {
@@ -21,6 +22,9 @@ export default function ElevateNav() {
                     <Stack.Screen name="Registration" component={RegistrationView} />
                     <Stack.Screen name="Home" component={HomeView} />
                     <Stack.Screen name="ProductDetails" component={ProductDetailsView} />
+
+
+                    <Stack.Screen name="Address" component={AddressView} />
                 </Stack.Navigator>
             </NavigationContainer>
         </PaperProvider>
