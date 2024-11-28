@@ -63,11 +63,6 @@ export default function HomeView({ navigation }) {
                     keyExtractor={(item) => item.id}
                     onEndReached={handlePagination}
                 />
-                <IconButton
-                    icon={'arrow-left'}
-                    size={25}
-                    onPress={() => { navigation.navigate("Address", { userId: userIdFromStore })}}
-                />
             </SafeAreaView>
         </PaperProvider>
     );
