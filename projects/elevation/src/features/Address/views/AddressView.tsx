@@ -1,15 +1,12 @@
 import React from 'react';
 import { View, Text, TouchableOpacity } from 'react-native';
 import { useEffect, useState } from 'react';
-import { Alert } from 'react-native';
 import { styles } from '../styles';
 import Header from '../components/header/header';
-import {Card} from 'react-native-paper';
 import {IconButton} from 'react-native-paper';
 import { fetchAddressesById } from '../server/api';
 import { Address } from '../server/api';
-import reactotron from 'reactotron-react-native';
-
+import Loader from '../components/loader/loader';
 
 export default function AddressView({route, navigation}) {
 
@@ -20,7 +17,7 @@ export default function AddressView({route, navigation}) {
     const [addresses, setAddresses] = useState<Address>();
 
     // chosen address state
-    const [chosenAddress, setChosenAddress] = useState(false);
+    const [chosenAddress, setChosenAddress] = useState(true);
 
     // fetch address function
     useEffect(() => {
@@ -35,8 +32,6 @@ export default function AddressView({route, navigation}) {
             }
         };
         callFetchAddresses(userId);
-        reactotron.log(addresses);
-        console.log(addresses);
     }, [userId]);
 
     function goToHome() {
@@ -81,7 +76,7 @@ export default function AddressView({route, navigation}) {
 
                     </TouchableOpacity>
                 :
-                    (<Text>Loading...</Text>)
+                    (<Loader />)
                 }
                 </View>
         </View>
