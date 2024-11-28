@@ -26,7 +26,7 @@ export const fetchAddressesById = async (userId:number) => {
             },
             'country' : '',
         };
-        const response = await fetch(`https://dummyjson.com/users/1`);
+        const response = await fetch(`https://dummyjson.com/users/${userId}`);
         if(response){
             let dataFetched = await response.json();
             const { address } = dataFetched;

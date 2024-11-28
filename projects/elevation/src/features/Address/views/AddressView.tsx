@@ -19,6 +19,9 @@ export default function AddressView({route, navigation}) {
     // set address
     const [addresses, setAddresses] = useState<Address>();
 
+    // chosen address state
+    const [chosenAddress, setChosenAddress] = useState(false);
+
     // fetch address function
     useEffect(() => {
         const callFetchAddresses = async (receivedUserId: number) => {
@@ -52,9 +55,31 @@ export default function AddressView({route, navigation}) {
                 </View>
                 <Header />
             </View>
+                <View style={{ borderColor: '#E6E6E6', borderWidth: 1, marginHorizontal: 40,}} />
                 <View style={{}}>
                     {addresses ?
-                    <Text>{addresses.address}</Text>
+                    <TouchableOpacity onPress={() => {setChosenAddress(!chosenAddress);}}>
+                        <View style={{margin: 40,}}>
+                            <Text style={{fontSize: 15, fontWeight: 'bold', color: 'black'}}>Saved addresses</Text>
+                        </View>
+                        <View style={{borderColor: '#E6E6E6', borderRadius: 10, borderWidth: 1, marginHorizontal: 40,}}>
+                            <View style={{ flexDirection: 'row', marginVertical: 10, }}>
+                                <IconButton
+                                    icon={'map-marker-outline'}
+                                    size={30}
+                                />
+                                <View style={{marginVertical: 10}}>
+                                    <Text style={{fontSize: 15, fontWeight: 'bold', color: 'black'}}>Home</Text>
+                                    <Text lineBreakMode='tail' numberOfLines={1} style={{width: 215, }}>{addresses.address}, {addresses.city}, {addresses.state}, {addresses.country}, {addresses.postalCode}</Text>
+                                </View>
+                                <IconButton
+                                    icon={chosenAddress ? 'radiobox-marked' : 'radiobox-blank'}
+                                    size={30}
+                                />
+                            </View>
+                        </View>
+
+                    </TouchableOpacity>
                 :
                     (<Text>Loading...</Text>)
                 }
