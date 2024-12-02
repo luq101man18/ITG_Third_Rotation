@@ -8,6 +8,7 @@ export const styles = StyleSheet.create({
     },
     product: {
         flex: 1,
-        margin: 10,
+        padding: 10,
+        width: 195,
     },
 });
