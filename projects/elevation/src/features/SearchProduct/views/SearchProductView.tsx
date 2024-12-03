@@ -1,5 +1,5 @@
 import React from 'react';
-import { View, FlatList, TouchableOpacity } from 'react-native';
+import { View, FlatList, Text, TouchableOpacity } from 'react-native';
 import { PaperProvider } from 'react-native-paper';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { ProductCard } from '../components/card/Card';
@@ -7,32 +7,26 @@ import { useEffect, useState } from 'react';
 import fetchProductsData from '../server/api';
 import { Alert } from 'react-native';
 import { styles } from '../styles';
-import Header from '../components/header/header';
-import Search from '../components/search/Search';
-import { LIMIT_ADDED_PRODUCTS_NUMBER_TO_FETCH, LIMIT_DEFAULT_PRODUCTS_NUMBER_TO_FETCH, SKIP_DEFAULT_PRODUCTS_NUMBER_TO_FETCH, SKIP_PRODUCTS_NUMBER_TO_FETCH } from '../constants/pagination/constants';
 import { IconButton } from 'react-native-paper';
-import { selectUserId } from '../../Login/authentication/redux/authenticationSlice';
-import { useAppDispatch, useAppSelector } from '../../../hooks/hooks';
-export default function HomeView({ navigation }) {
+
+
+export default function SearchProductView({navigation, route}) {
 
     const [fetchedProducts, setFetchedProducts] = useState([]);
-    const [limit, setLimit] = useState(LIMIT_DEFAULT_PRODUCTS_NUMBER_TO_FETCH);
-    const [skip, setSkip] = useState(SKIP_DEFAULT_PRODUCTS_NUMBER_TO_FETCH);
-    const handlePagination = () => {
-        setLimit(limit + LIMIT_ADDED_PRODUCTS_NUMBER_TO_FETCH);
-        setSkip(SKIP_PRODUCTS_NUMBER_TO_FETCH);
-    };
-    const userIdFromStore = useAppSelector(selectUserId);
+    const { productName } = route.params;
 
-    //navigate to product screen details screen
-    const goToProductDetailsScreen = (productId : number) => {
+    function goToHome() {
+        navigation.navigate('Home');
+    }
+
+    const goToProductDetailsScreen = (productId: number) => {
         navigation.navigate('ProductDetails', { chosenProduct: productId });
     };
 
     useEffect(() => {
         try {
             const fetchProducts = async () => {
-                const fetchedProductsFromApi = await fetchProductsData(limit, skip);
+                const fetchedProductsFromApi = await fetchProductsData(productName);
                 if (fetchedProductsFromApi) {
                     setFetchedProducts(fetchedProductsFromApi.products);
                 } else {
@@ -43,13 +37,21 @@ export default function HomeView({ navigation }) {
         } catch (error) {
             Alert.alert('there is an error');
         }
-    }, [limit, skip]);
+    }, []);
 
     return(
         <PaperProvider>
             <SafeAreaView style={{flex: 1}}>
-                <Header />
-                <Search />
+                <View style={{ flexDirection: 'row', alignItems: "center" }}>
+                    <IconButton
+                        icon={'arrow-left'}
+                        iconColor="black"
+                        size={30}
+                        onPress={() => goToHome()}
+                        style={{ alignSelf: 'flex-start', marginLeft: 20, marginTop: 10, }}
+                    />
+                    <Text style={styles.header}>{productName}</Text>
+                </View>
                 <FlatList
                     style={styles.container}
                     numColumns={2}
@@ -62,7 +64,6 @@ export default function HomeView({ navigation }) {
                         </TouchableOpacity>
                     );} }
                     keyExtractor={(item) => item.id}
-                    onEndReached={handlePagination}
                 />
             </SafeAreaView>
         </PaperProvider>

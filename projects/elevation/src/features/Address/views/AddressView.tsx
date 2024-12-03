@@ -6,20 +6,13 @@ import Header from '../components/header/header';
 import {IconButton} from 'react-native-paper';
 import { fetchAddressesById } from '../server/api';
 import { Address } from '../server/api';
-import Loader from '../components/loader/loader';
-
+import Loader from '../components/loader/Loader';
 export default function AddressView({route, navigation}) {
 
-    // get user id
     const { userId } = route.params;
-
-    // set address
     const [addresses, setAddresses] = useState<Address>();
-
-    // chosen address state
     const [chosenAddress, setChosenAddress] = useState(true);
 
-    // fetch address function
     useEffect(() => {
         const callFetchAddresses = async (receivedUserId: number) => {
             try {
