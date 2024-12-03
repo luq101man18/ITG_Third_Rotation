@@ -37,7 +37,8 @@ export default function AddressView({route, navigation}) {
                 <View style={styles.headerArrowIcon}>
                     <IconButton
                         icon={'arrow-left'}
-                        size={25}
+                        size={30}
+                        iconColor='black'
                         onPress={() => goToHome()}
                     />
                 </View>
@@ -58,11 +59,12 @@ export default function AddressView({route, navigation}) {
                                 />
                                 <View style={{marginVertical: 10}}>
                                     <Text style={{fontSize: 15, fontWeight: 'bold', color: 'black'}}>Home</Text>
-                                    <Text lineBreakMode='tail' numberOfLines={1} style={{width: 215, }}>{addresses.address}, {addresses.city}, {addresses.state}, {addresses.country}, {addresses.postalCode}</Text>
+                                    <Text lineBreakMode='tail' numberOfLines={1} style={{width: 215, color: 'black'}}>{addresses.address}, {addresses.city}, {addresses.state}, {addresses.country}, {addresses.postalCode}</Text>
                                 </View>
                                 <IconButton
                                     icon={chosenAddress ? 'radiobox-marked' : 'radiobox-blank'}
                                     size={30}
+                                    iconColor='black'
                                 />
                             </View>
                         </View>
