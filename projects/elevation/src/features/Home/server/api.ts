@@ -9,5 +9,4 @@ const fetchProductsData = async (limit : number = 10) => {
         return 'Error at fetching the data From API!';
     }
 };
-
 export default fetchProductsData;

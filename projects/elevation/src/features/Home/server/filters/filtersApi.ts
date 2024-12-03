@@ -1,4 +1,3 @@
-import reactotron from "reactotron-react-native";
 
 export const filterProductsFromLowToHigh = (products) => {
     try {
@@ -82,5 +81,18 @@ export const findLowestPriceProduct = (products) => {
         return highestPrice;
     } catch (error) {
         return 'Error while looking for lowest product price!';
+    }
+};
+
+
+export const checkForAppliedFilters = (highToLowFlag : boolean, lowToHighFlag : boolean, products : any, minPriceRange : number, maxPriceRange : number) => {
+    try {
+        if(minPriceRange > maxPriceRange && minPriceRange > 0){products = filterProductsUsingPriceRange(products, minPriceRange, maxPriceRange);}
+        if(lowToHighFlag) {products = filterProductsFromLowToHigh(products);}
+        else if(highToLowFlag) {products = filterProductsFromHighToLow(products);}
+        else{products = sortingProductsByRelevanceAPI(products);}
+        return products;
+    } catch (error) {
+        return 'ERROR: CHECKING FOR APPLIED FILTERS FAILED';
     }
 };

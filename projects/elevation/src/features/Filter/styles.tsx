@@ -15,12 +15,14 @@ export const styles = StyleSheet.create({
     filterHeader: {
         flexDirection: 'row',
         marginTop: 10,
+        right: 10,
     },
     filterHeaderTitle: {
         color: 'black',
         fontWeight: 'bold',
         fontSize: 25,
         marginBottom: 10,
+        left: 10,
     },
     filterHeaderIcon: {
         marginLeft: 238,
@@ -78,7 +80,7 @@ export const styles = StyleSheet.create({
         marginTop: 30,
         backgroundColor: 'black',
         borderRadius: 10,
-        marginRight: 25,
+        marginRight: 30,
     },
     applyFilterButtonText: {
         color: 'white',

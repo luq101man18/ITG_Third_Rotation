@@ -1,5 +1,5 @@
 import React from "react";
-import { FlatList, View } from "react-native";
+import { FlatList, TouchableOpacity, View } from "react-native";
 import { styles } from "../../styles";
 import SearchedProduct from "../searchedProduct/SearchedProducts";
 const productSeparator = () => {
@@ -7,16 +7,23 @@ const productSeparator = () => {
         <View style={styles.productSeparator} />
     );
 };
-const ProductDisplay = ({ searchedProducts }) => {
+const ProductDisplay = ({ navigation, searchedProducts }) => {
+
+    const goToProductDetailsScreen = (productId: number) => {
+        navigation.navigate('ProductDetails', { chosenProduct: productId });
+    };
+
     return(
         <FlatList
             style = { styles.productContainer }
             data = { searchedProducts.products }
             renderItem = {({ item }) => {
                 return (
-                    <View>
-                        <SearchedProduct product={item} />
-                    </View>
+                    <TouchableOpacity onPress={() => goToProductDetailsScreen(item.id)}>
+                        <View>
+                            <SearchedProduct product={item} />
+                        </View>
+                    </TouchableOpacity>
                 );
             }}
             keyExtractor = {(item) => item.id}

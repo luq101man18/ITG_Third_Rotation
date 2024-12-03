@@ -9,7 +9,6 @@ import MultiSlider from '@ptomasroos/react-native-multi-slider';
 import { styles } from '../styles';
 import { Alert } from 'react-native';
 import { filterProductsFromHighToLow, filterProductsFromLowToHigh, filterProductsUsingPriceRange, sortingProductsByRelevanceAPI } from '../server/api';
-import reactotron from 'reactotron-react-native';
 import { findHighestPriceProduct, findLowestPriceProduct } from '../server/api';
 import { useAppDispatch, useAppSelector } from '../../../hooks/hooks';
 import AsyncStorage from '@react-native-async-storage/async-storage';
@@ -64,11 +63,7 @@ const FilterView = ({ products, setProducts, displayFilter }) => {
         }
     };
 
-    // get products from slice
     const productsFromSlice = useAppSelector((state: RootState) => state.products);
-    reactotron.log("proudcts from slice: ");
-    reactotron.log(productsFromSlice);
-    reactotron.log("proudcts from slice Done");
 
     let filteredProducts : any[] = products;
 
@@ -236,6 +231,10 @@ const FilterView = ({ products, setProducts, displayFilter }) => {
                                             step={1}
                                             allowOverlap={false}
                                             enableLabel
+                                            trackStyle={{ backgroundColor: 'black' }}
+                                            markerStyle={{backgroundColor: '#808080'}}
+                                            selectedStyle={{backgroundColor: '#4D4D4D'}}
+                                            labelStyle={{backgroundColor: 'black', color: 'black'}}
                                         />
                                     </View>
                                 </View>
@@ -258,7 +257,7 @@ const FilterView = ({ products, setProducts, displayFilter }) => {
                                 </View>
                             </View> */}
                             <View>
-                            <TouchableOpacity style={styles.applyFilterButton} onPress={() => processProductsFiltration()}>
+                                <TouchableOpacity style={styles.applyFilterButton} onPress={() => processProductsFiltration()}>
                                     <Text style={styles.applyFilterButtonText}>Apply Filter</Text>
                                 </TouchableOpacity>
                             </View>
