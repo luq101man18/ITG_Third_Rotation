@@ -16,32 +16,37 @@ const Footer = ({ navigation }) => {
         <View style={styles.container}>
             <IconButton
                 icon={'home'}
-                size={25}
+                size={30}
                 style={{justifyContent: 'space-between', marginHorizontal: 17,}}
+                iconColor='black'
                 onPress={() => goToHome()}
             />
             <IconButton
                 icon={'magnify'}
-                size={25}
+                size={30}
                 style={{ justifyContent: 'space-between', marginHorizontal: 17, }}
+                iconColor='black'
                 onPress={() => {}}
             />
             <IconButton
                 icon={'heart'}
-                size={25}
+                size={30}
                 style={{ justifyContent: 'space-between', marginHorizontal: 17, }}
+                iconColor='black'
                 onPress={() => {}}
             />
             <IconButton
                 icon={'cart'}
-                size={25}
+                size={30}
                 style={{ justifyContent: 'space-between', marginHorizontal: 17, }}
+                iconColor='black'
                 onPress={() => goToCart()}
             />
             <IconButton
                 icon={'account'}
-                size={25}
+                size={30}
                 style={{ justifyContent: 'space-between', marginHorizontal: 17, }}
+                iconColor='black'
                 onPress={() => {}}
             />
         </View>

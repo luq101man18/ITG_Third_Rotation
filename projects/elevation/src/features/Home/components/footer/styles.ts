@@ -7,6 +7,7 @@ const styles = StyleSheet.create({
         flexDirection: 'row',
         position: 'absolute',
         backgroundColor: 'white',
+        left: 7,
     },
 });
 

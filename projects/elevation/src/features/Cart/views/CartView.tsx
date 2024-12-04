@@ -108,7 +108,8 @@ export default function CartView({ navigation }) {
                     <View style={styles.headerArrowIcon}>
                         <IconButton
                             icon={'arrow-left'}
-                            size={25}
+                            size={30}
+                            iconColor='black'
                             onPress={() => goToHome()}
                         />
                     </View>
@@ -160,7 +161,7 @@ export default function CartView({ navigation }) {
                                         </View>
                                     }
                                 />
-                                <View style={{position: 'absolute', marginTop: 760,}}>
+                                <View style={{position: 'absolute', marginTop: 725, right: 380,}}>
                                     <Footer navigation={navigation}/>
                                 </View>
                             </View>

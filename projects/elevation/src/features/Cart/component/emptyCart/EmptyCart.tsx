@@ -19,7 +19,7 @@ const EmptyCart = ({navigation}) => {
                 </Text>
 
             </View>
-            <View style={{ position: 'absolute', marginTop: 760, }}>
+            <View style={{ position: 'absolute', marginTop: 740, }}>
                 <Footer navigation={navigation} />
             </View>
         </View>
