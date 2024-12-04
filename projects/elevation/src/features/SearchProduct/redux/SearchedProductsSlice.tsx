@@ -17,15 +17,15 @@ export interface Products {
 }
 
 export interface FetchingRequirements {
-    limit: number,
+    productName: string,
 }
 
 // the thunk
 export const fetchProducts = createAsyncThunk(
     'products/fetchAllProducts',
-    async ({limit} : FetchingRequirements ) => {
+    async ({productName} : FetchingRequirements ) => {
         try {
-            const response = await fetchProductsData(limit);
+            const response = await fetchProductsData(productName);
             if(response){
                 return response;
             }
@@ -34,7 +34,6 @@ export const fetchProducts = createAsyncThunk(
         }
     }
 );
-
 
 const productsSlice = createSlice({
     name: 'products',
@@ -53,13 +52,14 @@ const productsSlice = createSlice({
         });
         builder.addCase(fetchProducts.fulfilled, (state, action) => {
             state.loading = 'succeeded';
-            state.products = action.payload;
+            state.products = action.payload.products;
         });
         builder.addCase(fetchProducts.rejected, (state, action) => {
             state.loading = 'failed';
         });
     },
 });
+
 export const { setPriceRange, setSortingFlags } = productsSlice.actions;
 export const selectProducts = (state :  RootState) => state.products.products;
 export const selectPriceRange = (state :  RootState) => state.products.priceRange;

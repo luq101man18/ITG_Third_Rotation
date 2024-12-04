@@ -15,7 +15,7 @@ export default function ElevateNav() {
     return (
         <PaperProvider>
             <NavigationContainer>
-                <Stack.Navigator initialRouteName="Login" screenOptions={{
+                <Stack.Navigator initialRouteName="Home" screenOptions={{
                     contentStyle: { backgroundColor: '#fff' },
                     headerShown: false,
                 }}>
@@ -25,7 +25,6 @@ export default function ElevateNav() {
                     <Stack.Screen name="SearchProduct" component={SearchProductView} />
                     <Stack.Screen name="Home" component={HomeView} />
                     <Stack.Screen name="ProductDetails" component={ProductDetailsView} />
-
                 </Stack.Navigator>
             </NavigationContainer>
         </PaperProvider>

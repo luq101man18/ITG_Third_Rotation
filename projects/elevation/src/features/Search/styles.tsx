@@ -5,8 +5,17 @@ import { StyleSheet } from "react-native";
 export const styles = StyleSheet.create({
     container: {
         margin: 30,
-        marginTop: 10,
+        marginTop: 20,
         flexDirection: 'row',
+    },
+    searchHeader: {
+        flexDirection: 'row',
+        alignItems: 'center',
+    },
+    searchIcon: {
+        alignSelf: 'flex-start',
+        marginLeft: 30,
+        marginTop: 25,
     },
     textInput: {
         padding: 10,
@@ -61,7 +70,7 @@ export const styles = StyleSheet.create({
         marginRight: 75,
         textAlign: 'center',
         flex: 1,
-        marginTop: 5,
+        marginTop: 20,
     },
     noSearch: {
         fontSize: 28,

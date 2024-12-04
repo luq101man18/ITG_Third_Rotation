@@ -7,6 +7,7 @@ import Header from '../components/header/header';
 import {Card} from 'react-native-paper';
 import {IconButton} from 'react-native-paper';
 import { fetchProductById } from '../server/api';
+import { ScrollView } from 'react-native-gesture-handler';
 
 export default function ProductDetailsView({route, navigation}) {
 
@@ -76,12 +77,14 @@ export default function ProductDetailsView({route, navigation}) {
                 <View style={styles.headerArrowIcon}>
                     <IconButton
                         icon={'arrow-left'}
-                        size={25}
+                        size={30}
+                        iconColor='black'
                         onPress={() => goToHome()}
                     />
                 </View>
                 <Header />
             </View>
+            <ScrollView contentContainerStyle={{paddingBottom: 50,}}>
                 <View style={styles.screenBody}>
                     {product ?
                         (
@@ -110,7 +113,7 @@ export default function ProductDetailsView({route, navigation}) {
                                         <Text> ({product.reviews.length} reviews)</Text>
                                     </View>
                                 </View>
-                                <Text>{product.description}</Text>
+                                <Text style={{color: '#808080'}}>{product.description}</Text>
                                 <View>
                                     <View style={styles.chooseSizePart}>
                                         <Text style={styles.chooseSizeText}>Choose size</Text>
@@ -163,10 +166,11 @@ export default function ProductDetailsView({route, navigation}) {
                                 </View>
                             </Card>
                         )
-                :
-                    (<Text>Loading...</Text>)
-                }
+                    :
+                        (<Text>Loading...</Text>)
+                    }
                 </View>
+            </ScrollView>
         </View>
     );
 }
