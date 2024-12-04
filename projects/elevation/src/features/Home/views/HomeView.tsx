@@ -10,6 +10,8 @@ import FilterView from '../../Filter/views/FilterView';
 import Search from '../components/search/Search';
 import { fetchProducts, selectSortingFlags } from '../redux/ProductsSlice';
 import { LIMIT_ADDED_PRODUCTS_NUMBER_TO_FETCH, LIMIT_DEFAULT_PRODUCTS_NUMBER_TO_FETCH, SKIP_DEFAULT_PRODUCTS_NUMBER_TO_FETCH, SKIP_PRODUCTS_NUMBER_TO_FETCH } from '../constants/pagination/constants';
+import { IconButton } from 'react-native-paper';
+import { selectUserId } from '../../Login/authentication/redux/authenticationSlice';
 import { checkForAppliedFilters } from '../server/filters/filtersApi';
 import { selectPriceRange } from '../redux/ProductsSlice';
 
@@ -31,6 +33,9 @@ export default function HomeView({ navigation }) {
         setLimit(limit + LIMIT_ADDED_PRODUCTS_NUMBER_TO_FETCH);
         setSkip(SKIP_PRODUCTS_NUMBER_TO_FETCH);
     };
+    const userIdFromStore = useAppSelector(selectUserId);
+
+    //navigate to product screen details screen
 
     //navigate to product screen details screen
     const goToProductDetailsScreen = (productId : number) => {
