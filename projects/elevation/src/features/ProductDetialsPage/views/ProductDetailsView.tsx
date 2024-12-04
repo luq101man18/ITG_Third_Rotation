@@ -7,7 +7,8 @@ import Header from '../components/header/header';
 import {Card} from 'react-native-paper';
 import {IconButton} from 'react-native-paper';
 import { fetchProductById } from '../server/api';
-
+import { useAppDispatch } from '../../../hooks/hooks';
+import { addProduct, FetchingRequirements } from '../../Cart/redux/cartSlice/CartSlice';
 export default function ProductDetailsView({route, navigation}) {
 
     const [isSaved, setIsSaved] = useState(false);
@@ -68,6 +69,14 @@ export default function ProductDetailsView({route, navigation}) {
 
     function goToHome() {
         navigation.navigate('Home');
+    }
+
+    // cart
+    const dispatch = useAppDispatch();
+
+    function addToCart(productFromPDP: number) {
+        const productIdFromPDP : FetchingRequirements = {productId: productFromPDP};
+        dispatch(addProduct(productIdFromPDP));
     }
 
     return(
@@ -147,7 +156,7 @@ export default function ProductDetailsView({route, navigation}) {
                                         </View>
                                     </View>
                                     <View style={styles.addToCartButtonContainer}>
-                                        <TouchableOpacity style={styles.addToCartButton}>
+                                        <TouchableOpacity style={styles.addToCartButton} onPress={() => addToCart(product.id)}>
                                             <View style={styles.addToCartButtonTextAndIcon}>
                                                 <IconButton
                                                     icon={'basket-outline'}
