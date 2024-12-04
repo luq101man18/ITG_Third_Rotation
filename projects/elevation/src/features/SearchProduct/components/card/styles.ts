@@ -8,12 +8,14 @@ export const styles =  StyleSheet.create({
     },
     price: {
         fontWeight: 'bold',
+        color: '#808080',
     },
     discountColor: {
         color: 'red',
     },
     title: {
         fontWeight: 'bold',
+        color: 'black',
     },
     displayPriceAndDiscount:{
         flexDirection: 'row',

@@ -13,9 +13,15 @@ export const styles = StyleSheet.create({
         fontSize: 28,
         fontWeight: 'bold',
         color: 'black',
-        marginRight: 75,
+        marginLeft: 10,
         textAlign: 'center',
         flex: 1,
         marginTop: 5,
+    },
+    iconWrapperFilter: {
+        backgroundColor:'black',
+        borderRadius: 10,
+        marginRight: 30,
+        marginTop: 10,
     },
 });

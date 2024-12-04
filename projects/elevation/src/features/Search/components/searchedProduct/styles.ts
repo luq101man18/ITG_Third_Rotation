@@ -9,6 +9,7 @@ export const styles =  StyleSheet.create({
         marginLeft: 20,
         marginBottom: 10,
         fontWeight: 'bold',
+        color: '#808080',
     },
     discountColor: {
         color: 'red',
