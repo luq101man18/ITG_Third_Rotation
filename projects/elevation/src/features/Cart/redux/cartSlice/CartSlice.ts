@@ -1,7 +1,6 @@
 import { createAsyncThunk, createSlice, PayloadAction } from '@reduxjs/toolkit';
 import fetchProductViaId from '../../server/api';
 import { RootState } from '../../../../store/store';
-import reactotron from 'reactotron-react-native';
 
 const initialState: Products = {
     products: [],
@@ -108,4 +107,5 @@ const cartSlice = createSlice({
 });
 export const { addProduct, deleteProduct, incrementProductQuantity, decrementProductQuantity } = cartSlice.actions;
 export const selectProducts = (state :  RootState) => state.cart.products;
+export const selectQuantity = (state :  RootState) => state.cart.products.reduce((totalQuantity, product) => product.quantity + totalQuantity, 0);
 export default cartSlice.reducer;
