@@ -133,69 +133,68 @@ export default function CheckoutView({ navigation }) {
                                 <View />
                             }
                         </View>
-                        
                         {/* payment */}
                         <View style={{marginHorizontal: 20,}}>
-                            <ScrollView horizontal={true}>
                                 <View style={{flexDirection: 'column'}}>
                                     <View>
                                         <Text style={styles.paymentMethodText}>Payment Method</Text>
                                     </View>
-                                    <View style={{ flexDirection: 'row' }}>
-                                        <View>
-                                            <TouchableOpacity onPress={() => {
-                                                setCardPaymentMethod(true);
-                                                setCashPaymentMethod(false);
-                                                setApplePayPaymentMethod(false);
-                                            }} style={{ backgroundColor: cardPaymentMethod ? 'black' : 'white', borderRadius: 10, }}>
-                                                <View style={{flexDirection: 'row'}}>
-                                                    <IconButton
-                                                        icon={'card-text'}
-                                                        size={20}
-                                                        iconColor= {cardPaymentMethod ? 'white' : 'black'}
-                                                    />
-                                                    <Text style={[styles.paymentMethodCard, {color: cardPaymentMethod ? 'white' : 'black'}]}>Card</Text>
-                                                </View>
-                                            </TouchableOpacity>
-                                        </View>
+                                    <ScrollView horizontal={true}>
                                         <View style={{ flexDirection: 'row' }}>
-                                            <TouchableOpacity onPress={() => {
-                                                setCardPaymentMethod(false);
-                                                setCashPaymentMethod(true);
-                                                setApplePayPaymentMethod(false);
-                                        }} style={{ backgroundColor: cashPaymentMethod ? 'black' : 'white', marginHorizontal: 10, borderRadius: 10, }}>
-                                                <View style={{ flexDirection: 'row' }}>
-                                                    <IconButton
-                                                        icon={'cash'}
-                                                        size={27}
-                                                        iconColor={cashPaymentMethod ? 'white' : 'black'}
-                                                    />
-                                                <Text style={[styles.paymentMethodCash, { color: cashPaymentMethod ? 'white' : 'black' }]}>Cash</Text>
-                                                </View>
-                                            </TouchableOpacity>
+                                            <View>
+                                                <TouchableOpacity onPress={() => {
+                                                    setCardPaymentMethod(true);
+                                                    setCashPaymentMethod(false);
+                                                    setApplePayPaymentMethod(false);
+                                                }} style={{ backgroundColor: cardPaymentMethod ? 'black' : 'white', borderRadius: 10, }}>
+                                                    <View style={{flexDirection: 'row'}}>
+                                                        <IconButton
+                                                            icon={'card-text'}
+                                                            size={20}
+                                                            iconColor= {cardPaymentMethod ? 'white' : 'black'}
+                                                        />
+                                                        <Text style={[styles.paymentMethodCard, {color: cardPaymentMethod ? 'white' : 'black'}]}>Card</Text>
+                                                    </View>
+                                                </TouchableOpacity>
+                                            </View>
+                                            <View style={{ flexDirection: 'row' }}>
+                                                <TouchableOpacity onPress={() => {
+                                                    setCardPaymentMethod(false);
+                                                    setCashPaymentMethod(true);
+                                                    setApplePayPaymentMethod(false);
+                                            }} style={{ backgroundColor: cashPaymentMethod ? 'black' : 'white', marginHorizontal: 10, borderRadius: 10, }}>
+                                                    <View style={{ flexDirection: 'row' }}>
+                                                        <IconButton
+                                                            icon={'cash'}
+                                                            size={27}
+                                                            iconColor={cashPaymentMethod ? 'white' : 'black'}
+                                                        />
+                                                    <Text style={[styles.paymentMethodCash, { color: cashPaymentMethod ? 'white' : 'black' }]}>Cash</Text>
+                                                    </View>
+                                                </TouchableOpacity>
+                                            </View>
+                                            <View style={{ flexDirection: 'row' }}>
+                                                <TouchableOpacity onPress={() => {
+                                                    setCardPaymentMethod(false);
+                                                    setCashPaymentMethod(false);
+                                                    setApplePayPaymentMethod(true);
+                                            }} style={{ backgroundColor: applePayPaymentMethod ? 'black' : 'white', borderRadius: 10, }}>
+                                                    <View style={{ flexDirection: 'row' }}>
+                                                        <IconButton
+                                                            icon={'apple'}
+                                                            size={25}
+                                                            iconColor={applePayPaymentMethod ? 'white' : 'black'}
+                                                        />
+                                                    <Text style={[styles.paymentMethodApplePay, { color: applePayPaymentMethod ? 'white' : 'black' }]}>Apple Pay</Text>
+                                                    </View>
+                                                </TouchableOpacity>
+                                            </View>
                                         </View>
-                                        <View style={{ flexDirection: 'row' }}>
-                                            <TouchableOpacity onPress={() => {
-                                                setCardPaymentMethod(false);
-                                                setCashPaymentMethod(false);
-                                                setApplePayPaymentMethod(true);
-                                        }} style={{ backgroundColor: applePayPaymentMethod ? 'black' : 'white', borderRadius: 10, }}>
-                                                <View style={{ flexDirection: 'row' }}>
-                                                    <IconButton
-                                                        icon={'apple'}
-                                                        size={25}
-                                                        iconColor={applePayPaymentMethod ? 'white' : 'black'}
-                                                    />
-                                                <Text style={[styles.paymentMethodApplePay, { color: applePayPaymentMethod ? 'white' : 'black' }]}>Apple Pay</Text>
-                                                </View>
-                                            </TouchableOpacity>
-                                        </View>
-                                    </View>
+                                    </ScrollView>
                                     <View style={{ flexDirection: 'row' }}>
                                         
                                     </View>
                                 </View>
-                            </ScrollView>
                         </View>
                         {/* end payment  */}
                         <View style={{ marginHorizontal: 20, }}>
