@@ -1,28 +1,26 @@
 import React from 'react';
 import { View, Text, TouchableOpacity } from 'react-native';
 import { useEffect, useState } from 'react';
-import { Alert } from 'react-native';
 import { styles } from '../styles';
 import Header from '../components/header/header';
 import {Card} from 'react-native-paper';
 import {IconButton} from 'react-native-paper';
 import { fetchProductById } from '../server/api';
+import { useAppDispatch, useAppSelector } from '../../../hooks/hooks';
+import { addProduct, decrementProductQuantity, FetchingRequirements, incrementProductQuantity, selectProducts } from '../../Cart/redux/cartSlice/CartSlice';
 import { ScrollView } from 'react-native-gesture-handler';
 
 export default function ProductDetailsView({route, navigation}) {
-
+    const dispatch = useAppDispatch();
     const [isSaved, setIsSaved] = useState(false);
     const [small, setSmall] = useState(false);
     const [medium, setMedium] = useState(false);
     const [large, setLarge] = useState(false);
-
-    // get product name
+    const [isInCart, setIsInCart] = useState(false);
+    const [productQuantity, setProductQuantity] = useState(0);
+    const productsInCartSelector = useAppSelector(selectProducts);
     const { chosenProduct } = route.params;
-
-    // set product name
     const [product, setFetchedProduct] = useState<productId|null>(null);
-
-    // fetch Product function
     const callFetchProduct = async (receivedProductId : string) => {
         if (receivedProductId) {
             const productIdNum = parseInt(receivedProductId);
@@ -51,24 +49,37 @@ export default function ProductDetailsView({route, navigation}) {
     }
 
     // fetch product
-    useEffect(() => {
-        try {
-            const fetchReceivedProduct = async (receivedProduct : string) => {
-                const fetchedProductFromApi = await callFetchProduct(receivedProduct);
-                if (fetchedProductFromApi) {
-                    setFetchedProduct(fetchedProductFromApi);
-                } else {
-                    Alert.alert("product wasn't set yet");
-                }
-            };
-            fetchReceivedProduct(chosenProduct);
-        } catch (error) {
-            Alert.alert("there is an error");
+useEffect(() => {
+    try {
+        const fetchReceivedProduct = async (receivedProduct : string) => {
+            const fetchedProductFromApi = await callFetchProduct(receivedProduct);
+            if (fetchedProductFromApi) {
+                setFetchedProduct(fetchedProductFromApi);
+            } else {
+                return 'ERROR: PDP, Product wasn\'t set yet';
+            }
+        };
+        fetchReceivedProduct(chosenProduct);
+        const productInCart = productsInCartSelector.find(
+            (productFromCart) => productFromCart.id === chosenProduct
+        );
+        if(productInCart){
+            setIsInCart(true);
+            setProductQuantity(productInCart.quantity);
+        } else {
+            setIsInCart(false);
         }
-    }, [chosenProduct]);
+    } catch (error) {
+        return 'ERROR: PDP screen failed.';
+    }
+}, [chosenProduct, productsInCartSelector]);
 
     function goToHome() {
         navigation.navigate('Home');
+    }
+    function addToCart(productFromPDP: number) {
+        const productIdFromPDP : FetchingRequirements = {productId: productFromPDP};
+        dispatch(addProduct(productIdFromPDP));
     }
 
     return(
@@ -149,20 +160,48 @@ export default function ProductDetailsView({route, navigation}) {
                                             </Text>
                                         </View>
                                     </View>
-                                    <View style={styles.addToCartButtonContainer}>
-                                        <TouchableOpacity style={styles.addToCartButton}>
-                                            <View style={styles.addToCartButtonTextAndIcon}>
-                                                <IconButton
-                                                    icon={'basket-outline'}
-                                                    size={30}
-                                                    iconColor="white"
-                                                />
-                                                <Text style={styles.addToCartText}>
-                                                    Add to Cart
-                                                </Text>
+                                    {isInCart ?
+                                        <View style={styles.addToCartButtonContainer}>
+                                            <View style={styles.addToCartButton}>
+                                                <View style={styles.addToCartButtonTextAndIcon}>
+                                                    <TouchableOpacity>
+                                                        <IconButton
+                                                            icon={'plus'}
+                                                            size={30}
+                                                            iconColor="white"
+                                                            onPress={() => { dispatch(incrementProductQuantity(product.id)); }}
+                                                        />
+                                                    </TouchableOpacity>
+                                                    <Text style={styles.addToCartText}>
+                                                        In Cart {productQuantity}
+                                                    </Text>
+                                                    <TouchableOpacity>
+                                                        <IconButton
+                                                            icon={'minus'}
+                                                            size={30}
+                                                            iconColor="white"
+                                                            onPress = {() => {dispatch(decrementProductQuantity(product.id)); }}
+                                                        />
+                                                    </TouchableOpacity>
+                                                </View>
                                             </View>
-                                        </TouchableOpacity>
-                                    </View>
+                                        </View>
+                                        :
+                                        <View style={styles.addToCartButtonContainer}>
+                                            <TouchableOpacity style={styles.addToCartButton} onPress={() => addToCart(product.id)}>
+                                                <View style={styles.addToCartButtonTextAndIcon}>
+                                                    <IconButton
+                                                        icon={'basket-outline'}
+                                                        size={30}
+                                                        iconColor="white"
+                                                    />
+                                                        <Text style={styles.addToCartText}>
+                                                            Add to Cart
+                                                        </Text>
+                                                </View>
+                                            </TouchableOpacity>
+                                        </View>
+                                    }
                                 </View>
                             </Card>
                         )
