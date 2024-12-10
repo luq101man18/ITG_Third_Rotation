@@ -9,13 +9,14 @@ import SearchProductView from '../features/SearchProduct/views/SearchProductView
 import HomeView from '../features/Home/views/HomeView';
 import ProductDetailsView from '../features/ProductDetialsPage/views/ProductDetailsView';
 import AddressView from '../features/Address/views/AddressView';
+import PaymentView from '../features/Payment/views/PaymentView';
 const Stack = createNativeStackNavigator();
 
 export default function ElevateNav() {
     return (
         <PaperProvider>
             <NavigationContainer>
-                <Stack.Navigator initialRouteName="Login" screenOptions={{
+                <Stack.Navigator initialRouteName="Payment" screenOptions={{
                     contentStyle: { backgroundColor: '#fff' },
                     headerShown: false,
                 }}>
@@ -28,6 +29,7 @@ export default function ElevateNav() {
 
 
                     <Stack.Screen name="Address" component={AddressView} />
+                    <Stack.Screen name="Payment" component={PaymentView} />
                 </Stack.Navigator>
             </NavigationContainer>
         </PaperProvider>
