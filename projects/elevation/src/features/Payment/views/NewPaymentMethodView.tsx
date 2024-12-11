@@ -2,6 +2,7 @@ import React from 'react';
 import { View, Text, TouchableOpacity } from 'react-native';
 import { useEffect, useState } from 'react';
 import { styles } from '../styles';
+import Modal from "react-native-modal";
 import Header from '../components/header/header';
 import { IconButton, TextInput } from 'react-native-paper';
 import { fetchCardsById } from '../server/api';
@@ -12,6 +13,8 @@ import Error from '../../Registration/components/errors/Error';
 import { useAppDispatch } from '../../../hooks/hooks';
 import { useForm, Controller } from "react-hook-form"
 import { Alert } from 'react-native';
+import { MessageModal } from '../components/modal/modal';
+import reactotron from 'reactotron-react-native';
 export default function NewPaymentMethodView({ navigation }) {
 
     const {
@@ -28,15 +31,25 @@ export default function NewPaymentMethodView({ navigation }) {
     });
 
     const dispatch = useAppDispatch();
+    const [congratModalVisible, setCongratModalVisible] = useState(false);
     const cardNumber = watch("cardNumber");
     const cardExpirationDate = watch("cardExpirationDate");
     const cardSecurityCode = watch("cardSecurityCode");
 
+
+    function validateInputs() {
+        reactotron.log(cardNumber);
+    }
     const processAddingNewCard = () => {
-        Alert.alert("Congratulations");
+        if (cardNumber && cardExpirationDate && cardSecurityCode) {
+            validateInputs();
+            setCongratModalVisible(true);
+        } else {
+            Alert.alert('Please Fill All Fields Properly!');
+        }
     };
-    function goToHome() {
-        navigation.navigate('Home');
+    function goToPayment() {
+        navigation.navigate('Payment');
     }
 
     return (
@@ -47,7 +60,7 @@ export default function NewPaymentMethodView({ navigation }) {
                         icon={'arrow-left'}
                         size={30}
                         iconColor='black'
-                        onPress={() => goToHome()}
+                        onPress={() => goToPayment()}
                     />
                 </View>
                 <Header />
@@ -144,6 +157,7 @@ export default function NewPaymentMethodView({ navigation }) {
                             <Text style={styles.AddCardText}>Add Card</Text>
                         </TouchableOpacity>
                     </View>
+                    <MessageModal visibility={congratModalVisible} messageTitle={'Congratulations'} messageBody={'Your new card has been added!`'} setVisibility={setCongratModalVisible} navigation={navigation}/>
                 </View>
             </View>
         </View>

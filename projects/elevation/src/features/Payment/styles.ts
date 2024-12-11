@@ -289,4 +289,17 @@ export const styles = StyleSheet.create({
     },
     AddNewCreditCardContainer:{
     },
+    AddNewCardButton: {
+        marginTop: 20,
+        backgroundColor: 'black',
+        borderRadius: 10,
+        marginHorizontal: 40,
+    },
+    AddNewCardText: {
+        color: 'white',
+        textAlign: 'center',
+        padding: 20,
+        borderRadius: 20,
+        fontWeight: 'bold',
+    },
 });

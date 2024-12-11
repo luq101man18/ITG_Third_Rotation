@@ -14,7 +14,7 @@ import { IconButton } from 'react-native-paper';
 import { selectUserId } from '../../Login/authentication/redux/authenticationSlice';
 import { checkForAppliedFilters } from '../server/filters/filtersApi';
 import { selectPriceRange } from '../redux/ProductsSlice';
-
+import Footer from '../components/footer/Footer';
 export default function HomeView({ navigation }) {
 
     let sortingFlags: boolean[] = useAppSelector(selectSortingFlags);
@@ -78,6 +78,9 @@ export default function HomeView({ navigation }) {
                     keyExtractor={(item) => item.id}
                     onEndReached={handlePagination}
                 />
+                <View>
+                    <Footer navigation={navigation} />
+                </View>
                 {filterVisibility ? <FilterView products={fetchedProducts} setProducts={setFetchedProducts} displayFilter={displayFilter} /> : <View />}
 
             </SafeAreaView>

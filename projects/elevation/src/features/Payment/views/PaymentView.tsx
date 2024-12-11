@@ -29,10 +29,9 @@ export default function PaymentView({route, navigation}) {
         callFetchCards(userId);
     }, [userId]);
 
-    function goToHome() {
-        navigation.navigate('Home');
+    function goToCheckout() {
+        navigation.navigate('Checkout');
     }
-
     return(
         <View>
             <View style={styles.screenHeaderAndArrow}>
@@ -41,7 +40,7 @@ export default function PaymentView({route, navigation}) {
                         icon={'arrow-left'}
                         size={30}
                         iconColor='black'
-                        onPress={() => goToHome()}
+                        onPress={() => goToCheckout()}
                     />
                 </View>
                 <Header />
@@ -76,6 +75,11 @@ export default function PaymentView({route, navigation}) {
                     (<Loader />)
                 }
                 </View>
+            <View>
+                <TouchableOpacity style={styles.AddNewCardButton} onPress={() => { navigation.navigate('NewPaymentMethod')}}>
+                    <Text style={styles.AddNewCardText}>Add New Card</Text>
+                </TouchableOpacity>
+            </View>
         </View>
     );
 }
