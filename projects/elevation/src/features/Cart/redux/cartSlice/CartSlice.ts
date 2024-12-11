@@ -78,7 +78,9 @@ const cartSlice = createSlice({
                 }
             });
         },
-
+        clearCart(state){
+            state.products = [];
+        },
         decrementProductQuantity(state, action: PayloadAction<{productId : number}>){
             state.products.find((product) => {
                 if(product.id === action.payload) {
@@ -105,7 +107,7 @@ const cartSlice = createSlice({
         });
     },
 });
-export const { addProduct, deleteProduct, incrementProductQuantity, decrementProductQuantity } = cartSlice.actions;
+export const { addProduct, deleteProduct, incrementProductQuantity, decrementProductQuantity, clearCart } = cartSlice.actions;
 export const selectProducts = (state :  RootState) => state.cart.products;
 export const selectQuantity = (state :  RootState) => state.cart.products.reduce((totalQuantity, product) => product.quantity + totalQuantity, 0);
 export default cartSlice.reducer;

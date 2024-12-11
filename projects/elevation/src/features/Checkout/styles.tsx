@@ -52,7 +52,7 @@ export const styles = StyleSheet.create({
         fontSize: 16,
         fontWeight: 'bold',
         color: 'black',
-        right: 50,
+        right: 15,
     },
     CartTotalVATText: {
         fontSize: 16,

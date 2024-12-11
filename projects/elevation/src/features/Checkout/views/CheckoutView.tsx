@@ -1,26 +1,23 @@
 import React from 'react';
-import { View, Text, TouchableOpacity, FlatList, ScrollView } from 'react-native';
+import { View, Text, TouchableOpacity, ScrollView } from 'react-native';
 import { useAppDispatch, useAppSelector } from '../../../hooks/hooks';
 import { useEffect, useState } from 'react';
 import { styles } from '../styles';
-
-
 import { IconButton } from 'react-native-paper';
-import reactotron from 'reactotron-react-native';
-import EmptyCart from '../component/emptyCart/EmptyCart';
-import AddedProduct from '../component/cartProduct/CartProduct';
-import AsyncStorage from '@react-native-async-storage/async-storage';
-import { FetchingRequirements, fetchProductsForCart } from '../redux/cartSlice/CartSlice';
-import { selectProducts } from '../redux/cartSlice/CartSlice';
+import { selectProducts } from '../../Cart/redux/cartSlice/CartSlice'
 import fetchProductViaId from '../server/api';
-import CartProduct from '../component/cartProduct/CartProduct';
-import { product } from '../redux/cartSlice/CartSlice';
+import { clearCart } from '../../Cart/redux/cartSlice/CartSlice';
+import { product } from '../../Cart/redux/cartSlice/CartSlice';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import Header from '../component/Header/Header';
 import Footer from '../../Home/components/footer/Footer';
 import { selectUserId } from '../../Login/authentication/redux/authenticationSlice';
 import { Address } from '../../Address/server/api';
 import { fetchAddressesById } from '../../Address/server/api';
+import { PaymentIcon } from 'react-native-payment-icons';
+import { Card, fetchCardsById } from '../../Payment/server/api';
+import { MessageModal } from '../component/modal/modal';
+
 export default function CheckoutView({ navigation }) {
 
     const [cartProducts, setCartProducts] = useState<product[]>([]);
@@ -28,10 +25,11 @@ export default function CheckoutView({ navigation }) {
     const [cardPaymentMethod, setCardPaymentMethod] = useState(true);
     const [cashPaymentMethod, setCashPaymentMethod] = useState(false);
     const [applePayPaymentMethod, setApplePayPaymentMethod] = useState(false);
-
+    const [userBankCard, setUserBankCard] = useState<Card>();
+    const [placingOrderModalVisibility, setPlacingOrderModalVisibility] = useState(false);
     const selectProductsFromSlice = useAppSelector(selectProducts);
     const selectUserIdFromSlice = useAppSelector(selectUserId);
-
+    const dispatch = useAppDispatch();
     const totalPrice = 0;
 
     useEffect(() => {
@@ -74,6 +72,17 @@ export default function CheckoutView({ navigation }) {
                 return 'ERROR: Couldn\'t retrieve addresses';
             }
         };
+        const callFetchCards = async (receivedUserId: number) => {
+            try {
+                if (receivedUserId) {
+                    const retrievedUserCards: Card = await fetchCardsById(receivedUserId);
+                    if (retrievedUserCards) { setUserBankCard(retrievedUserCards); }
+                }
+            } catch (error) {
+                return 'ERROR: Couldn\'t retrieve cards';
+            }
+        };
+        callFetchCards(selectUserIdFromSlice);
         callFetchAddresses(selectUserIdFromSlice);
         fetchCartProducts();
 
@@ -88,7 +97,10 @@ export default function CheckoutView({ navigation }) {
     function goToAddress() {
         navigation.navigate('Address', { userId: selectUserIdFromSlice });
     }
-
+    function processPlacingOrder() {
+        setPlacingOrderModalVisibility(true);
+        dispatch(clearCart());
+    }
 
     return (
         <SafeAreaView style={{flex: 1}}>
@@ -134,9 +146,9 @@ export default function CheckoutView({ navigation }) {
                             }
                         </View>
                         {/* payment */}
-                        <View style={{marginHorizontal: 20,}}>
+                        <View style={{ marginHorizontal: 20, marginVertical: 15, }}>
                                 <View style={{flexDirection: 'column'}}>
-                                    <View>
+                                    <View style={{ marginVertical: 15, }}>
                                         <Text style={styles.paymentMethodText}>Payment Method</Text>
                                     </View>
                                     <ScrollView horizontal={true}>
@@ -191,8 +203,56 @@ export default function CheckoutView({ navigation }) {
                                             </View>
                                         </View>
                                     </ScrollView>
-                                    <View style={{ flexDirection: 'row' }}>
-                                        
+                                    <View style={{ flexDirection: 'row', marginVertical: 15, }}>
+                                        {userBankCard && cardPaymentMethod?
+                                            <TouchableOpacity onPress={() => {}}>
+                                                <View style={{ borderColor: '#E6E6E6', borderRadius: 10, borderWidth: 1,}}>
+                                                    <View style={{ flexDirection: 'row', marginVertical: 10, }}>
+                                                        <View style={{ marginRight: 10, marginLeft: 10, marginTop: 15, }}>
+                                                            <PaymentIcon type={userBankCard.cardType} />
+                                                        </View>
+                                                        <View style={{ marginVertical: 18, }}>
+                                                            <Text style={{ width: 200, color: 'black', fontWeight: 'bold' }}>
+                                                                **** **** **** {userBankCard.cardNumber?.substring(12)}
+                                                            </Text>
+                                                        </View>
+                                                        <IconButton
+                                                            icon={'pencil'}
+                                                            size={30}
+                                                            iconColor='black'
+                                                            onPress={() => {navigation.navigate('Payment');}}
+                                                        />
+                                                    </View>
+                                                </View>
+
+                                            </TouchableOpacity>
+                                            : applePayPaymentMethod ?
+                                            <View style={{ borderColor: '#E6E6E6', borderRadius: 10, borderWidth: 1, }}>
+                                                <View style={{ flexDirection: 'row', marginVertical: 10, }}>
+                                                    <IconButton
+                                                        icon={'apple'}
+                                                        size={30}
+                                                        iconColor='black'
+                                                        onPress={() => { navigation.navigate('Payment'); }}
+                                                    />
+                                                    <View style={{ marginVertical: 18, }}>
+                                                        <Text style={{ width: 260, color: 'black', fontWeight: 'bold', textAlign: 'center' }}>
+                                                            Apple Pay
+                                                        </Text>
+                                                    </View>
+                                                </View>
+                                            </View>
+                                            :
+                                            <View style={{ borderColor: '#E6E6E6', borderRadius: 10, borderWidth: 1, }}>
+                                                <View style={{ flexDirection: 'row', marginVertical: 10, }}>
+                                                    <View style={{ marginVertical: 18, }}>
+                                                        <Text style={{ width: 320, color: 'black', fontWeight: 'bold', textAlign: 'center' }}>
+                                                            Cash on delivery
+                                                        </Text>
+                                                    </View>
+                                                </View>
+                                            </View>
+                                        }
                                     </View>
                                 </View>
                         </View>
@@ -223,7 +283,7 @@ export default function CheckoutView({ navigation }) {
                                     totalPrice,).toFixed(3)}</Text>
                             </View>
                             <View>
-                                <TouchableOpacity style={styles.checkoutButton} onPress={() => { }}>
+                                <TouchableOpacity style={styles.checkoutButton} onPress={() => {processPlacingOrder();}}>
                                     <Text style={styles.checkoutButtonText}>Place Order </Text>
                                 </TouchableOpacity>
                             </View>
@@ -233,6 +293,7 @@ export default function CheckoutView({ navigation }) {
                         </View>
                     </View>
                 </View>
+                <MessageModal visibility={placingOrderModalVisibility} messageTitle={'Congratulations'} messageBody={'Your order has been placed!`'} setVisibility={setPlacingOrderModalVisibility} navigation={navigation} />
         </SafeAreaView>
 
     );
