@@ -13,6 +13,7 @@ import AddressView from '../features/Address/views/AddressView';
 import CheckoutView from '../features/Checkout/views/CheckoutView';
 import PaymentView from '../features/Payment/views/PaymentView';
 import NewPaymentMethodView from '../features/Payment/views/NewPaymentMethodView';
+import OrderView from '../features/Order/views/OrderView';
 const Stack = createNativeStackNavigator();
 
 export default function ElevateNav() {
@@ -34,6 +35,7 @@ export default function ElevateNav() {
                     <Stack.Screen name="Checkout" component={CheckoutView} />
                     <Stack.Screen name="Payment" component={PaymentView} />
                     <Stack.Screen name="NewPaymentMethod" component={NewPaymentMethodView} />
+                    <Stack.Screen name="Order" component={OrderView} />
                 </Stack.Navigator>
             </NavigationContainer>
         </PaperProvider>
