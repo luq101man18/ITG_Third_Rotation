@@ -42,9 +42,8 @@ export const styles =  StyleSheet.create({
         fontSize: 16,
     },
     productQuantityNumber: {
-        // marginLeft: 20,
         marginTop: 10,
-        marginHorizontal: 5,
+        left: 70,
         fontWeight: 'bold',
         fontSize: 16,
         color: 'black',

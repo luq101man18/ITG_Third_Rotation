@@ -21,7 +21,7 @@ const OrderProduct = ({ product }) => {
                             <Text style={styles.price}>$ {product.price}</Text>
                             <View style={{flexDirection: 'row'}}>
                                 <Text style={styles.productQuantityNumber}>
-                                    {product.quantity}
+                                    Quantity: {product.quantity}
                                 </Text>
                             </View>
                         </View>
