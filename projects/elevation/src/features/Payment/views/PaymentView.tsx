@@ -29,8 +29,8 @@ export default function PaymentView({route, navigation}) {
         callFetchCards(userId);
     }, [userId]);
 
-    function goToCheckout() {
-        navigation.navigate('Checkout');
+    function goToHome() {
+        navigation.navigate('Home');
     }
     return(
         <View>
@@ -40,7 +40,7 @@ export default function PaymentView({route, navigation}) {
                         icon={'arrow-left'}
                         size={30}
                         iconColor='black'
-                        onPress={() => goToCheckout()}
+                        onPress={() => goToHome()}
                     />
                 </View>
                 <Header />
