@@ -16,7 +16,7 @@ export default function AccountView({ navigation }) {
     }
 
     function goToAccountDetails() {
-        navigation.navigate('AccountDetails');
+        navigation.navigate('AccountDetails', { userId: selectUserIdFromSlice });
     }
 
     function goToOrder() {
