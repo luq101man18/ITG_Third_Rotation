@@ -5,8 +5,8 @@ import styles from "./styles";
 import Footer from "../../../Home/components/footer/Footer";
 const EmptyCart = ({navigation}) => {
     return (
-        <View>
-            <View style={{ flexDirection: "column", marginTop: 100, }}>
+        <View style={{flex: 1,}}>
+            <View style={{ flexDirection: "column", marginTop: 100, flex: 1 }}>
                 <IconButton
                     icon={'cart'}
                     iconColor="#B3B3B3"
@@ -19,7 +19,7 @@ const EmptyCart = ({navigation}) => {
                 </Text>
 
             </View>
-            <View style={{ position: 'absolute', marginTop: 740, }}>
+            <View style={{}}>
                 <Footer navigation={navigation} />
             </View>
         </View>

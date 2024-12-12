@@ -12,6 +12,7 @@ import {fetchProducts} from '../redux/SearchedProductsSlice';
 import { checkForAppliedFilters } from '../../Home/server/filters/filtersApi';
 import { selectSortingFlags, selectPriceRange } from '../redux/SearchedProductsSlice';
 import { useAppSelector } from '../../../hooks/hooks';
+import Footer from '../../Home/components/footer/Footer';
 export default function SearchProductView({navigation, route}) {
 
     let sortingFlags: boolean[] = useAppSelector(selectSortingFlags);
@@ -26,7 +27,9 @@ export default function SearchProductView({navigation, route}) {
     function goToHome() {
         navigation.navigate('Home');
     }
-
+    function goToSearch() {
+        navigation.navigate('Search');
+    }
     const goToProductDetailsScreen = (productId: number) => {
         navigation.navigate('ProductDetails', { chosenProduct: productId });
     };
@@ -52,12 +55,12 @@ export default function SearchProductView({navigation, route}) {
     return(
         <PaperProvider>
             <SafeAreaView style={{flex: 1}}>
-                <View style={{ flexDirection: 'row', alignItems: "center", marginTop: 10, }}>
+                <View style={{ flexDirection: 'row', alignItems: "center", marginTop: 10,}}>
                     <IconButton
                         icon={'arrow-left'}
                         iconColor="black"
                         size={30}
-                        onPress={() => goToHome()}
+                        onPress={() => goToSearch()}
                         style={{ alignSelf: 'flex-start', marginLeft: 20, marginTop: 10, }}
                     />
                     <Text style={styles.header}>{productName}</Text>
@@ -83,6 +86,7 @@ export default function SearchProductView({navigation, route}) {
                     );} }
                     keyExtractor={(item) => item.id}
                 />
+                <Footer navigation={navigation}/>
                 {filterVisibility ? <FilterView products={fetchedProducts} setProducts={setFetchedProducts} displayFilter={displayFilter} /> : <View />}
             </SafeAreaView>
         </PaperProvider>

@@ -5,6 +5,8 @@ import { IconButton } from 'react-native-paper';
 import searchProducts from '../server/api';
 import ProductDisplay from '../components/ProductDisplay/ProductDisplay';
 import NotFound from '../components/NotFound/NotFound';
+import Footer from '../../Home/components/footer/Footer';
+
 
 
 
@@ -40,44 +42,49 @@ const SearchView = ({ navigation }) => {
     }
 
     return (
-        <View>
-            <View style={{flexDirection: 'row', alignItems: "center"}}>
-                <IconButton
-                    icon={'arrow-left'}
-                    iconColor="black"
-                    size={30}
-                    onPress={() => goToHome()}
-                    style={{alignSelf:'flex-start', marginLeft: 20, marginTop:10,}}
-                    />
-                <Text style={styles.header}>Search</Text>
-            </View>
-            <View style={styles.container}>
-                <View style={styles.iconWrapperMagnify}>
+        <View style={{flex: 1}}>
+            <View style={{flex: 1}}>
+                <View style={{flexDirection: 'row', alignItems: "center"}}>
                     <IconButton
-                        icon={'magnify'}
-                        iconColor="#B3B3B3"
-                        size={24}
-                        onPress={() => goToSearchProduct()}
-                    />
+                        icon={'arrow-left'}
+                        iconColor="black"
+                        size={30}
+                        onPress={() => goToHome()}
+                        style={{alignSelf:'flex-start', marginLeft: 20, marginTop:10,}}
+                        />
+                    <Text style={styles.header}>Search</Text>
                 </View>
-                <TextInput
-                    placeholder="Search for clothes..."
-                    placeholderTextColor={'#B3B3B3'}
-                    style={styles.textInput}
-                    onChangeText={(text) => searchForProductOnTextChange(text)}
-                />
-                <View style={styles.iconWrapperMice}>
-                    <IconButton
-                        icon={'microphone-outline'}
-                        iconColor="#B3B3B3"
-                        size={24}
+                <View style={styles.container}>
+                    <View style={styles.iconWrapperMagnify}>
+                        <IconButton
+                            icon={'magnify'}
+                            iconColor="#B3B3B3"
+                            size={24}
+                            onPress={() => goToSearchProduct()}
+                        />
+                    </View>
+                    <TextInput
+                        placeholder="Search for clothes..."
+                        placeholderTextColor={'#B3B3B3'}
+                        style={styles.textInput}
+                        onChangeText={(text) => searchForProductOnTextChange(text)}
                     />
+                    <View style={styles.iconWrapperMice}>
+                        <IconButton
+                            icon={'microphone-outline'}
+                            iconColor="#B3B3B3"
+                            size={24}
+                        />
+                    </View>
                 </View>
+                {product === '' ?
+                    <View /> : validSearch ?
+                    <ProductDisplay searchedProducts={searchedProducts} navigation={navigation}/> : <NotFound />
+                }
             </View>
-            {product === '' ?
-                <View /> : validSearch ?
-                <ProductDisplay searchedProducts={searchedProducts} navigation={navigation}/> : <NotFound />
-            }
+            <View style={{}}>
+                <Footer navigation={navigation} />
+            </View>
         </View>
     );
 };

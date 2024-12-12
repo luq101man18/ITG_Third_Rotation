@@ -7,19 +7,33 @@ import { selectQuantity } from '../../../Cart/redux/cartSlice/CartSlice';
 const Footer = ({ navigation }) => {
 
     const productsQuantitySelector = useAppSelector(selectQuantity);
-    function goToHome(){
+    function goToHome() {
         navigation.navigate('Home');
     }
     function goToCart() {
         navigation.navigate('Cart');
     }
 
+    function goToSearch() {
+        navigation.navigate('Search');
+    }
+
+    function goToAccount() {
+        navigation.navigate('Account');
+    }
+
+    function goToSaved() {
+        navigation.navigate('Saved');
+    }
+
+
+
     return (
         <View style={styles.container}>
             <IconButton
                 icon={'home'}
                 size={30}
-                style={{justifyContent: 'space-between', marginHorizontal: 17,}}
+                style={{ justifyContent: 'space-between', marginHorizontal: 17, }}
                 iconColor='black'
                 onPress={() => goToHome()}
             />
@@ -28,26 +42,26 @@ const Footer = ({ navigation }) => {
                 size={30}
                 style={{ justifyContent: 'space-between', marginHorizontal: 17, }}
                 iconColor='black'
-                onPress={() => {}}
+                onPress={() => { goToSearch(); }}
             />
             <IconButton
                 icon={'heart'}
                 size={30}
                 style={{ justifyContent: 'space-between', marginHorizontal: 17, }}
                 iconColor='black'
-                onPress={() => {}}
+                onPress={() => { goToSaved(); }}
             />
             <View>
                 {productsQuantitySelector ?
-                    <View style={{position: 'absolute', marginLeft: 20, zIndex: 10}}>
-                        <View style={{flexDirection: 'row'}}>
-                        <Text style={{marginLeft: 30, position: 'absolute', marginTop: 10, zIndex: 10, fontWeight: 'bold', color: 'white'}}>
-                            {productsQuantitySelector}
-                        </Text>
+                    <View style={{ position: 'absolute', marginLeft: 20, zIndex: 10 }}>
+                        <View style={{ flexDirection: 'row' }}>
+                            <Text style={{ marginLeft: 30, position: 'absolute', marginTop: 10, zIndex: 10, fontWeight: 'bold', color: 'white' }}>
+                                {productsQuantitySelector}
+                            </Text>
                             <IconButton
                                 icon={'circle'}
                                 size={30}
-                                style={{ marginLeft: 10, bottom: 10,}}
+                                style={{ marginLeft: 10, bottom: 10, }}
                                 iconColor='red'
                                 onPress={() => goToCart()}
                             />
@@ -69,7 +83,7 @@ const Footer = ({ navigation }) => {
                 size={30}
                 style={{ justifyContent: 'space-between', marginHorizontal: 17, }}
                 iconColor='black'
-                onPress={() => {}}
+                onPress={() => { goToAccount(); }}
             />
         </View>
     );

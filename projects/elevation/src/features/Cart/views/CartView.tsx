@@ -126,7 +126,7 @@ export default function CartView({ navigation }) {
                                         </View>
                                     }
                                 />
-                                <View style={{position: 'absolute', marginTop: 725, right: 380,}}>
+                                <View style={{right: 20,}}>
                                     <Footer navigation={navigation}/>
                                 </View>
                             </View>
