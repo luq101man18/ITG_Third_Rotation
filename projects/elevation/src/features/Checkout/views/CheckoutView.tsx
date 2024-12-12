@@ -17,6 +17,8 @@ import { fetchAddressesById } from '../../Address/server/api';
 import { PaymentIcon } from 'react-native-payment-icons';
 import { Card, fetchCardsById } from '../../Payment/server/api';
 import { MessageModal } from '../component/modal/modal';
+import { addOrder, FetchingRequirements } from '../../Order/redux/orderSlice/OrderSlice';
+import reactotron from 'reactotron-react-native';
 
 export default function CheckoutView({ navigation }) {
 
@@ -98,8 +100,11 @@ export default function CheckoutView({ navigation }) {
         navigation.navigate('Address', { userId: selectUserIdFromSlice });
     }
     function processPlacingOrder() {
+        selectProductsFromSlice.forEach((productFromSliceToOrder) => {
+            const productIdForOrder: FetchingRequirements = { productId: productFromSliceToOrder.id };
+            dispatch(addOrder(productIdForOrder));
+        });
         setPlacingOrderModalVisibility(true);
-        dispatch(clearCart());
     }
 
     return (

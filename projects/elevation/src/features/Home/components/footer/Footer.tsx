@@ -19,7 +19,7 @@ const Footer = ({ navigation }) => {
     }
 
     function goToAccount() {
-        navigation.navigate('Account');
+        navigation.navigate('Order');
     }
 
     function goToSaved() {

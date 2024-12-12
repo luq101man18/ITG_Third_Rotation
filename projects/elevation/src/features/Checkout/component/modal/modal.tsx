@@ -4,11 +4,15 @@ import { View, Text, TouchableOpacity } from 'react-native';
 import  Modal  from 'react-native-modal'
 import { IconButton } from 'react-native-paper';
 import { styles } from './styles';
+import { useAppDispatch } from '../../../../hooks/hooks';
+import { clearCart } from '../../../Cart/redux/cartSlice/CartSlice';
 
 export const MessageModal = ({ visibility, messageTitle, messageBody, setVisibility, navigation}) => {
+    const dispatch = useAppDispatch();
     function goBackToHome() {
         setVisibility(!visibility);
         navigation.navigate('Home');
+        dispatch(clearCart());
     }
     return (
         <View>
