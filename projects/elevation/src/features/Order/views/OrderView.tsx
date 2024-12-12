@@ -4,7 +4,7 @@ import { useAppSelector } from '../../../hooks/hooks';
 import { useEffect, useState } from 'react';
 import { styles } from '../styles';
 import { IconButton } from 'react-native-paper';
-import { selectProducts } from '../redux/orderSlice/OrderSlice';
+import { fetchProductsForOrders, selectProducts } from '../redux/orderSlice/OrderSlice';
 import fetchProductViaId from '../server/api';
 import { product } from '../redux/orderSlice/OrderSlice';
 import { SafeAreaView } from 'react-native-safe-area-context';
@@ -25,7 +25,7 @@ export default function OrderView({ navigation }) {
                 const orderProductsFromSlice = selectProductsFromSlice;
                 const fetchProductsFromCartHelper = await Promise.all(
                     orderProductsFromSlice.map(async (productFromSlice) => {
-                        return await fetchProductViaId(productFromSlice.id);
+                        return await fetchProductsForOrders(productFromSlice.id);
                     })
                 );
                 if (fetchProductsFromCartHelper) {
