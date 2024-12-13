@@ -9,6 +9,7 @@ import { fetchProductById } from '../server/api';
 import { useAppDispatch, useAppSelector } from '../../../hooks/hooks';
 import { addProduct, decrementProductQuantity, FetchingRequirements, incrementProductQuantity, selectProducts } from '../../Cart/redux/cartSlice/CartSlice';
 import { ScrollView } from 'react-native-gesture-handler';
+import { addProductToSaved, deleteProductFromSaved, selectSavedProducts } from '../../Saved/redux/SavedSlice';
 
 export default function ProductDetailsView({route, navigation}) {
     const dispatch = useAppDispatch();
@@ -20,6 +21,16 @@ export default function ProductDetailsView({route, navigation}) {
     const [productQuantity, setProductQuantity] = useState(0);
     const productsInCartSelector = useAppSelector(selectProducts);
     const { chosenProduct } = route.params;
+
+    const selectProductsFromSavedSlice = useAppSelector(selectSavedProducts);
+    const selectProductsFromSavedSliceFlag = () => {
+        if(selectProductsFromSavedSlice.find((productFromSaved) => productFromSaved.id === chosenProduct)) {
+            return true;
+        } else {
+            return false;
+        }
+    };
+
     const [product, setFetchedProduct] = useState<productId|null>(null);
     const callFetchProduct = async (receivedProductId : string) => {
         if (receivedProductId) {
@@ -29,9 +40,16 @@ export default function ProductDetailsView({route, navigation}) {
         }
     };
 
-    function addToSaved() {
+    function processSaved(id : number) {
+        const stateValue = !isSaved;
         setIsSaved(!isSaved);
+        if(stateValue) {
+            dispatch(addProductToSaved({productId: id}));
+        } else {
+            dispatch(deleteProductFromSaved({productId: id}));
+        }
     }
+
     function chooseSmall() {
         setMedium(false);
         setLarge(false);
@@ -49,30 +67,33 @@ export default function ProductDetailsView({route, navigation}) {
     }
 
     // fetch product
-useEffect(() => {
-    try {
-        const fetchReceivedProduct = async (receivedProduct : string) => {
-            const fetchedProductFromApi = await callFetchProduct(receivedProduct);
-            if (fetchedProductFromApi) {
-                setFetchedProduct(fetchedProductFromApi);
+    useEffect(() => {
+        try {
+            const fetchReceivedProduct = async (receivedProduct : string) => {
+                const fetchedProductFromApi = await callFetchProduct(receivedProduct);
+                if (fetchedProductFromApi) {
+                    setFetchedProduct(fetchedProductFromApi);
+                } else {
+                    return 'ERROR: PDP, Product wasn\'t set yet';
+                }
+            };
+            fetchReceivedProduct(chosenProduct);
+            const productInCart = productsInCartSelector.find(
+                (productFromCart) => productFromCart.id === chosenProduct
+            );
+            if(productInCart){
+                setIsInCart(true);
+                setProductQuantity(productInCart.quantity);
             } else {
-                return 'ERROR: PDP, Product wasn\'t set yet';
+                setIsInCart(false);
             }
-        };
-        fetchReceivedProduct(chosenProduct);
-        const productInCart = productsInCartSelector.find(
-            (productFromCart) => productFromCart.id === chosenProduct
-        );
-        if(productInCart){
-            setIsInCart(true);
-            setProductQuantity(productInCart.quantity);
-        } else {
-            setIsInCart(false);
+            if (selectProductsFromSavedSliceFlag()) {
+                setIsSaved(true);
+            }
+        } catch (error) {
+            return 'ERROR: PDP screen failed.';
         }
-    } catch (error) {
-        return 'ERROR: PDP screen failed.';
-    }
-}, [chosenProduct, productsInCartSelector]);
+    }, [chosenProduct, productsInCartSelector]);
 
     function goToHome() {
         navigation.navigate('Home');
@@ -104,7 +125,7 @@ useEffect(() => {
                                     <IconButton
                                         icon={isSaved ? 'heart' : 'heart-outline'}
                                         size={20}
-                                        onPress={() => addToSaved()}
+                                        onPress={() => processSaved(product.id)}
                                     />
                                 </View>
                                 <Card.Cover source={{ uri: product.images[0] }} style={styles.screenProductImage}/>
@@ -156,7 +177,7 @@ useEffect(() => {
                                         <Text>Price</Text>
                                         <View>
                                         <Text style={styles.priceNumber}>
-                                                $ {(product.price - (product.price * product.discountPercentage * 0.01)).toPrecision(3)}
+                                                $ {product.price}
                                             </Text>
                                         </View>
                                     </View>

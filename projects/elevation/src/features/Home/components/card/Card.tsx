@@ -1,25 +1,41 @@
-import React from "react";
-import { useState } from "react";
-import { ScrollView } from "react-native";
-import { View, Text } from "react-native";
-import { Card, Title } from "react-native-paper";
-import { styles } from "./styles";
-import { IconButton } from "react-native-paper";
+import React, { useEffect } from 'react';
+import { useState } from 'react';
+import { View, Text } from 'react-native';
+import { Card } from 'react-native-paper';
+import { styles } from './styles';
+import { IconButton } from 'react-native-paper';
+import { useAppDispatch, useAppSelector } from '../../../../hooks/hooks';
+import { addProductToSaved, deleteProductFromSaved, selectSavedProducts } from '../../../Saved/redux/SavedSlice';
 
 export const ProductCard = ({product}) => {
     const discountPercentage = product.discountPercentage;
-    // const discountPercentage = 0;
+    const selectProductsFromSavedSlice = useAppSelector(selectSavedProducts);
+    const dispatch = useAppDispatch();
+
+    let savedValueBasedOnStore = false;
     const [isSaved, setIsSaved] =  useState(false);
-    function addToSaved(){
-        return setIsSaved(!isSaved);
+    function processSaved() {
+        setIsSaved(!isSaved);
+        savedValueBasedOnStore = !isSaved;
+        if (savedValueBasedOnStore) {
+            dispatch(addProductToSaved({ productId: product.id }));
+        } else {
+            dispatch(deleteProductFromSaved({ productId: product.id }));
+        }
     }
+    useEffect(() => {
+        if(selectProductsFromSavedSlice.find((productFromSlice) => productFromSlice.id === product.id)) {
+            setIsSaved(true);
+        }
+    }, [selectProductsFromSavedSlice, product.id]);
+
     return(
         <Card style={styles.container} elevation={0} >
             <View style={styles.saveIcon}>
                 <IconButton
                     icon={isSaved ? 'heart' : 'heart-outline'}
                     size={20}
-                    onPress={() => addToSaved()}
+                    onPress={() => processSaved()}
                 />
             </View>
             <Card.Cover source={{uri: product.images[0]}} />

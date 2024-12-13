@@ -4,7 +4,7 @@ import { useAppSelector } from '../../../hooks/hooks';
 import { useEffect, useState } from 'react';
 import { styles } from '../styles';
 import { IconButton } from 'react-native-paper';
-import { fetchProductsForOrders, selectProducts } from '../redux/orderSlice/OrderSlice';
+import { selectProducts } from '../redux/orderSlice/OrderSlice';
 import fetchProductViaId from '../server/api';
 import { product } from '../redux/orderSlice/OrderSlice';
 import { SafeAreaView } from 'react-native-safe-area-context';
@@ -12,7 +12,6 @@ import Header from '../component/Header/Header';
 import Footer from '../../Home/components/footer/Footer';
 import EmptyOrder from '../component/emptyOrder/EmptyOrder';
 import OrderProduct from '../component/orderProduct/OrderProduct';
-import reactotron from 'reactotron-react-native';
 
 export default function OrderView({ navigation }) {
 
@@ -25,16 +24,15 @@ export default function OrderView({ navigation }) {
                 const orderProductsFromSlice = selectProductsFromSlice;
                 const fetchProductsFromCartHelper = await Promise.all(
                     orderProductsFromSlice.map(async (productFromSlice) => {
-                        return await fetchProductsForOrders(productFromSlice.id);
+                        return await fetchProductViaId(productFromSlice.id);
                     })
                 );
                 if (fetchProductsFromCartHelper) {
-                    reactotron.log(fetchProductsFromCartHelper);
-                    const destructureFetchedProductsForCart = fetchProductsFromCartHelper.map((product) => ({
-                        id: product.id,
-                        title: product.title,
-                        price: product.price,
-                        image: product.images[0],
+                    const destructureFetchedProductsForCart = fetchProductsFromCartHelper.map((productFromCartHelper) => ({
+                        id: productFromCartHelper.id,
+                        title: productFromCartHelper.title,
+                        price: productFromCartHelper.price,
+                        image: productFromCartHelper.images[0],
                         quantity: 1,
                     }));
                     orderProductsFromSlice.forEach((productFromSlice) => {

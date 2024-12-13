@@ -57,7 +57,6 @@ const orderSlice = createSlice({
             state.products = [];
         },
         addOrder(state, action: PayloadAction<{productId : number}>) {
-            reactotron.log("add order inside start");
             if(state.products.find((product) => product.id === action.payload.productId)) {
                 state.products.find((product) => {
                     if(product.id === action.payload.productId){
@@ -70,8 +69,6 @@ const orderSlice = createSlice({
                 };
                 state.products.push(product);
             }
-            reactotron.log("add order inside done");
-            reactotron.log(state.products);
         },
 
     },

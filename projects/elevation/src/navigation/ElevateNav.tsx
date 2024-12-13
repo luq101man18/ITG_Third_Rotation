@@ -16,13 +16,14 @@ import NewPaymentMethodView from '../features/Payment/views/NewPaymentMethodView
 import OrderView from '../features/Order/views/OrderView';
 import AccountView from '../features/Account/views/AccountView';
 import AccountDetailsView from '../features/Account/views/AccountDetails';
+import SavedView from '../features/Saved/views/SavedView';
 const Stack = createNativeStackNavigator();
 
 export default function ElevateNav() {
     return (
         <PaperProvider>
             <NavigationContainer>
-                <Stack.Navigator initialRouteName="Login" screenOptions={{
+                <Stack.Navigator initialRouteName="Home" screenOptions={{
                     contentStyle: { backgroundColor: '#fff' },
                     headerShown: false,
                 }}>
@@ -40,6 +41,7 @@ export default function ElevateNav() {
                     <Stack.Screen name="Order" component={OrderView} />
                     <Stack.Screen name="Account" component={AccountView} />
                     <Stack.Screen name="AccountDetails" component={AccountDetailsView} />
+                    <Stack.Screen name="Saved" component={SavedView} />
                 </Stack.Navigator>
             </NavigationContainer>
         </PaperProvider>

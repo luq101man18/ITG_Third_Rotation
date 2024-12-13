@@ -38,7 +38,6 @@ export default function NewPaymentMethodView({ navigation }) {
 
 
     function validateInputs() {
-        reactotron.log(cardNumber);
     }
     const processAddingNewCard = () => {
         if (cardNumber && cardExpirationDate && cardSecurityCode) {
