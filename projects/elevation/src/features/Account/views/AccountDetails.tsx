@@ -76,7 +76,6 @@ export default function AccountDetailsView({ route, navigation }) {
                 }
             };
             callFetchUserDetails(userId);
-            reactotron.log(userDetails);
         } catch (error) {
         }
     }, [userId]);
