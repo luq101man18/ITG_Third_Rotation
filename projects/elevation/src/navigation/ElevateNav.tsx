@@ -23,7 +23,7 @@ export default function ElevateNav() {
     return (
         <PaperProvider>
             <NavigationContainer>
-                <Stack.Navigator initialRouteName="Home" screenOptions={{
+                <Stack.Navigator initialRouteName="Login" screenOptions={{
                     contentStyle: { backgroundColor: '#fff' },
                     headerShown: false,
                 }}>
