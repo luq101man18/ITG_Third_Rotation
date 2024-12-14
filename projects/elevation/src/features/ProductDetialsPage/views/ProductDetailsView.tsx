@@ -172,7 +172,7 @@ export default function ProductDetailsView({route, navigation}) {
                                     </View>
                                     <View style={styles.dividerLine} />
                                 </View>
-                                <View style={styles.priceAndAddToCartButton}>
+                                <View style={[styles.priceAndAddToCartButton, {left: 20,}]}>
                                     <View style={styles.priceLabelAndNumber}>
                                         <Text>Price</Text>
                                         <View>
@@ -182,7 +182,7 @@ export default function ProductDetailsView({route, navigation}) {
                                         </View>
                                     </View>
                                     {isInCart ?
-                                        <View style={styles.addToCartButtonContainer}>
+                                        <View style={[styles.addToCartButtonContainer, {left: 80,}]}>
                                             <View style={styles.addToCartButton}>
                                                 <View style={styles.addToCartButtonTextAndIcon}>
                                                     <TouchableOpacity>
@@ -208,7 +208,7 @@ export default function ProductDetailsView({route, navigation}) {
                                             </View>
                                         </View>
                                         :
-                                        <View style={styles.addToCartButtonContainer}>
+                                        <View style={[styles.addToCartButtonContainer, {left: 100}]}>
                                             <TouchableOpacity style={styles.addToCartButton} onPress={() => addToCart(product.id)}>
                                                 <View style={styles.addToCartButtonTextAndIcon}>
                                                     <IconButton
