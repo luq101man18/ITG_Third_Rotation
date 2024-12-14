@@ -30,6 +30,10 @@ export default function AddressView({route, navigation}) {
     function goToHome() {
         navigation.navigate('Home');
     }
+    
+    function goToNewAddress() {
+        navigation.navigate('NewAddress');
+    }
 
     return(
         <View>
@@ -73,6 +77,11 @@ export default function AddressView({route, navigation}) {
                 :
                     (<Loader />)
                 }
+                <View>
+                    <TouchableOpacity style={styles.AddNewAddressButton} onPress={() => {goToNewAddress();}}>
+                        <Text style={styles.AddNewAddressText}>Add New Address</Text>
+                    </TouchableOpacity>
+                </View>
                 </View>
         </View>
     );

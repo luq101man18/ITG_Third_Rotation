@@ -17,6 +17,7 @@ import OrderView from '../features/Order/views/OrderView';
 import AccountView from '../features/Account/views/AccountView';
 import AccountDetailsView from '../features/Account/views/AccountDetails';
 import SavedView from '../features/Saved/views/SavedView';
+import NewAddressView from '../features/Address/views/NewAddressView';
 const Stack = createNativeStackNavigator();
 
 export default function ElevateNav() {
@@ -35,6 +36,7 @@ export default function ElevateNav() {
                     <Stack.Screen name="ProductDetails" component={ProductDetailsView} />
                     <Stack.Screen name="Cart" component={CartView} />
                     <Stack.Screen name="Address" component={AddressView} />
+                    <Stack.Screen name="NewAddress" component={NewAddressView} />
                     <Stack.Screen name="Checkout" component={CheckoutView} />
                     <Stack.Screen name="Payment" component={PaymentView} />
                     <Stack.Screen name="NewPaymentMethod" component={NewPaymentMethodView} />
