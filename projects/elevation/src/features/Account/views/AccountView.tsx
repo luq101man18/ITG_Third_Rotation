@@ -1,5 +1,5 @@
-import React from 'react';
-import { View, Text } from 'react-native';
+import React, { useState } from 'react';
+import { View, Text, TouchableOpacity } from 'react-native';
 import { styles } from '../styles';
 import { IconButton } from 'react-native-paper';
 import { SafeAreaView } from 'react-native-safe-area-context';
@@ -7,10 +7,12 @@ import Header from '../component/Header/Header';
 import Footer from '../../Home/components/footer/Footer';
 import { useAppDispatch, useAppSelector } from '../../../hooks/hooks';
 import { selectUserId } from '../../Login/authentication/redux/authenticationSlice';
+import { LogoutModal } from '../component/logout/LogoutModal';
 
 
 export default function AccountView({ navigation }) {
     const selectUserIdFromSlice = useAppSelector(selectUserId);
+    const [changesLogoutModalVisible, setChangesLogoutModalVisible] =  useState(false);
     function goToHome() {
         navigation.navigate('Home');
     }
@@ -131,10 +133,24 @@ export default function AccountView({ navigation }) {
                                     />
                                 </View>
                             </View>
+                            <View style={{ borderColor: '#B3B3B3', borderWidth: 1 }} />
+                            <View style={{ flexDirection: 'row', marginVertical: 10, }}>
+                                <View style={{}}>
+                                    <IconButton
+                                        icon={'exit-to-app'}
+                                        size={30}
+                                        iconColor='red'
+                                    />
+                                </View>
+                                <TouchableOpacity style={{ left: 20, marginTop: 19, }} onPress={() => {setChangesLogoutModalVisible(true);}}>
+                                    <Text style={{ textAlign: 'center', fontSize: 19, fontWeight: 'bold', color: 'red', }}>Logout</Text>
+                                </TouchableOpacity>
+                            </View>
                         </View>
                         <View style={{right: 20,}}>
                             <Footer navigation={navigation}/>
                         </View>
+                        <LogoutModal visibility={changesLogoutModalVisible} setVisibility={setChangesLogoutModalVisible} navigation={navigation} />
                     </View>
                 </View>
         </SafeAreaView>
