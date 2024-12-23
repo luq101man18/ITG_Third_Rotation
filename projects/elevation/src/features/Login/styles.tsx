@@ -14,6 +14,7 @@ export const stylesLogin = StyleSheet.create({
         marginBottom: 10,
         fontWeight: "bold",
         fontSize: 33,
+        color: 'black',
     },
     userInputs: {
         marginBottom: 20,
