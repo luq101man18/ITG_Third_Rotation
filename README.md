@@ -14,7 +14,7 @@
 	 - Stop the task timer
 	 - See all completed tasks
 
-> [!To further explore the app please navigate to stopWatch folder in the repository]
+> To further explore the app please navigate to stopWatch folder in the repository
 
 ## E-commerce Application Phase
 ###### Elevation E-commerce Application
