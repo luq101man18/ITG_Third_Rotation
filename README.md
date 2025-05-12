@@ -1,105 +1,91 @@
 # ITG Third Rotation (React Native)
 
-## 📌 Project Overview
-This repository contains two React Native applications:  
+### The rotation had two main phases:
+- Demo phase
+	- Reviewed and learned React native (RN) materials then built a demo RN application.
+- E-commerce Application phase
+	- Applied all new learned materials and more by building an E-commerce React native application that enables users to purchase 
 
-### 🕒 SessionTime
-A session management app that allows users to:
-- Specify a task and set a session duration.
-- Start and manage tasks efficiently.
+## Demo Phase: 
+ - SessionTime: Session app where user is able to do the following:
+	 - Create a task
+	 - Set the task duration
+	 - Start the task
+	 - Stop the task timer
+	 - See all completed tasks
 
-### 🛒 Elevation (E-Commerce App)
-A full-featured e-commerce application with various functionalities for seamless online shopping.
+> [!To further explore the app please navigate to stopWatch folder in the repository]
 
----
-
-## 🚀 Features & Functionality
-
-### 🔐 Authentication
-- **Login**: Registered users can securely log in using their email and password.
-- **Registration**: New users can easily sign up with minimal required information.
-
-### 🏠 Home
-- Users can **search for products** directly from the top search bar or through the bottom navigation bar.
-- **Product listings** are fetched and displayed with **pagination** to enhance user experience.
-- Clicking on a product navigates to the **Product Details Page**.
-- Users can **filter products** based on various attributes.
-- Bottom **navigation bar** allows easy access to:
-  - 🏠 Home
-  - 🔍 Search
-  - ❤️ Favorites
-  - 🛒 Cart
-  - 👤 Account
-
-### 🔎 Search
-- Users can search for products via the **search bar** on the search screen.
-- The app begins fetching results **after typing the second letter**.
-- **Top five products** matching the search query will be displayed.
-- Clicking on a product reveals **detailed information**.
-- To see **all relevant products**, users can click the **magnify icon** next to the search bar.
-
-### 📄 Searched Products Page
-- Displays **all products** found for the search query.
-- Allows **sorting & filtering**:
-  - **Sort by:** Price (High to Low, Low to High), Relevance.
-  - **Filter by:** Price range.
-
-### 🛍️ Product Details Page (PDP)
-- Displays **complete product details** including title, price, description, and more.
-- Users can:
-  - **Add products to the cart**.
-  - **Adjust quantity** (increase/decrease).
-
-### ❤️ Favorites
-- Users can **add products to favorites** by tapping the heart icon.
-- A dedicated **Favorites screen** displays all saved products.
-
-### 🛒 Cart & Cart Screen
-- Users can **add products to the cart**.
-- Inside the **cart screen**, users can:
-  - ✅ Increase or decrease product quantity.
-  - ❌ Remove products from the cart.
-  - 🏷️ View **total cost** (including product prices, taxes, and shipping).
-  - 🛍️ Proceed to **Checkout**.
-
-### 💳 Checkout
-- Users can **review and modify their address** before placing an order.
-- Choose **payment method**:
-  - **Card Payment**: Modify and switch payment cards.
-  - **Cash on Delivery**.
-  - **Apple Pay** (if applicable).
-- **Final order summary** with total cost.
-- Option to **place the order**.
-
-### 👤 Account Management
-Users can manage their personal details and settings:
-- **View & update personal information** (Name, DOB, Email, Phone, Gender).
-- **Manage payment methods**:
-  - View saved cards.
-  - Add a new payment card.
-- **Manage delivery addresses**:
-  - View saved addresses.
-  - Add new addresses.
-- **View order history**:
-  - See all previously placed orders.
-- **Logout**:
-  - Users can log out easily from the account settings.
-
----
-
-## 🛠️ Tech Stack & Tools
-This app is built using the following technologies:
-- **React Native** 📱 (for cross-platform mobile development).
-- **Redux** 🎛️ (state management for handling global application data).
-- **dummyJSON API** 🗄️ (backend for fetching product data).
-
-## 📖 Installation & Setup
-
-Follow these steps to run the project locally:
-
-### 1️⃣ Prerequisites
-Ensure you have the following installed on your machine:
-- **Node.js**
-- **npm or yarn** 
-- **React Native CLI** 
-- **Android Studio** (For Android development) or **Xcode** (For iOS development)
+## E-commerce Application Phase
+###### Elevation E-commerce Application
+  - In this app there are the following features:
+    - Login: Registered users can login easily by providing their email and password 
+    - Registration: New users are able to register easily with few required information
+    - Home:
+      - User will be able to search for products from home by pressing in the top search bar or using the bottom nav bar
+      - Products are fetched and displayed. Moreover, pagination is implemented to improve user experience.
+      - Users can see products details by simply pressing on the product.
+      - Users can also use a filter feature that allow them to filter products.
+      - finally, a bottom navigator bar that navigates between (Home, Search, favorites, Cart, Account)
+    - Search:
+      - Users are able to search for products by typing on the top search bar at the search screen.
+      - The app will fetch for products after the second letter.
+      - five products will be displayed on the screen, and users will be able to see product details by pressing on the product.   
+      - To see all potential products, press on the button magnify icon next to the search bar to go to searched products screen.
+    - Searched products:
+      - Searched product screen display all products found for the searched term.
+      - Also, the user will be able to filter and sort products. 
+    - Filter and sort:
+      - Allow user to sort products in three ways (High to low, Low to high, relevance)
+      - Allow user to filter products based on a price range.
+    - Product details page:
+      - PDP display all information (title, price, description, etc) about the pressed product.
+      - User will be able to add the product to cart as well as increase the quantity of the product and decrease it. 
+    - add to favorite:
+      - User will be able to add to favorite by pressing on the heart icon on the product image.
+      - Favorite screen display all favorite products.
+    - add to cart and cart screen:
+      - Allow user to add the product to cart.
+      - In the cart screen, the user will be able to:
+        - Increase quantity of the product
+        - Decrease quantity of the product
+        - Delete the product
+        - See total price that includes all products, taxes, and shipping
+        - Checkout
+    - Checkout:
+      - In the checkout screen, the user will be able to:
+        - See and modify address
+        - Choose payment method
+            - Card
+              - User will be able to modify and change the cards
+            - Cash
+            - Apple pay
+        - See total price again
+        - Place the order
+    - Account to manage personal information:
+      - User will be able to:
+        - See personal information
+        - See cards
+        - See addresses
+        - Logout
+    - Personal info details screen
+      - The following information will be displayed:
+        - Full name
+        - Date of birth
+        - Email
+        - Phone number
+        - Gender
+    - Payment methods screen:
+      - User will be able to see available cards.
+      - User will be able to add new card.
+    - Address screen:
+      - User will be able to see saved addresses.
+      - User will be able to add new address.
+    - Placed orders screen:
+      - User will be able to see all placed orders
+    - Logout:
+      - User will be able to logout by simply pressing on logout in the account screen.
+    
+	- The app utilizes the following: 
+	    - Utilizes redux store management to manage data between components.
+	    - Utilizes dummyJSON as a backend.   
